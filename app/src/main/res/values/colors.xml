@@ -16,4 +16,5 @@
     <color name="navigation_type_selected">#ffffff</color>
     <color name="login_txt_color">#E0E0E0</color>
     <color name="login_line">#DBDBDB</color>
+    <color name="tab_sep">#F4B188</color>
 </resources>

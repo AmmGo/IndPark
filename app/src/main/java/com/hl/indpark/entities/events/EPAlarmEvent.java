@@ -3,7 +3,7 @@ package com.hl.indpark.entities.events;
 
 /**
  * Created by yjl on 2021/3/8 17:13
- * Function：
+ * Function：查询类型 1 当天 2 当月 3 当季度 4 当年
  * Desc：环保报警
  */
 public class EPAlarmEvent {
@@ -15,6 +15,9 @@ public class EPAlarmEvent {
      */
     public int gasNumber;
     public int waterNumber;
+    public String gasStr = "废气报警";
+    public String waterStr = "废水报警";
+    public String ePAlarmStr = "环保报警";
     public int totalNumber;
 }
 
