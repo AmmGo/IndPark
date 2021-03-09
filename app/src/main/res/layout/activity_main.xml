@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".uis.activities.MainActivity">
+
+    <!--    <net.arvin.baselib.widgets.TitleBar-->
+    <!--        android:id="@+id/title_bar"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:statusBarColor="@color/primary_dark"-->
+    <!--        app:statusBarMode="light"-->
+    <!--        app:titleBarHeight="0dp" />-->
+
+    <FrameLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

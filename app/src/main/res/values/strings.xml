@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">园区行</string>
+    <string name="tab_home">首页</string>
+    <string name="tab_monitor">监控系统</string>
+    <string name="tab_maillist">通讯录</string>
+    <string name="tab_self">我的</string>
+    <string name="tab_self1"></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="splash_txt">实时数据汇总</string>
+    <string name="login_tv_name">用户名</string>
+    <string name="login_tv_pwd">密码</string>
+</resources>
