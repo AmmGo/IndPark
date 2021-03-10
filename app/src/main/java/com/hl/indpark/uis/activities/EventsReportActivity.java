@@ -32,6 +32,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.ToastUtil;
+import net.arvin.baselib.widgets.TitleBar;
 import net.arvin.permissionhelper.PermissionUtil;
 
 import java.io.File;
@@ -85,6 +86,14 @@ public class EventsReportActivity extends BaseActivity {
     protected void init(Bundle savedInstanceState) {
         initPermissionConfig();
         uploadFile = new ArrayList<>();
+        TitleBar titleBar = findViewById(R.id.title_bar);
+        titleBar.getCenterTextView().setText("事件上报");
+        titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         initData();
     }
 
