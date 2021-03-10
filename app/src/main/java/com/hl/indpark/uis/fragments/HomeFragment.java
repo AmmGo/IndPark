@@ -3,7 +3,6 @@ package com.hl.indpark.uis.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -14,7 +13,7 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
-import com.hl.indpark.uis.activities.OneEventsActivity;
+import com.hl.indpark.uis.activities.EventsReportActivity;
 import com.hl.indpark.uis.adapters.ViewPagerAdapter;
 
 import net.arvin.baselib.base.BaseFragment;
@@ -45,7 +44,7 @@ public class HomeFragment extends BaseFragment {
                 ToastUtil.showToast(getActivity(), "去打电话");
                 break;
             case R.id.ll_events:
-                intent = new Intent(getActivity(), OneEventsActivity.class);
+                intent = new Intent(getActivity(), EventsReportActivity.class);
                 startActivity(intent);
                 break;
         }

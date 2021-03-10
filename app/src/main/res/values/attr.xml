@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BKToolbar">
+        <attr name="titleTxt" format="reference|string" />
+        <attr name="leftImg" format="reference" />
+        <attr name="rightImg" format="reference" />
+        <attr name="showLeftImg" format="boolean" />
+        <attr name="showRightImg" format="boolean" />
+        <attr name="showLeftTv" format="boolean" />
+        <attr name="showRightTv" format="boolean" />
+        <attr name="leftTxt" format="reference|string" />
+        <attr name="rightTxt" format="reference|string" />
+    </declare-styleable>
+    <declare-styleable name="RoundImageView">
+        <attr name="type" format="enum">
+            <enum name="circle" value="1"/>
+            <enum name="round" value="2"/>
+        </attr>
+        <attr name="radiusround" format="dimension"/>
+    </declare-styleable>
+</resources>
