@@ -71,12 +71,6 @@ public class TabSEPFragment extends BaseFragment {
             }
         });
     }
-    //设置各区块的颜色
-    public static final int[] PIE_COLORS = {
-            Color.rgb(181, 194, 202), Color.rgb(129, 216, 200), Color.rgb(241, 214, 145),
-            Color.rgb(108, 176, 223), Color.rgb(195, 221, 155), Color.rgb(251, 215, 191),
-            Color.rgb(237, 189, 189), Color.rgb(172, 217, 243)
-    };
     @Override
     protected void init(Bundle savedInstanceState) {
         mPieChart = root.findViewById(R.id.chart_sep);
@@ -101,7 +95,7 @@ public class TabSEPFragment extends BaseFragment {
         });
     }
     private void sepPieChart(EPAlarmEvent alarmEvent) {
-
+        data.clear();
         entry1 = new PieEntry(alarmEvent.gasNumber, alarmEvent.gasStr);
         entry2 = new PieEntry(alarmEvent.waterNumber, alarmEvent.waterStr);
         data.add(entry1);
@@ -109,11 +103,10 @@ public class TabSEPFragment extends BaseFragment {
         PieDataSet dataSet = new PieDataSet(data, "");
         pieData = new PieData(dataSet);
         mPieChart.setUsePercentValues(false);//设置使用百分比（后续有详细介绍）
-        mPieChart.getDescription().setEnabled(false);//设置描述
         mPieChart.setExtraOffsets(26, 5, 26, 5);//设置边距
         mPieChart.setDragDecelerationFrictionCoef(0.95f);//设置摩擦系数（值越小摩擦系数越大）
         mPieChart.setCenterText(alarmEvent.totalNumber + alarmEvent.ePAlarmStr);//设置环中的文字
-        mPieChart.getDescription().setEnabled(false);//设置描述
+        mPieChart.getDescription().setEnabled(true);//设置描述
         mPieChart.setRotationEnabled(true);//是否可以旋转
         mPieChart.setHighlightPerTapEnabled(true);//点击是否放大
         mPieChart.setCenterTextSize(10f);//设置环中文字的大小
@@ -130,14 +123,14 @@ public class TabSEPFragment extends BaseFragment {
         mPieChart.setTransparentCircleAlpha(110);
         mPieChart.animateXY(1400, 1400);
         mPieChart.spin(1000, mPieChart.getRotationAngle(), mPieChart.getRotationAngle() + 360, Easing.EaseInCubic);
-        dataSet.setSelectionShift(5f);
-        dataSet.setValueLinePart1OffsetPercentage(80f);//数据连接线距图形片内部边界的距离，为百分数
-        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        //数据连接线距图形片内部边界的距离，为百分数(0~100f)
-        dataSet.setValueLinePart1OffsetPercentage(100f);
-//设置x,y在圆外显示的值为透明(transparent = 0x00000000)
-        pieData.setValueTextColor(0x00000000);
+//        dataSet.setSelectionShift(5f);
+//        dataSet.setValueLinePart1OffsetPercentage(80f);//数据连接线距图形片内部边界的距离，为百分数
+//        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+//        dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+//        //数据连接线距图形片内部边界的距离，为百分数(0~100f)
+//        dataSet.setValueLinePart1OffsetPercentage(100f);
+////设置x,y在圆外显示的值为透明(transparent = 0x00000000)
+//        pieData.setValueTextColor(0x00000000);
         // 设置饼块之间的间隔
         dataSet.setSliceSpace(1f);
         dataSet.setHighlightEnabled(true);
@@ -159,7 +152,7 @@ public class TabSEPFragment extends BaseFragment {
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
-        data.setValueTextColor(Color.BLACK);;
+        data.setValueTextColor(Color.BLACK);
         mPieChart.setData(data);
         mPieChart.highlightValues(null);
         //刷新

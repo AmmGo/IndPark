@@ -3,6 +3,7 @@ package com.hl.indpark.uis.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.CompoundButton;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -17,58 +18,69 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
-import com.hl.indpark.entities.events.HSAlarmEvent;
+import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
-import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseFragment;
 
 import java.util.ArrayList;
 
+import butterknife.OnCheckedChanged;
+
 
 /**
- * Created by yjl on 2021/3/9 13:19
- * Function：
- * Desc：报警统计---危险源
+ * Created by yjl on 2021/3/9 13:20
+ * Function：查询类型 1 当天 2 当月 3 当季度 4 当年
+ * Desc：报警分析---环保
  */
-public class TabSHSFragment extends BaseFragment {
+public class TabAEPFragment extends BaseFragment {
+
 
     private PieChart mPieChart;
     private ArrayList<PieEntry> data = new ArrayList<PieEntry>();
     private PieData pieData;
     private PieEntry entry1;
     private PieEntry entry2;
+    private String type = "2";
+
+    @OnCheckedChanged({R.id.rg_month, R.id.rg_quarter, R.id.rg_year})
+    public void OnCheckedChangeListener(CompoundButton view, boolean ischanged) {
+        switch (view.getId()) {
+            case R.id.rg_month:
+                if (ischanged) {
+                    type = "2";
+                    initData(type);
+                }
+                break;
+            case R.id.rg_quarter:
+                if (ischanged) {
+                    type = "3";
+                    initData(type);
+                }
+                break;
+            case R.id.rg_year:
+                if (ischanged) {
+                    type = "4";
+                    initData(type);
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     protected int getContentView() {
-        return R.layout.fragment_tab_shs;
+        return R.layout.fragment_tab_aep;
     }
 
-    @Override
-    protected void init(Bundle savedInstanceState) {
-        mPieChart = root.findViewById(R.id.chart_sep);
-        initData();
-        mPieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+    private void initData(String ty) {
+        ArticlesRepo.getEpAlarm(ty).observe(this, new ApiObserver<EPAlarmEvent>() {
             @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                if (e == null) return;
-            }
-
-            @Override
-            public void onNothingSelected() {
-                //图表外部点击事件 也是（上一个方法为点击一次放大） 本方法为二次点击事件
-
-            }
-        });
-    }
-
-    private void initData() {
-        ArticlesRepo.getHSAlarm("1").observe(this, new ApiObserver<HSAlarmEvent>() {
-            @Override
-            public void onSuccess(Response<HSAlarmEvent> response) {
+            public void onSuccess(Response<EPAlarmEvent> response) {
                 if (response != null && response.getData() != null) {
-                    HSAlarmEvent alarmEvent = response.getData();
+                    EPAlarmEvent alarmEvent = response.getData();
                     sepPieChart(alarmEvent);
                 }
             }
@@ -86,17 +98,42 @@ public class TabSHSFragment extends BaseFragment {
         });
     }
 
-    private void sepPieChart(HSAlarmEvent alarmEvent) {
+    @Override
+    protected void init(Bundle savedInstanceState) {
+        mPieChart = root.findViewById(R.id.chart_sep);
+        initData(type);
+        mPieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                if (e == null) return;
+                //此时e.getY()等于数据 由此判断点击了哪一个扇区
+                if (entry1.getValue() == e.getY()) {
+
+                } else if (entry2.getValue() == e.getY()) {
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected() {
+                //图表外部点击事件 也是（上一个方法为点击一次放大） 本方法为二次点击事件
+
+            }
+        });
+    }
+
+    private void sepPieChart(EPAlarmEvent alarmEvent) {
         data.clear();
-        for (int i = 0; i < alarmEvent.value.size(); i++) {
-            data.add(new PieEntry(alarmEvent.value.get(i).num, HSAlarmEvent.getType(alarmEvent.value.get(i).type)));
-        }
+        entry1 = new PieEntry(alarmEvent.gasNumber, alarmEvent.gasStr);
+        entry2 = new PieEntry(alarmEvent.waterNumber, alarmEvent.waterStr);
+        data.add(entry1);
+        data.add(entry2);
         PieDataSet dataSet = new PieDataSet(data, "");
         pieData = new PieData(dataSet);
         mPieChart.setUsePercentValues(false);//设置使用百分比（后续有详细介绍）
         mPieChart.setExtraOffsets(26, 5, 26, 5);//设置边距
         mPieChart.setDragDecelerationFrictionCoef(0.95f);//设置摩擦系数（值越小摩擦系数越大）
-        mPieChart.setCenterText(alarmEvent.key + "危险源报警");//设置环中的文字
+        mPieChart.setCenterText(alarmEvent.totalNumber + alarmEvent.ePAlarmStr);//设置环中的文字
         mPieChart.getDescription().setEnabled(true);//设置描述
         mPieChart.setRotationEnabled(true);//是否可以旋转
         mPieChart.setHighlightPerTapEnabled(true);//点击是否放大
@@ -149,5 +186,6 @@ public class TabSHSFragment extends BaseFragment {
         //刷新
         mPieChart.invalidate();
     }
+
 
 }

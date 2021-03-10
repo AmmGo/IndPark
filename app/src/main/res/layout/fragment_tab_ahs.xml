@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:background="@drawable/tab_s_ep">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart_sep"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="30dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/rg_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/background_white"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rg_month"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_home_tab_a"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="月度"
+                    android:textColor="@color/color_rb" />
+
+                <RadioButton
+                    android:id="@+id/rg_quarter"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_home_tab_a"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="季度"
+                    android:textColor="@color/color_rb" />
+
+                <RadioButton
+                    android:id="@+id/rg_year"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_home_tab_a"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="年度"
+                    android:textColor="@color/color_rb" />
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
