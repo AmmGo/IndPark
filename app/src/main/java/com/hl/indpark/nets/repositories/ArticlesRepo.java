@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData;
 import com.github.leonardoxh.livedatacalladapter.Resource;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.EPAlarmEvent;
-import com.hl.indpark.entities.events.EntEvent;
+import com.hl.indpark.entities.events.EntNameEvent;
+import com.hl.indpark.entities.events.EntTypeEvent;
+import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
@@ -47,11 +49,11 @@ public class ArticlesRepo {
         return Net.api().getSelfReportEvent();
     }
 
-    public static LiveData<Resource<Response<List<EntEvent>>>> getEnterpriseEvent() {
+    public static LiveData<Resource<Response<List<EntNameEvent>>>> getEnterpriseEvent() {
         return Net.api().getEnterpriseEvent();
     }
 
-    public static LiveData<Resource<Response<List<EntEvent>>>> getEntTypeEvent(int id) {
+    public static LiveData<Resource<Response<List<EntTypeEvent>>>> getEntTypeEvent(int id) {
         return Net.api().getEntTypeEvent(id);
     }
 

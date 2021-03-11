@@ -37,7 +37,7 @@
         android:background="@drawable/dialog_item_bg_only"
         android:gravity="center"
         android:text="取消"
-        android:textColor="@color/divider"
+        android:textColor="#2B2B2B"
         android:textSize="18sp" />
 
 </LinearLayout>

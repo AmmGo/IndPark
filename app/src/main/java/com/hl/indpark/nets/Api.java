@@ -7,7 +7,9 @@ import com.github.leonardoxh.livedatacalladapter.Resource;
 import com.hl.indpark.entities.LoginResultEntity;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.EPAlarmEvent;
-import com.hl.indpark.entities.events.EntEvent;
+import com.hl.indpark.entities.events.EntNameEvent;
+import com.hl.indpark.entities.events.EntTypeEvent;
+import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
@@ -62,11 +64,11 @@ public interface Api {
 
     /*=======企业列表======*/
     @GET("/transmission/enterpriseList/")
-    LiveData<Resource<Response<List<EntEvent>>>> getEnterpriseEvent();
+    LiveData<Resource<Response<List<EntNameEvent>>>> getEnterpriseEvent();
 
     /*=======企业工艺列表======*/
     @GET("/perilousCraft/queryTechnologyIdByEnterpriseId/")
-    LiveData<Resource<Response<List<EntEvent>>>> getEntTypeEvent(@Query("enterpriseId") int id);
+    LiveData<Resource<Response<List<EntTypeEvent>>>> getEntTypeEvent(@Query("enterpriseId") int id);
 
     /*=======危险源信息======*/
     @GET("/transmission/querySourceDangerRealDate/")

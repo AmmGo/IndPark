@@ -1,9 +1,14 @@
 package com.hl.indpark.uis.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -41,7 +46,21 @@ public class HomeFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_one_alrarm:
-                ToastUtil.showToast(getActivity(), "去打电话");
+//                Intent intent = null;
+//                Uri uri = Uri.parse("tel:" + "119");
+//                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//                    ToastUtil.showToast(getContext(),"请到设置中打开电话权限");
+//                    intent = new Intent(Settings.ACTION_SETTINGS);
+//                    getActivity().startActivity(intent);
+//                    return;
+//                }
+//                intent = new Intent(Intent.ACTION_CALL);
+//                intent.setData(uri);
+//                getContext().startActivity(intent);
+//                Uri uri = Uri.parse("tel:" + "119");
+//                Intent intent = new Intent(Intent.ACTION_DIAL);
+//                intent.setData(uri);
+//                getActivity().startActivity(intent);
                 break;
             case R.id.ll_events:
                 intent = new Intent(getActivity(), EventsReportActivity.class);

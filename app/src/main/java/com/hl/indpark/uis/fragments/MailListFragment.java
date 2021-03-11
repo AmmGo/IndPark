@@ -1,8 +1,13 @@
 package com.hl.indpark.uis.fragments;
 
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -12,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.core.app.ActivityCompat;
 
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
@@ -158,7 +165,17 @@ public class MailListFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
                 ContactsSortAdapter.ViewHolder viewHolder = (ContactsSortAdapter.ViewHolder) view.getTag();
               SortModel sortModel =   adapter.toggleChecked(position);
-                ToastUtil.showToast(getActivity(), "点击了"+sortModel.name);
+                Intent intent = null;
+                Uri uri = Uri.parse("tel:" + sortModel.number);
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ToastUtil.showToast(getContext(),"请到设置中打开电话权限");
+                    intent = new Intent(Settings.ACTION_SETTINGS);
+                    getActivity().startActivity(intent);
+                    return;
+                }
+                intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(uri);
+                getContext().startActivity(intent);
             }
         });
 
