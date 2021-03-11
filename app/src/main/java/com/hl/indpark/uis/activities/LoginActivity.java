@@ -89,7 +89,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 dialogUtil.hideProgressDialog();
                 LoginResultEntity data = response.getData();
                 SharePreferenceUtil.saveKeyValue("token",data.token);
-                ToastUtil.showToast(getApplicationContext(), "登录成功");
                 onBackPressed();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }

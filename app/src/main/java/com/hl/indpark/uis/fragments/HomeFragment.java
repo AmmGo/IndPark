@@ -58,6 +58,22 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void init(Bundle savedInstanceState) {
         tabLayout = root.findViewById(R.id.layout_tab);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+          ToastUtil.showToast(getContext(),tab.getPosition()+"");
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         mViewPager = root.findViewById(R.id.viewpager);
         unbinder = ButterKnife.bind(this, root);
         initView();
@@ -87,7 +103,6 @@ public class HomeFragment extends BaseFragment {
         ArticlesRepo.getHSAlarm("1").observe(this, new ApiObserver<HSAlarmEvent>() {
             @Override
             public void onSuccess(Response<HSAlarmEvent> response) {
-                ToastUtil.showToast(getActivity(), "登录成功");
             }
 
             @Override

@@ -9,10 +9,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <!--读取联系人的权限-->
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <!--写联系人的权限-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 读取联系人的权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 写联系人的权限 -->
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission
         android:name="android.permission.READ_LOGS"
@@ -29,7 +27,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
-        <activity android:name=".uis.activities.EventsReportActivity"></activity>
+        <activity android:name=".uis.activities.PieChartDataActivity"></activity>
+        <activity android:name=".uis.activities.EventsReportActivity" />
         <activity
             android:name=".uis.activities.SplashActivity"
             android:theme="@style/AppTheme">
@@ -45,17 +44,16 @@
         <activity
             android:name=".uis.activities.MainActivity"
             android:screenOrientation="portrait" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.hl.indpark.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true"
-            >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider>
-   <!-- 配置APP渠道号 -->
+        </provider> <!-- 配置APP渠道号 -->
         <meta-data
             android:name="BUGLY_APP_CHANNEL"
             android:value="${BUGLY_APP_CHANNEL}" />

@@ -1,6 +1,7 @@
 package com.hl.indpark.uis.fragments;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -20,7 +21,7 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
-import com.hl.indpark.utils.Util;
+import com.hl.indpark.uis.activities.PieChartDataActivity;
 
 import net.arvin.baselib.base.BaseFragment;
 
@@ -53,6 +54,9 @@ public class TabSHSFragment extends BaseFragment {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 if (e == null) return;
+                Intent intent = new Intent(getActivity(), PieChartDataActivity.class);
+                intent.putExtra("type",2);
+                startActivity(intent);
             }
 
             @Override
@@ -100,7 +104,7 @@ public class TabSHSFragment extends BaseFragment {
         mPieChart.getDescription().setEnabled(true);//设置描述
         mPieChart.setRotationEnabled(true);//是否可以旋转
         mPieChart.setHighlightPerTapEnabled(true);//点击是否放大
-        mPieChart.setCenterTextSize(10f);//设置环中文字的大小
+        mPieChart.setCenterTextSize(8f);//设置环中文字的大小
         mPieChart.setDrawCenterText(true);//设置绘制环中文字
         mPieChart.setRotationAngle(120f);//设置旋转角度
         mPieChart.setTransparentCircleRadius(30f);//设置半透明圆环的半径,看着就有一种立体的感觉
