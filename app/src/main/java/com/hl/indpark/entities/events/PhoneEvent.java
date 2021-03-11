@@ -10,10 +10,10 @@ public class PhoneEvent {
      * sex : 1
      * deviceId : null
      */
-    private int id;
-    private String name;
-    private String phone;
-    private int sex;
-    private String deviceId;
+    public int id;
+    public String name;
+    public String phone;
+    public int sex;
+    public String deviceId;
 
 }

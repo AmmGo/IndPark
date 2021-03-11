@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
-import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
 import com.hl.indpark.entities.events.SelfReportEvent;
 import com.hl.indpark.entities.events.UserInfoEvent;
@@ -288,23 +287,7 @@ public class EventsReportActivity extends BaseActivity {
 
             }
         });
-        ArticlesRepo.getPhoneEvent().observe(this, new ApiObserver<List<PhoneEvent>>() {
-            @Override
-            public void onSuccess(Response<List<PhoneEvent>> response) {
-                Log.e("人员列表", "onSuccess: ");
-            }
 
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
         ArticlesRepo.getUserInfoEvent().observe(this, new ApiObserver<UserInfoEvent>() {
             @Override
             public void onSuccess(Response<UserInfoEvent> response) {
