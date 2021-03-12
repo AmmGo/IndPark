@@ -2,34 +2,22 @@ package com.hl.indpark.uis.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.PopEvent;
+import com.hl.indpark.entities.events.ReportEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
-import com.hl.indpark.entities.events.SelfReportEvent;
-import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.permission.DefaultResourceProvider;
@@ -47,22 +35,32 @@ import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.widgets.TitleBar;
 import net.arvin.permissionhelper.PermissionUtil;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class EventsReportActivity extends BaseActivity {
     @BindView(R.id.tv_count)
     TextView tvCount;
+    @BindView(R.id.tv_type)
+    TextView tvType;
     boolean islMaxCount;
     private MediaFragment mediaFragment;
     private List<LocalMedia> selectList = new ArrayList<>();
     private List<LocalMedia> mediaList = new ArrayList<>();
-    private Location location;
+    private ReportEvent eventReport;
 
     @OnTextChanged(value = R.id.ed_event_decs, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void editTextDetailChange(Editable editable) {
@@ -89,6 +87,9 @@ public class EventsReportActivity extends BaseActivity {
                 addImageDialog(PHOTO, PHOTOLIB);
                 break;
             case R.id.tv_report:
+//                getUpdateUserImg(uploadFile.get(0));
+//                getUploadEvent();
+                getUpdateUserImgS();
                 break;
             case R.id.ll_type:
                 try {
@@ -101,6 +102,13 @@ public class EventsReportActivity extends BaseActivity {
                 break;
             default:
         }
+    }
+
+    @Subscribe
+    public void getEntType(ReportTypeEvent event) {
+        tvType.setText(event.name);
+        eventReport.id = event.id;
+        pop.cancel();
     }
 
     @Override
@@ -122,11 +130,13 @@ public class EventsReportActivity extends BaseActivity {
         });
         initData();
         setMediaFragment();
+        eventReport = new ReportEvent();
     }
 
     private PermissionUtil permissionUtil;
     private static String PHOTO = "拍照";
     private static String PHOTOLIB = "相册";
+
     /**
      * 设置fragment
      */
@@ -140,7 +150,9 @@ public class EventsReportActivity extends BaseActivity {
         PermissionUtil.setPermissionTextProvider(new DefaultResourceProvider());
         permissionUtil = new PermissionUtil.Builder().with(this).build();
     }
-    private List<File> uploadFile;
+
+    private List<File> uploadFile = new ArrayList<>();
+
     private void addImageDialog(String one, String two) {
         List<String> names = new ArrayList<>();
         names.add(one);
@@ -203,9 +215,9 @@ public class EventsReportActivity extends BaseActivity {
                     mediaList.addAll(selectList);
                     uploadFile.clear();
                     mediaFragment.setActivity(this, mediaList);
-//                    for (int i = 0; i < mediaList.size(); i++) {
-//                        uploadFile.add(new File(mediaList.get(i).getCompressPath()));
-//                    }
+                    for (int i = 0; i < mediaList.size(); i++) {
+                        uploadFile.add(new File(mediaList.get(i).getPath()));
+                    }
                     break;
                 default:
             }
@@ -232,27 +244,25 @@ public class EventsReportActivity extends BaseActivity {
             }
         });
 
-        ArticlesRepo.getUserInfoEvent().observe(this, new ApiObserver<UserInfoEvent>() {
-            @Override
-            public void onSuccess(Response<UserInfoEvent> response) {
-                Log.e("用户成功", "onSuccess: ");
-            }
 
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-            }
+    }
 
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
+    public void getUploadEvent() {
+        Map<String, String> paramMap = new HashMap<>();
+        /**
+         * 通用参数配置
+         * */
+        paramMap.put("title", "垃圾处理");
+        paramMap.put("type", String.valueOf(eventReport.id));
+        paramMap.put("content", "东北方向有大量垃圾,已经堵塞管道需要及时处理");
+        paramMap.put("image", "2021/03/12/e94704cd-dc47-471e-8ea2-466a25216f06.jpg,2021/03/12/4ab24bd5-dc26-4fab-939b-fbe79aaba3ff.jpg,2021/03/12/23023e3d-0def-4546-ba50-5b22b84bb748.jpg");
+        paramMap.put("longitude", "116.397128");
+        paramMap.put("latitude", "39.916527");
 
-            }
-        });
-        ArticlesRepo.getSelfReportEvent().observe(this, new ApiObserver<SelfReportEvent>() {
+        ArticlesRepo.getReportEvent(paramMap).observe(this, new ApiObserver<String>() {
             @Override
-            public void onSuccess(Response<SelfReportEvent> response) {
-                Log.e("我的上报", "onSuccess: ");
+            public void onSuccess(Response<String> response) {
+                Log.e("上报事件", "onSuccess: ");
             }
 
             @Override
@@ -267,104 +277,99 @@ public class EventsReportActivity extends BaseActivity {
             }
         });
     }
-//    public static final int LOCATION_CODE = 301;
-//    private LocationManager locationManager;
-//    private String locationProvider = null;
-//    private void getLocation () {
-//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//        //获取所有可用的位置提供器
-//        List<String> providers = locationManager.getProviders(true);
-//        if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
-//            //如果是Network
-//            locationProvider = LocationManager.NETWORK_PROVIDER;
-//        }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            //获取权限（如果没有开启权限，会弹出对话框，询问是否开启权限）
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                    || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                //请求权限
-//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-//                        Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_CODE);
-//            } else {
-//                //监视地理位置变化
-//                locationManager.requestLocationUpdates(locationProvider, 3000, 1, locationListener);
-//                Location location = locationManager.getLastKnownLocation(locationProvider);
-//                if (location != null) {
-//                    //输入经纬度
-//                    Toast.makeText(this, location.getLongitude() + " " + location.getLatitude() + "", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        } else {
-//            //监视地理位置变化
-//            locationManager.requestLocationUpdates(locationProvider, 3000, 1, locationListener);
-//            Location location = locationManager.getLastKnownLocation(locationProvider);
-//            if (location != null) {
-//                //不为空,显示地理位置经纬度
-//                Toast.makeText(this, location.getLongitude() + " " + location.getLatitude() + "", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
-//
-//    public LocationListener locationListener = new LocationListener() {
-//        // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
-//        @Override
-//        public void onStatusChanged(String provider, int status, Bundle extras) {
-//        }
-//        // Provider被enable时触发此函数，比如GPS被打开
-//        @Override
-//        public void onProviderEnabled(String provider) {
-//        }
-//        // Provider被disable时触发此函数，比如GPS被关闭
-//        @Override
-//        public void onProviderDisabled(String provider) {
-//        }
-//        //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
-//        @Override
-//        public void onLocationChanged(Location location) {
-//            if (location != null) {
-//                //不为空,显示地理位置经纬度
-//                Toast.makeText(EventsReportActivity.this, location.getLongitude() + " " + location.getLatitude() + "", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    };
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        switch (requestCode) {
-//            case LOCATION_CODE:
-//                if(grantResults.length > 0 && grantResults[0] == getPackageManager().PERMISSION_GRANTED
-//                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-//                    Toast.makeText(this, "申请权限", Toast.LENGTH_LONG).show();
-//                    try {
-//                        List<String> providers = locationManager.getProviders(true);
-//                        if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
-//                            //如果是Network
-//                            locationProvider = LocationManager.NETWORK_PROVIDER;
-//                        }else if (providers.contains(LocationManager.GPS_PROVIDER)) {
-//                            //如果是GPS
-//                            locationProvider = LocationManager.GPS_PROVIDER;
-//                        }
-//                        //监视地理位置变化
-//                        locationManager.requestLocationUpdates(locationProvider, 3000, 1, locationListener);
-//                        Location location = locationManager.getLastKnownLocation(locationProvider);
-//                        if (location != null) {
-//                            //不为空,显示地理位置经纬度
-//                            Toast.makeText(EventsReportActivity.this, location.getLongitude() + " " + location.getLatitude() + "", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }catch (SecurityException e){
-//                        e.printStackTrace();
-//                    }
-//                } else {
-//                    Toast.makeText(this, "缺少权限", Toast.LENGTH_LONG).show();
-//                    finish();
-//                }
-//                break;
-//        }
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        locationManager.removeUpdates(locationListener);
-//    }
+
+    public void getUpdateUserImg(File file) {
+        Map<String, String> paramMap = new HashMap<>();
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part MultipartFile =
+                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+        ArticlesRepo.getUploadImg(MultipartFile).observe(this, new ApiObserver<String>() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                Log.e("上传一张图片", "onSuccess: " + response.getData());
+//                2021/03/12/d900ef89-a365-4172-9719-1406ae2f8287.jpg
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+
+            }
+        });
+    }
+
+    private List<MultipartBody.Part> filesToMultipartBodyParts(List<File> files) {
+
+        List<MultipartBody.Part> parts = new ArrayList<>(files.size());
+        for (File file : files) {
+//            //设置文件的类型
+//            RequestBody requestBody = RequestBody.create(MediaType.parse("image/png"), file);
+//            //file就是上传文件的参数类型,后面的file.getName()就是你上传的文件,首先要拿到文件的地址
+//            MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+            RequestBody requestFile =
+                    RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            MultipartBody.Part part =
+                    MultipartBody.Part.createFormData("files", file.getName(), requestFile);
+            parts.add(part);
+        }
+        return parts;
+    }
+
+    public void getUpdateUserImgS() {
+//      /storage/emulated/0/Pictures/Screenshots/1.jpg
+//      /storage/emulated/0/Pictures/Screenshots/2.jpg
+//      /storage/emulated/0/Pictures/Screenshots/3.jpg
+        List<File> files = new ArrayList<>();
+        files.add(new File("/storage/emulated/0/Pictures/Screenshots/1.jpg"));
+        files.add(new File("/storage/emulated/0/Pictures/Screenshots/2.jpg"));
+        files.add(new File("/storage/emulated/0/Pictures/Screenshots/3.jpg"));
+        files.add(new File("/storage/emulated/0/Pictures/Screenshots/4.jpg"));
+        files.add(new File("/storage/emulated/0/Pictures/Screenshots/5.jpg"));
+        files.add(new File("/storage/emulated/0/Pictures/Screenshots/6.jpg"));
+
+        List<MultipartBody.Part> partList = filesToMultipartBodyParts(files);
+        Log.e("fdas", "getUpdateUserImgS: ");
+        ArticlesRepo.getUploadImgS(partList).observe(this, new ApiObserver<String>() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                Log.e("上传多张图片", "onSuccess: " + response.getData());
+//                2021/03/12/d900ef89-a365-4172-9719-1406ae2f8287.jpg
+//                2021/03/12/e94704cd-dc47-471e-8ea2-466a25216f06.jpg,2021/03/12/4ab24bd5-dc26-4fab-939b-fbe79aaba3ff.jpg,2021/03/12/23023e3d-0def-4546-ba50-5b22b84bb748.jpg,
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
 }

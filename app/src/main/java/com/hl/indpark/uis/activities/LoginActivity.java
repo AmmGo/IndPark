@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -90,6 +91,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 dialogUtil.hideProgressDialog();
                 LoginResultEntity data = response.getData();
                 SharePreferenceUtil.saveKeyValue("token",data.token);
+                Log.e("TOKEN", data.token );
                 onBackPressed();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
@@ -105,6 +107,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onError(Throwable throwable) {
                 super.onError(throwable);
                 dialogUtil.hideProgressDialog();
+//                code":10015登录过期，请重新登录
             }
         });
     }

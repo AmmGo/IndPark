@@ -10,10 +10,13 @@ import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.entities.events.EntNameEvent;
 import com.hl.indpark.entities.events.EntSEPEvent;
 import com.hl.indpark.entities.events.EntSEPTypeEvent;
-import com.hl.indpark.entities.events.EntTypeEvent;
-import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
+import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
+import com.hl.indpark.entities.events.MyApprovalEvent;
+import com.hl.indpark.entities.events.MyMsgEvent;
+import com.hl.indpark.entities.events.MyPeportEvent;
+import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
 import com.hl.indpark.entities.events.SelfReportEvent;
@@ -22,9 +25,12 @@ import com.hl.indpark.entities.events.UserInfoEvent;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -33,7 +39,12 @@ import retrofit2.http.Query;
  * Desc：
  */
 public interface Api {
-    //    String BASE_URL = "http://192.168.119.237:11035/";
+    /**
+     * 后台服务*/
+//    String BASE_URL = "http://192.168.119.237:11035/";
+    /**
+     * 内网服务
+     */
     String BASE_URL = "http://192.168.119.248:11035/";
 
     /*=======登陆注册======*/
@@ -81,8 +92,50 @@ public interface Api {
     LiveData<Resource<Response<List<EntSEPTypeEvent>>>> getEntSEPTypeEvent(@Query("enterpriseId") int id);
 
     /*=======环保信息======*/
-    @GET("/phone/EnvironmentMonitor")
-    LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(@Query("psCode") String id, @Query("pointCode") String tlid, @Query("current") String page, @Query("size") String pageSize);
+    @GET("/phone/EnvironmentMonitor/")
+    LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(@Query("psCode") String id, @Query("pointCode") String tlid, @Query("current") String page, @Query("size") String pageSize, @Query("isException") String isp);
+
+    /*=======消息列表======*/
+    @GET("/push/pageList/")
+    LiveData<Resource<Response<MyMsgEvent>>> getMyMsgEvent(@Query("current") String page, @Query("size") String pageSize);
+
+    /*=======上报列表======*/
+    @GET("/phone/events/")
+    LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(@Query("current") String page, @Query("size") String pageSize);
+
+    /*=======审批列表======*/
+    @GET("/phone/approveEvents/")
+    LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(@Query("current") String page, @Query("size") String pageSize);
+
+    /*=======审批列表-ID-查询事件======*/
+    @GET("/event/findById/")
+    LiveData<Resource<Response<MyPeportIDEvent>>> getMyPeportIDEvent(@Query("id") String id);
+
+    /*=======提交审批======*/
+    @POST("/event/update/")
+    LiveData<Resource<Response<String>>> getMyPeportIDUpdateEvent(@Body HashMap<String, String> mape);
+
+    /*=======用户信息修改======*/
+    @POST("/phone/update/")
+    LiveData<Resource<Response<String>>> getUserInfoUpdateEvent(@Body HashMap<String, String> map);
+
+    /*=======上报事件======*/
+    @POST("/event/insert/")
+    LiveData<Resource<Response<String>>> getReportEvent(@Body HashMap<String, String> map);
+
+    /**
+     * 上传单张图片
+     */
+    @Multipart
+    @POST("/file/upload")
+    LiveData<Resource<Response<String>>> getUploadImg(@Part MultipartBody.Part MultipartFile);
+
+    /**
+     * 上传多张图片
+     */
+    @Multipart
+    @POST("/file/multiUpload")
+    LiveData<Resource<Response<String>>> getUploadImgS(@Part List<MultipartBody.Part> maps);
 
 
 }

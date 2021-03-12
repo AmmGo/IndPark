@@ -11,13 +11,22 @@ import com.hl.indpark.entities.events.EntSEPTypeEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
+import com.hl.indpark.entities.events.MyApprovalEvent;
+import com.hl.indpark.entities.events.MyMsgEvent;
+import com.hl.indpark.entities.events.MyPeportEvent;
+import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
 import com.hl.indpark.entities.events.SelfReportEvent;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.Net;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 
 /**
@@ -66,7 +75,44 @@ public class ArticlesRepo {
         return Net.api().getEntSEPTypeEvent(id);
     }
 
-    public static LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(String id, String tlid,String page,String sizePage) {
-        return Net.api().getEntSEPEvent(id, tlid,page,sizePage);
+    public static LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(String id, String tlid, String page, String sizePage, String isP) {
+        return Net.api().getEntSEPEvent(id, tlid, page, sizePage, isP);
+    }
+
+
+    public static LiveData<Resource<Response<MyMsgEvent>>> getMyMsgEvent(String sizePage, String isP) {
+        return Net.api().getMyMsgEvent(sizePage, isP);
+    }
+
+    public static LiveData<Resource<Response<MyPeportIDEvent>>> getMyPeportIDEvent(String id) {
+        return Net.api().getMyPeportIDEvent(id);
+    }
+
+    public static LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(String sizePage, String isP) {
+        return Net.api().getMyPeportEvent(sizePage, isP);
+    }
+
+    public static LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(String sizePage, String isP) {
+        return Net.api().getMyApprovalEvent(sizePage, isP);
+    }
+
+    public static LiveData<Resource<Response<String>>> getUserInfoUpdateEvent(Map map) {
+        return Net.api().getUserInfoUpdateEvent((HashMap<String, String>) map);
+    }
+
+    public static LiveData<Resource<Response<String>>> getMyPeportIDUpdateEvent(Map map) {
+        return Net.api().getMyPeportIDUpdateEvent((HashMap<String, String>) map);
+    }
+
+    public static LiveData<Resource<Response<String>>> getReportEvent(Map map) {
+        return Net.api().getReportEvent((HashMap<String, String>) map);
+    }
+
+    public static LiveData<Resource<Response<String>>> getUploadImg(MultipartBody.Part MultipartFile) {
+        return Net.api().getUploadImg(MultipartFile);
+    }
+
+    public static LiveData<Resource<Response<String>>> getUploadImgS(List<MultipartBody.Part> maps) {
+        return Net.api().getUploadImgS(maps);
     }
 }

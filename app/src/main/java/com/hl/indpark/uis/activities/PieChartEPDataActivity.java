@@ -50,6 +50,7 @@ public class PieChartEPDataActivity extends BaseActivity {
     private PopEvent popEvent;
     private TabLayout tabLayout;
     private int typeAdapter;
+    private String iocode;
 
     @OnClick({R.id.ll_spin, R.id.ll_spin2})
     public void onClick(View v) {
@@ -124,15 +125,18 @@ public class PieChartEPDataActivity extends BaseActivity {
                         break;
                     case 1:
                         //正常
-                        adapter.setNewData(getNewData("0"));
+                        getEntSEP(enterpriseId, iocode,"0");
+//                        adapter.setNewData(getNewData("0"));
                         break;
                     case 2:
                         //异常
-                        adapter.setNewData(getNewData("1"));
+                        getEntSEP(enterpriseId, iocode,"1");
+//                        adapter.setNewData(getNewData("1"));
                         break;
                     case 3:
                         //超标
-                        adapter.setNewData(getNewData("2"));
+                        getEntSEP(enterpriseId,iocode,"2");
+//                        adapter.setNewData(getNewData("2"));
                         break;
 
                 }
@@ -219,14 +223,14 @@ public class PieChartEPDataActivity extends BaseActivity {
         });
     }
 
-    public void getEntSEP(String id, String tlid) {
-        ArticlesRepo.getEntSEPEvent(id, tlid, "1", "20").observe(this, new ApiObserver<EntSEPEvent>() {
+    public void getEntSEP(String id, String tlid,String isP) {
+        ArticlesRepo.getEntSEPEvent(id, tlid, "1", "20",isP).observe(this, new ApiObserver<EntSEPEvent>() {
             @Override
             public void onSuccess(Response<EntSEPEvent> response) {
+                entSep.clear();
                 entSep = response.getData().records;
                 adapter.getType(typeAdapter);
                 adapter.setNewData(entSep);
-
             }
 
             @Override
@@ -244,7 +248,7 @@ public class PieChartEPDataActivity extends BaseActivity {
 
     @Subscribe
     public void getEntName(EntNameEvent event) {
-
+        tabLayout.getTabAt(0).select();
         chooseText2.setText("请选择排口");
         entSep.clear();
         adapter.notifyDataSetChanged();
@@ -262,8 +266,8 @@ public class PieChartEPDataActivity extends BaseActivity {
         }else{
             typeAdapter = 2;
         }
-
-        getEntSEP(enterpriseId, event.iocode);
+        iocode = event.iocode;
+        getEntSEP(enterpriseId, event.iocode,null);
         pop.cancel();
     }
 
