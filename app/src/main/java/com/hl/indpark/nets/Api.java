@@ -8,6 +8,8 @@ import com.hl.indpark.entities.LoginResultEntity;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.entities.events.EntNameEvent;
+import com.hl.indpark.entities.events.EntSEPEvent;
+import com.hl.indpark.entities.events.EntSEPTypeEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
@@ -73,6 +75,14 @@ public interface Api {
     /*=======危险源信息======*/
     @GET("/transmission/querySourceDangerRealDate/")
     LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid);
+
+    /*=======企业排污口列表======*/
+    @GET("/environmentpoint/list/")
+    LiveData<Resource<Response<List<EntSEPTypeEvent>>>> getEntSEPTypeEvent(@Query("enterpriseId") int id);
+
+    /*=======环保信息======*/
+    @GET("/phone/EnvironmentMonitor")
+    LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(@Query("psCode") String id, @Query("pointCode") String tlid, @Query("current") String page, @Query("size") String pageSize);
 
 
 }

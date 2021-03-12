@@ -1,6 +1,7 @@
 package com.hl.indpark.uis.fragments;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.CompoundButton;
@@ -21,6 +22,7 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.uis.activities.PieChartEPDataActivity;
 
 import net.arvin.baselib.base.BaseFragment;
 
@@ -106,12 +108,9 @@ public class TabAEPFragment extends BaseFragment {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 if (e == null) return;
-                //此时e.getY()等于数据 由此判断点击了哪一个扇区
-                if (entry1.getValue() == e.getY()) {
-
-                } else if (entry2.getValue() == e.getY()) {
-
-                }
+                Intent intent = new Intent(getActivity(), PieChartEPDataActivity.class);
+                intent.putExtra("type",1);
+                startActivity(intent);
             }
 
             @Override

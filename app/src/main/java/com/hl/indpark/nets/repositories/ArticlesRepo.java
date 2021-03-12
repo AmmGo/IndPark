@@ -6,9 +6,10 @@ import com.github.leonardoxh.livedatacalladapter.Resource;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.entities.events.EntNameEvent;
-import com.hl.indpark.entities.events.EntTypeEvent;
-import com.hl.indpark.entities.events.PopEvent;
+import com.hl.indpark.entities.events.EntSEPEvent;
+import com.hl.indpark.entities.events.EntSEPTypeEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
+import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
@@ -59,5 +60,13 @@ public class ArticlesRepo {
 
     public static LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(String id, String tlid) {
         return Net.api().getEntSHSEvent(id, tlid);
+    }
+
+    public static LiveData<Resource<Response<List<EntSEPTypeEvent>>>> getEntSEPTypeEvent(int id) {
+        return Net.api().getEntSEPTypeEvent(id);
+    }
+
+    public static LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(String id, String tlid,String page,String sizePage) {
+        return Net.api().getEntSEPEvent(id, tlid,page,sizePage);
     }
 }

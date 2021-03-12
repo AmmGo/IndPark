@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.hl.indpark">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission
         android:name="android.permission.READ_LOGS"
@@ -28,8 +28,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
-        <activity android:name=".uis.activities.PieChartDataActivity"></activity>
-        <activity android:name=".uis.activities.EventsReportActivity" />
         <activity
             android:name=".uis.activities.SplashActivity"
             android:theme="@style/AppTheme">
@@ -45,6 +43,16 @@
         <activity
             android:name=".uis.activities.MainActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.PieChartSHDataActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.PieChartEPDataActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.EventsReportActivity"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.selector.provider"

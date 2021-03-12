@@ -10,6 +10,7 @@ import java.util.List;
 public class PopEvent {
     public int entChose;
     public List<EntTypeEvent> entTypeEvents;
+    public List<EntSEPTypeEvent> entSEPTypeEvents;
     public List<EntNameEvent> entNameEvents;
     public List<ReportTypeEvent> reportTypeEventList;
 }

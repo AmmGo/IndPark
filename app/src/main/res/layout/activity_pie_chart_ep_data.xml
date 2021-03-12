@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="请选择工艺"
+                android:text="请选择排口"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
@@ -89,7 +89,7 @@
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/layout_tab_pie"
+        android:id="@+id/layout_tab_list"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tab_bar"
         android:background="@color/background_white"
@@ -116,25 +116,20 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="高高报" />
+            android:text="异常" />
 
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="高报" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="低" />
+            android:text="超标" />
     </com.google.android.material.tabs.TabLayout>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recy_pie_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recy_pie_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

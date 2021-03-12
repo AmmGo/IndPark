@@ -19,9 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.events.EntNameEvent;
+import com.hl.indpark.entities.events.EntSEPTypeEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
+import com.hl.indpark.uis.adapters.EntEPTypeAdapter;
 import com.hl.indpark.uis.adapters.EntNameAdapter;
 import com.hl.indpark.uis.adapters.EntTypeAdapter;
 import com.hl.indpark.uis.adapters.ReportTypeAdapter;
@@ -67,6 +69,9 @@ public class EntDialog extends Dialog implements OnClickListener {
             case 102:
                 initReportTypeAdapter(popEvent.reportTypeEventList);
                 break;
+            case 103:
+                initEPTypeAdapter(popEvent.entSEPTypeEvents);
+                break;
             default:
         }
 
@@ -83,6 +88,24 @@ public class EntDialog extends Dialog implements OnClickListener {
                 EntNameEvent event = new EntNameEvent();
                 event.id = list.get(position).id;
                 event.name = list.get(position).name;
+                event.companyCode = list.get(position).companyCode;
+                event.psCode = list.get(position).psCode;
+                EventBus.getDefault().post(event);
+            }
+        });
+    }
+
+    private void initEPTypeAdapter(List<EntSEPTypeEvent> list) {
+        EntEPTypeAdapter entAdapter = new EntEPTypeAdapter(list, context);
+        entAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        //给RecyclerView设置适配器
+        recyclerView.setAdapter(entAdapter);
+        entAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                EntSEPTypeEvent event = new EntSEPTypeEvent();
+                event.name = list.get(position).name;
+                event.iocode= list.get(position).iocode;
                 EventBus.getDefault().post(event);
             }
         });

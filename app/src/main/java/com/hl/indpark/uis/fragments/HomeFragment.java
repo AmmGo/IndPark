@@ -80,7 +80,6 @@ public class HomeFragment extends BaseFragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-          ToastUtil.showToast(getContext(),tab.getPosition()+"");
             }
 
             @Override

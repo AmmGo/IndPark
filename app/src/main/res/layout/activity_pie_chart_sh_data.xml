@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEEEEE"
+    android:orientation="vertical">
+
+    <net.arvin.baselib.widgets.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="title"
+        app:centerTextColor="@color/text"
+        app:centerType="textView"
+        app:leftBackground="@drawable/bg_button"
+        app:leftImageResource="@drawable/ic_back"
+        app:leftType="imageView"
+        app:showBottomLine="false"
+        app:statusBarColor="@color/primary_dark"
+        app:statusBarMode="light"
+        app:titleBarColor="@color/primary" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="1dp">
+
+        <LinearLayout
+            android:id="@+id/ll_spin"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/background_white"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:id="@+id/chooseText"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:text="请选择公司"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="10dp"
+                android:layout_height="14dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/icon_drop_down" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_spin2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/background_white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:id="@+id/chooseText2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="请选择工艺"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/arrow2"
+                android:layout_width="10dp"
+                android:layout_height="14dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/icon_drop_down" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/layout_tab_list"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tab_bar"
+        android:background="@color/background_white"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/primary"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/primary"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabTextColor="#3A3A3A">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="全部" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="正常" />
+
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="高高报" />
+
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="高报" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="低低报" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="低报" />
+    </com.google.android.material.tabs.TabLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recy_pie_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>
