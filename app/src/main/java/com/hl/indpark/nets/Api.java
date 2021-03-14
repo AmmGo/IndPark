@@ -97,15 +97,15 @@ public interface Api {
 
     /*=======消息列表======*/
     @GET("/push/pageList/")
-    LiveData<Resource<Response<MyMsgEvent>>> getMyMsgEvent(@Query("current") String page, @Query("size") String pageSize);
+    LiveData<Resource<Response<MyMsgEvent>>> getMyMsgEvent(@Query("current") int page, @Query("size") int pageSize);
 
     /*=======上报列表======*/
     @GET("/phone/events/")
-    LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(@Query("current") String page, @Query("size") String pageSize);
+    LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(@Query("current") int page, @Query("size") int pageSize,@Query("state") String state);
 
     /*=======审批列表======*/
     @GET("/phone/approveEvents/")
-    LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(@Query("current") String page, @Query("size") String pageSize);
+    LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(@Query("current") int page, @Query("size") int pageSize,@Query("state") String state);
 
     /*=======审批列表-ID-查询事件======*/
     @GET("/event/findById/")

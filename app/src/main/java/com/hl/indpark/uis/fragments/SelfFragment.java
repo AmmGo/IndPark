@@ -1,19 +1,23 @@
 package com.hl.indpark.uis.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
-import com.hl.indpark.entities.events.MyApprovalEvent;
 import com.hl.indpark.entities.events.MyMsgEvent;
-import com.hl.indpark.entities.events.MyPeportEvent;
-import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.uis.activities.MyApprovalActivity;
+import com.hl.indpark.uis.activities.MyMsgActivity;
+import com.hl.indpark.uis.activities.MyReportActivity;
+import com.hl.indpark.uis.activities.SetUpActivity;
 import com.hl.indpark.utils.RoundImageView;
 
 import net.arvin.baselib.base.BaseFragment;
@@ -22,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 /**
@@ -35,9 +40,32 @@ public class SelfFragment extends BaseFragment {
     RoundImageView imageView;
     @BindView(R.id.txtName)
     TextView tvName;
+    @BindView(R.id.img_new_msg)
+    ImageView imgNewMsg;
     @BindView(R.id.tv_photo_sjh)
     TextView tvPhone;
     private UserInfoEvent userInfoEvent;
+    private boolean hideNew;
+
+    @OnClick({R.id.ll_wd_shenp, R.id.ll_wdsp, R.id.ll_wdxx, R.id.img_set_up})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_wd_shenp:
+                startActivity(new Intent(getActivity(), MyApprovalActivity.class));
+//                startActivity(new Intent(getActivity(), ReportApprovalActivity.class));
+                break;
+            case R.id.ll_wdsp:
+                startActivity(new Intent(getActivity(), MyReportActivity.class));
+                break;
+            case R.id.ll_wdxx:
+                startActivity(new Intent(getActivity(), MyMsgActivity.class));
+                break;
+            case R.id.img_set_up:
+                startActivity(new Intent(getActivity(), SetUpActivity.class));
+                break;
+            default:
+        }
+    }
 
     @Override
     protected int getContentView() {
@@ -47,6 +75,7 @@ public class SelfFragment extends BaseFragment {
     @Override
     protected void init(Bundle savedInstanceState) {
         initData();
+        getNewHide();
     }
 
     public void initData() {
@@ -92,10 +121,19 @@ public class SelfFragment extends BaseFragment {
 
             }
         });
-        ArticlesRepo.getMyMsgEvent("1", "20").observe(this, new ApiObserver<MyMsgEvent>() {
+    }
+
+    public void getNewHide() {
+        ArticlesRepo.getMyMsgEvent(1, 10).observe(this, new ApiObserver<MyMsgEvent>() {
             @Override
             public void onSuccess(Response<MyMsgEvent> response) {
                 Log.e("我的消息", "onSuccess: ");
+                MyMsgEvent event = response.getData();
+                if (event != null && event.records.size() > 0) {
+                    imgNewMsg.setVisibility(View.VISIBLE);
+                } else {
+                    imgNewMsg.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -109,82 +147,6 @@ public class SelfFragment extends BaseFragment {
 
             }
         });
-        ArticlesRepo.getMyPeportEvent("1", "20").observe(this, new ApiObserver<MyPeportEvent>() {
-            @Override
-            public void onSuccess(Response<MyPeportEvent> response) {
-                Log.e("上报列表", "onSuccess: ");
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
-        ArticlesRepo.getMyApprovalEvent("1", "20").observe(this, new ApiObserver<MyApprovalEvent>() {
-            @Override
-            public void onSuccess(Response<MyApprovalEvent> response) {
-                Log.e("审批列表", "onSuccess: ");
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
-        Map<String, String> paramMap = new HashMap<>();
-        /**
-         * 通用参数配置
-         * */
-        paramMap.put("handleOpinion", "这个事件没处理");
-        paramMap.put("id", "22");
-        ArticlesRepo.getMyPeportIDUpdateEvent(paramMap).observe(this, new ApiObserver<String>() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                Log.e("提交审批", "onSuccess: ");
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
-        ArticlesRepo.getMyPeportIDEvent("23").observe(this, new ApiObserver<MyPeportIDEvent>() {
-            @Override
-            public void onSuccess(Response<MyPeportIDEvent> response) {
-                Log.e("审批列表-ID-查询事件", "onSuccess: ");
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
-
-
 
     }
 

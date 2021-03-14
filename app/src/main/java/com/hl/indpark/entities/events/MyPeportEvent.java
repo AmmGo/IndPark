@@ -6,17 +6,17 @@ public class MyPeportEvent {
     public List<RecordsBean> records;
 
     public static class RecordsBean {
-        private String eventType;
+        public String eventType;
 
         public int id;
 
-        private String createTime;
+        public String createTime;
 
-        private String reportedName;
+        public String reportedName;
 
-        private String phone;
+        public String phone;
 
-        private Integer status;
+        public String status;
     }
 
 }

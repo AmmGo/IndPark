@@ -73,6 +73,7 @@
 
 
         <ImageView
+            android:id="@+id/img_set_up"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
@@ -85,7 +86,7 @@
         android:layout_height="wrap_content"
         android:background="@color/background_white"
         android:orientation="vertical"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="15dp">
 
 
         <LinearLayout
@@ -94,15 +95,14 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="3dp"
                 android:background="@mipmap/img_approval_self" />
 
             <TextView
@@ -131,15 +131,14 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="3dp"
                 android:background="@mipmap/img_rep_self" />
 
             <TextView
@@ -166,18 +165,16 @@
             android:id="@+id/ll_wdxx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="3dp"
                 android:background="@mipmap/img_msg_self" />
 
             <TextView
@@ -190,12 +187,14 @@
                 android:textSize="15sp" />
 
             <ImageView
+                android:id="@+id/img_new_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="20dp"
                 android:background="@mipmap/img_new_self" />
             <ImageView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

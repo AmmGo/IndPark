@@ -80,7 +80,7 @@ public class ArticlesRepo {
     }
 
 
-    public static LiveData<Resource<Response<MyMsgEvent>>> getMyMsgEvent(String sizePage, String isP) {
+    public static LiveData<Resource<Response<MyMsgEvent>>> getMyMsgEvent(int sizePage, int isP) {
         return Net.api().getMyMsgEvent(sizePage, isP);
     }
 
@@ -88,12 +88,12 @@ public class ArticlesRepo {
         return Net.api().getMyPeportIDEvent(id);
     }
 
-    public static LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(String sizePage, String isP) {
-        return Net.api().getMyPeportEvent(sizePage, isP);
+    public static LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(int sizePage, int isP,String state) {
+        return Net.api().getMyPeportEvent(sizePage, isP,state);
     }
 
-    public static LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(String sizePage, String isP) {
-        return Net.api().getMyApprovalEvent(sizePage, isP);
+    public static LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(int sizePage, int isP,String state) {
+        return Net.api().getMyApprovalEvent(sizePage, isP,state);
     }
 
     public static LiveData<Resource<Response<String>>> getUserInfoUpdateEvent(Map map) {

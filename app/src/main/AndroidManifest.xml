@@ -28,6 +28,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
+        <activity android:name=".uis.activities.SetUpActivity"></activity>
         <activity
             android:name=".uis.activities.SplashActivity"
             android:theme="@style/AppTheme">
@@ -37,6 +38,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".uis.activities.MyApprovalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.MyReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.MyMsgActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.LoginActivity"
             android:screenOrientation="portrait" />
@@ -51,6 +61,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.EventsReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.ReportApprovalActivity"
             android:screenOrientation="portrait" />
 
         <provider
