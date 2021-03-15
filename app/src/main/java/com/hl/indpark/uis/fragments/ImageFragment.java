@@ -1,7 +1,6 @@
 package com.hl.indpark.uis.fragments;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -9,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hl.indpark.R;
+import com.hl.indpark.uis.activities.ReportApprovalActivity;
 import com.hl.indpark.uis.adapters.ImageAdapter;
 
 import net.arvin.baselib.base.BaseFragment;
@@ -23,7 +23,7 @@ import butterknife.BindView;
  * @time 2018/12/19 15:09
  */
 public class ImageFragment extends BaseFragment {
-    private Activity activity;
+    private ReportApprovalActivity activity;
     @BindView(R.id.recyclerView_media)
     RecyclerView recyclerView;
     private ImageAdapter adapter;
@@ -48,7 +48,7 @@ public class ImageFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
     }
 
-    public void setActivity(Activity homeActivity, List<String> data) {
+    public void setActivity(ReportApprovalActivity homeActivity, List<String> data) {
         activity = homeActivity;
         list = data;
         if (list.size() > 0) {

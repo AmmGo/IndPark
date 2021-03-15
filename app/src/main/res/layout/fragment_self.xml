@@ -18,7 +18,7 @@
             android:layout_marginLeft="25dp"
             android:orientation="horizontal">
 
-            <com.hl.indpark.utils.RoundImageView
+            <com.hl.indpark.widgit.CircleImageView
                 android:id="@+id/imgAvatar"
                 android:layout_width="68dp"
                 android:layout_height="68dp"

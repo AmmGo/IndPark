@@ -8,10 +8,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.MyMsgEvent;
 import com.hl.indpark.entities.events.UserInfoEvent;
+import com.hl.indpark.nets.Api;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.MyApprovalActivity;
@@ -19,6 +22,7 @@ import com.hl.indpark.uis.activities.MyMsgActivity;
 import com.hl.indpark.uis.activities.MyReportActivity;
 import com.hl.indpark.uis.activities.SetUpActivity;
 import com.hl.indpark.utils.RoundImageView;
+import com.hl.indpark.widgit.CircleImageView;
 
 import net.arvin.baselib.base.BaseFragment;
 
@@ -37,7 +41,7 @@ import butterknife.OnClick;
 public class SelfFragment extends BaseFragment {
 
     @BindView(R.id.imgAvatar)
-    RoundImageView imageView;
+    CircleImageView imageView;
     @BindView(R.id.txtName)
     TextView tvName;
     @BindView(R.id.img_new_msg)
@@ -158,5 +162,12 @@ public class SelfFragment extends BaseFragment {
         } else {
             imageView.setBackgroundResource(R.mipmap.user_img_nv);
         }
+        //设置图片圆角角度
+//        RequestOptions options = new RequestOptions()
+//                .placeholder(R.drawable.a_error)
+//                .fallback(R.drawable.a_error)
+//                .error(R.drawable.a_error);
+//        Glide.with(getActivity()).load("https://gitee.com/ammgo/zjb/raw/master/blog_img/2020_08_10/pexels-eberhard-grossgasteiger-691668.jpg")
+//                .apply(options).into(imageView);
     }
 }

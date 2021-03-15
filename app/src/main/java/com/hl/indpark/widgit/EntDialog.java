@@ -121,7 +121,7 @@ public class EntDialog extends Dialog implements OnClickListener {
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 EntTypeEvent event = new EntTypeEvent();
                 event.name = list.get(position).name;
-                event.hazardType = list.get(position).hazardType;
+                event.id = list.get(position).id;
                 EventBus.getDefault().post(event);
             }
         });

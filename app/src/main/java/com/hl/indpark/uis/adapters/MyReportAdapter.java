@@ -21,9 +21,9 @@ public class MyReportAdapter extends BaseQuickAdapter<MyPeportEvent.RecordsBean,
     @Override
     protected void convert(BaseViewHolder holder, MyPeportEvent.RecordsBean item) {
         if (item.status != null) {
-            if (item.status.equals("0")) {
+            if (item.status.equals("1")) {
                 holder.setImageResource(R.id.img_status, R.mipmap.img_self_rep_ok);
-            } else if (item.status.equals("1")) {
+            } else if (item.status.equals("2")) {
                 holder.setImageResource(R.id.img_status, R.mipmap.img_self_rep_un);
             }
             holder.setText(R.id.tv_type, item.eventType);

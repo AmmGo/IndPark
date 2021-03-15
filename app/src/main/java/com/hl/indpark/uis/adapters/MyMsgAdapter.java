@@ -21,7 +21,7 @@ public class MyMsgAdapter extends BaseQuickAdapter<MyMsgEvent.RecordsBean, BaseV
     @Override
     protected void convert(BaseViewHolder holder, MyMsgEvent.RecordsBean item) {
 
-            holder.setText(R.id.tv_content, item.remarks);
+            holder.setText(R.id.tv_content, item.name);
             holder.setText(R.id.tv_time, item.pushTime);
 
     }

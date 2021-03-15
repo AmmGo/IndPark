@@ -6,6 +6,7 @@ package com.hl.indpark.entities.events;
  * Desc：企业工艺类型
  */
 public class EntTypeEvent {
-    public String hazardType;
+    public String id;
+    public String  hazardType;
     public String name;
 }

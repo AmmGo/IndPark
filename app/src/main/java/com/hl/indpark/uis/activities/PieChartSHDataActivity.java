@@ -234,7 +234,7 @@ public class PieChartSHDataActivity extends BaseActivity {
                 entSHSEvents.clear();
                 entSHSEvents = response.getData();
                 adapter.setNewData(entSHSEvents);
-
+                tabLayout.getTabAt(0).select();
             }
 
             @Override
@@ -252,7 +252,7 @@ public class PieChartSHDataActivity extends BaseActivity {
 
     @Subscribe
     public void getEntName(EntNameEvent event) {
-        tabLayout.getTabAt(0).select();
+
         chooseText2.setText("请选择工艺");
         entSHSEvents.clear();
         adapter.notifyDataSetChanged();

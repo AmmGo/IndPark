@@ -46,7 +46,7 @@ public class MyReportActivity extends BaseActivity {
     private List<MyPeportEvent.RecordsBean> myList;
     private MyReportAdapter adapter;
     private TabLayout tabLayout;
-    private String state = "0";
+    private String state = null;
 
     @Override
     protected int getContentView() {
@@ -73,11 +73,11 @@ public class MyReportActivity extends BaseActivity {
                         pageNum = 1;
                         pageSize = 10;
                         list.clear();
-                        state = "0";
+                        state = null;
                         getData(pageNum, pageSize, state);
                         break;
                     case 1:
-                        //正常
+                        //已处理
                         pageNum = 1;
                         pageSize = 10;
                         list.clear();
@@ -85,7 +85,7 @@ public class MyReportActivity extends BaseActivity {
                         getData(pageNum, pageSize, state);
                         break;
                     case 2:
-                        //高高报
+                        //未处理
                         pageNum = 1;
                         pageSize = 10;
                         list.clear();

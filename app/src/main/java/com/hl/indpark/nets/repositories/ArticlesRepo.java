@@ -70,6 +70,9 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(String id, String tlid) {
         return Net.api().getEntSHSEvent(id, tlid);
     }
+    public static LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(String id, String tlid,int pageNum,int pageSize,int timeType,int dataType) {
+        return Net.api().getEntSHSEvent(id, tlid,pageNum,pageSize,timeType,dataType);
+    }
 
     public static LiveData<Resource<Response<List<EntSEPTypeEvent>>>> getEntSEPTypeEvent(int id) {
         return Net.api().getEntSEPTypeEvent(id);

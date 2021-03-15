@@ -25,8 +25,13 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.widgets.TitleBar;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -47,11 +52,23 @@ public class MyApprovalActivity extends BaseActivity {
     private List<MyApprovalEvent.RecordsBean> myApprovalList;
     private MyApprovalAdapter adapter;
     private TabLayout tabLayout;
-    private String state = "0";
+    private String state ;
 
     @Override
     protected int getContentView() {
         return R.layout.activity_my_approval;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
     }
 
     @Override
@@ -74,11 +91,11 @@ public class MyApprovalActivity extends BaseActivity {
                         pageNum = 1;
                         pageSize = 10;
                         list.clear();
-                        state = "0";
+                        state = null;
                         getData(pageNum, pageSize, state);
                         break;
                     case 1:
-                        //正常
+                        //已处理
                         pageNum = 1;
                         pageSize = 10;
                         list.clear();
@@ -86,7 +103,7 @@ public class MyApprovalActivity extends BaseActivity {
                         getData(pageNum, pageSize, state);
                         break;
                     case 2:
-                        //高高报
+                        //未处理
                         pageNum = 1;
                         pageSize = 10;
                         list.clear();
@@ -194,5 +211,28 @@ public class MyApprovalActivity extends BaseActivity {
 
             }
         });
+    }
+    @Override
+    public void onDestroy() {
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+    @Subscribe
+    public void getMyApproval(MyApprovalEvent event) {
+        pageNum = 1;
+        pageSize = 10;
+        state = null;
+        list.clear();
+        tabLayout.getTabAt(0).select();
     }
 }

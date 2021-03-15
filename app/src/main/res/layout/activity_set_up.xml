@@ -6,7 +6,20 @@
     android:background="#F7F7F7"
     android:orientation="vertical"
     tools:context=".uis.activities.SetUpActivity">
-
+    <!--    <net.arvin.baselib.widgets.TitleBar-->
+    <!--        android:id="@+id/title_bar"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:centerText="title"-->
+    <!--        app:centerTextColor="@color/text"-->
+    <!--        app:centerType="textView"-->
+    <!--        app:leftBackground="@drawable/bg_button"-->
+    <!--        app:leftImageResource="@drawable/ic_back"-->
+    <!--        app:leftType="imageView"-->
+    <!--        app:showBottomLine="false"-->
+    <!--        app:statusBarColor="@color/primary_dark"-->
+    <!--        app:statusBarMode="light"-->
+    <!--        app:titleBarColor="@color/primary" />-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -25,6 +38,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:gravity="left"
                     android:text="基本资料:"
                     android:textColor="#3A3A3A"
@@ -55,17 +69,21 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:text="真实姓名:"
+                    android:text="真实姓名"
                     android:textColor="#3A3A3A"
                     android:textSize="15sp" />
 
-                <TextView
+                <EditText
+                    android:id="@+id/edit_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
+                    android:background="@null"
+                    android:gravity="left"
+                    android:hint="请输入真实姓名"
+                    android:maxEms="10"
                     android:text=""
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -91,17 +109,21 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:text="手机号码:"
+                    android:text="手机号码"
                     android:textColor="#3A3A3A"
                     android:textSize="15sp" />
 
-                <TextView
+                <EditText
+                    android:id="@+id/edit_phone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
+                    android:background="@null"
+                    android:gravity="left"
+                    android:hint="请输入手机号码"
+                    android:maxEms="10"
                     android:text=""
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -127,17 +149,20 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:text="身份证号:"
+                    android:text="身份证号"
                     android:textColor="#3A3A3A"
                     android:textSize="15sp" />
 
-                <TextView
+                <EditText
+                    android:id="@+id/edit_card_id"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
+                    android:background="@null"
+                    android:gravity="left"
+                    android:hint="请输入身份证号"
                     android:text=""
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -153,6 +178,7 @@
                 android:background="#F7F7F7" />
 
             <LinearLayout
+                android:id="@+id/ll_jycd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -164,7 +190,44 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:text="教育程度:"
+                    android:text="教育程度"
+                    android:textColor="#3A3A3A"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="请选择"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/img_back_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#F7F7F7" />
+
+            <LinearLayout
+                android:id="@+id/ll_hyzk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_white"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="婚姻状况"
                     android:textColor="#3A3A3A"
                     android:textSize="15sp" />
 
@@ -200,7 +263,7 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:text="婚姻状况:"
+                    android:text="出生日期"
                     android:textColor="#3A3A3A"
                     android:textSize="15sp" />
 
@@ -228,47 +291,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/background_white"
                 android:orientation="horizontal"
                 android:padding="15dp">
 
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text="出生日期:"
-                    android:textColor="#3A3A3A"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="请选择"
-                    android:textSize="13sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:src="@mipmap/img_back_right" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#F7F7F7" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="15dp">
-
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:gravity="left"
                     android:text="隐私设置"
                     android:textColor="#3A3A3A"
@@ -282,6 +311,86 @@
                     android:text=""
                     android:textSize="13sp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_white"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="消息推送"
+                    android:textColor="#3A3A3A"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:textSize="13sp" />
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:thumb="@drawable/switch_custom_thumb_selector"
+                    android:track="@drawable/switch_custom_track_selector" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#F7F7F7" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_white"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="跟踪保护"
+                    android:textColor="#3A3A3A"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:textSize="13sp" />
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:thumb="@drawable/switch_custom_thumb_selector"
+                    android:track="@drawable/switch_custom_track_selector" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#F7F7F7" />
+
+            <TextView
+                android:id="@+id/tv_report"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_margin="30dp"
+                android:background="@drawable/report_save"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="提交"
+                android:textColor="@color/background_white" />
         </LinearLayout>
 
 

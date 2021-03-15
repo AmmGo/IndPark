@@ -6,21 +6,23 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
+import com.hl.indpark.entities.events.MyApprovalEvent;
 import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.fragments.ImageFragment;
-import com.hl.indpark.uis.fragments.MediaFragment;
-import com.hl.indpark.widgit.EntDialog;
-import com.luck.picture.lib.entity.LocalMedia;
 
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.widgets.TitleBar;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,24 +48,36 @@ public class ReportApprovalActivity extends BaseActivity {
     TextView tvDes;
     @BindView(R.id.tv_count_onte)
     TextView tvCount;
+    @BindView(R.id.tv_report)
+    TextView tvReport;
+    @BindView(R.id.tv_event_onte)
+    TextView tv_event_onte;
     @BindView(R.id.ed_event_onte)
     EditText editOnte;
+    @BindView(R.id.ll_img)
+    LinearLayout llImg;
+    @BindView(R.id.rl_note)
+    RelativeLayout rlNote;
+    @BindView(R.id.rl_ed_event_onte)
+    RelativeLayout rledNote;
     boolean islMaxCount;
     private int idEvent;
 
-    @OnClick({ R.id.tv_report})
+    @OnClick({R.id.tv_report})
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.tv_report:
-                if (editOnte.getText()!=null&&!editOnte.getText().equals("")){
+                String edOnte = editOnte.getText().toString().trim().replaceAll(" ", "");
+                if (edOnte != null && !edOnte.equals("")) {
                     updataData();
-                }else {
-                    ToastUtil.showToast(this,"请填写处理意见");
+                } else {
+                    ToastUtil.showToast(this, "请填写处理意见");
                 }
                 break;
             default:
         }
     }
+
     @OnTextChanged(value = R.id.ed_event_onte, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void editTextDetailChange(Editable editable) {
         int detailLength = editable.length();
@@ -121,11 +135,30 @@ public class ReportApprovalActivity extends BaseActivity {
     }
 
     public void setViewData(MyPeportIDEvent idEvent) {
-        tvType.setText(idEvent.typeName);
-        tvTitle.setText(idEvent.reportedName);
-        tvDes.setText(idEvent.content);
-        if (idEvent.imageList!=null&&idEvent.imageList.size()>0){
+//        String eventType = "<font color='#3A3A3A'>事件类型</font><br/><font color='#BABABA'"+idEvent.typeName+"</font>";
+        tvType.setText("事件类型:" + idEvent.typeName);
+        tvTitle.setText("事件名称:" + idEvent.title);
+        tvDes.setText("事件内容:" + idEvent.content);
+        if (idEvent.imageList != null && idEvent.imageList.size() > 0) {
+            mediaList = idEvent.imageList;
             mediaFragment.setActivity(this, mediaList);
+            llImg.setVisibility(View.VISIBLE);
+        } else {
+            llImg.setVisibility(View.GONE);
+        }
+        if (idEvent.status == 1) {
+            tvReport.setVisibility(View.GONE);
+            rledNote.setVisibility(View.GONE);
+            if (idEvent.handleOpinion != null && !idEvent.handleOpinion.equals("")) {
+                rlNote.setVisibility(View.VISIBLE);
+                tv_event_onte.setText("审批意见:" + idEvent.handleOpinion);
+            } else {
+                rlNote.setVisibility(View.GONE);
+            }
+        } else {
+            tvReport.setVisibility(View.VISIBLE);
+            rledNote.setVisibility(View.VISIBLE);
+            rlNote.setVisibility(View.GONE);
         }
 
     }
@@ -135,16 +168,12 @@ public class ReportApprovalActivity extends BaseActivity {
      */
     private ImageFragment mediaFragment;
     private List<String> mediaList = new ArrayList<>();
+
     private void setMediaFragment() {
         mediaFragment = new ImageFragment();
         mediaList = new ArrayList<>();
-        mediaFragment.setActivity(this, mediaList);
+        mediaFragment.setActivity(ReportApprovalActivity.this, mediaList);
         getSupportFragmentManager().beginTransaction().add(R.id.fl_media, mediaFragment).commitAllowingStateLoss();
-//        for (int i =0;i<5;i++){
-//            mediaList.add("https://bkimg.cdn.bcebos.com/pic/bd3eb13533fa828b56571042f51f4134970a5a1f?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2U4MA==,g_7,xp_5,yp_5/format,f_auto");
-//        }
-//
-//        mediaFragment.setActivity(this, mediaList);
     }
 
     public void updataData() {
@@ -157,8 +186,10 @@ public class ReportApprovalActivity extends BaseActivity {
         ArticlesRepo.getMyPeportIDUpdateEvent(paramMap).observe(this, new ApiObserver<String>() {
             @Override
             public void onSuccess(Response<String> response) {
-                ToastUtil.showToast(ReportApprovalActivity.this,"提交成功");
-
+                ToastUtil.showToast(ReportApprovalActivity.this, "提交成功");
+                MyApprovalEvent event = new MyApprovalEvent();
+                EventBus.getDefault().post(event);
+                finish();
                 Log.e("提交审批", "onSuccess: ");
             }
 
@@ -174,6 +205,8 @@ public class ReportApprovalActivity extends BaseActivity {
             }
         });
 
+
     }
+
 
 }

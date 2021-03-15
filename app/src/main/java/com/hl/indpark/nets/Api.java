@@ -41,11 +41,12 @@ import retrofit2.http.Query;
 public interface Api {
     /**
      * 后台服务*/
-//    String BASE_URL = "http://192.168.119.237:11035/";
+    String BASE_URL = "http://192.168.119.237:11035/";
     /**
      * 内网服务
      */
-    String BASE_URL = "http://192.168.119.248:11035/";
+//    String BASE_URL = "http://192.168.119.248:11035/";
+    String BASE_URL_IMG = "http://appimg.hlx.com/";
 
     /*=======登陆注册======*/
     @POST("loginPhone")
@@ -86,6 +87,9 @@ public interface Api {
     /*=======危险源信息======*/
     @GET("/transmission/querySourceDangerRealDate/")
     LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid);
+    /*=======危险源信息分页======*/
+    @GET("/phone/hazardDetail")
+    LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid,@Query("current") int pageNum, @Query("size") int pageSiz, @Query("dataType") int timeType,@Query("type") int Type);
 
     /*=======企业排污口列表======*/
     @GET("/environmentpoint/list/")
@@ -101,11 +105,11 @@ public interface Api {
 
     /*=======上报列表======*/
     @GET("/phone/events/")
-    LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(@Query("current") int page, @Query("size") int pageSize,@Query("state") String state);
+    LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(@Query("current") int page, @Query("size") int pageSize,@Query("status") String state);
 
     /*=======审批列表======*/
     @GET("/phone/approveEvents/")
-    LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(@Query("current") int page, @Query("size") int pageSize,@Query("state") String state);
+    LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(@Query("current") int page, @Query("size") int pageSize,@Query("status") String state);
 
     /*=======审批列表-ID-查询事件======*/
     @GET("/event/findById/")
