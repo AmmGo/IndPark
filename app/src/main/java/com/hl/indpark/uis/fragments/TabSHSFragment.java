@@ -22,6 +22,7 @@ import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.PieChartSHDataActivity;
+import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseFragment;
 
@@ -55,7 +56,7 @@ public class TabSHSFragment extends BaseFragment {
             public void onValueSelected(Entry e, Highlight h) {
                 if (e == null) return;
                 Intent intent = new Intent(getActivity(), PieChartSHDataActivity.class);
-                intent.putExtra("type",2);
+                intent.putExtra("timeType", Util.wxyDay);
                 startActivity(intent);
             }
 

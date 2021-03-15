@@ -10,12 +10,12 @@ import com.hl.indpark.entities.events.EntSHSEvent;
 import java.util.List;
 //报警类型；0: 正常;1：高高报；2：高报；3：低报；4：低低报
 
-public class EntSHSAdapter extends BaseQuickAdapter<EntSHSEvent, BaseViewHolder> {
-    public EntSHSAdapter(@Nullable List<EntSHSEvent> data) {
+public class EntSHSAdapter extends BaseQuickAdapter<EntSHSEvent.RecordsBean, BaseViewHolder> {
+    public EntSHSAdapter(@Nullable List<EntSHSEvent.RecordsBean> data) {
         super(R.layout.item_pie_data, data);
     }
     @Override
-    protected void convert(BaseViewHolder holder, EntSHSEvent item) {
+    protected void convert(BaseViewHolder holder, EntSHSEvent.RecordsBean item) {
         if (item.type != null) {
             if (item.type.equals("0")) {
                 holder.setImageResource(R.id.img_status, R.mipmap.img_zc);

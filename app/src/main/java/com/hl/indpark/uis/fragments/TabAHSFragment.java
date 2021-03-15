@@ -43,7 +43,7 @@ public class TabAHSFragment extends BaseFragment {
     private ArrayList<PieEntry> data = new ArrayList<PieEntry>();
     private PieData pieData;
     private String type = "2";
-    private int typeData = 4;
+    private int typeData = 2;
 
     @OnCheckedChanged({R.id.rg_month, R.id.rg_quarter, R.id.rg_year})
     public void OnCheckedChangeListener(CompoundButton view, boolean ischanged) {
@@ -51,21 +51,21 @@ public class TabAHSFragment extends BaseFragment {
             case R.id.rg_month:
                 if (ischanged) {
                     type = "2";
-                    typeData = 4;
+                    typeData = Util.wxyMonthly;
                     initData(type);
                 }
                 break;
             case R.id.rg_quarter:
                 if (ischanged) {
                     type = "3";
-                    typeData = 5;
+                    typeData = Util.wxyQuarter;
                     initData(type);
                 }
                 break;
             case R.id.rg_year:
                 if (ischanged) {
                     type = "4";
-                    typeData = 6;
+                    typeData = Util.wxyYear;
                     initData(type);
                 }
                 break;
@@ -88,7 +88,7 @@ public class TabAHSFragment extends BaseFragment {
             public void onValueSelected(Entry e, Highlight h) {
                 if (e == null) return;
                 Intent intent = new Intent(getActivity(), PieChartSHDataActivity.class);
-                intent.putExtra("type",typeData);
+                intent.putExtra("timeType",typeData);
                 startActivity(intent);
             }
 

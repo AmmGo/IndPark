@@ -41,11 +41,11 @@ import retrofit2.http.Query;
 public interface Api {
     /**
      * 后台服务*/
-    String BASE_URL = "http://192.168.119.237:11035/";
+//    String BASE_URL = "http://192.168.119.237:11035/";
     /**
      * 内网服务
      */
-//    String BASE_URL = "http://192.168.119.248:11035/";
+    String BASE_URL = "http://192.168.119.248:11035/";
     String BASE_URL_IMG = "http://appimg.hlx.com/";
 
     /*=======登陆注册======*/
@@ -89,7 +89,7 @@ public interface Api {
     LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid);
     /*=======危险源信息分页======*/
     @GET("/phone/hazardDetail")
-    LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid,@Query("current") int pageNum, @Query("size") int pageSiz, @Query("dataType") int timeType,@Query("type") int Type);
+    LiveData<Resource<Response<EntSHSEvent>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid,@Query("current") int pageNum, @Query("size") int pageSiz, @Query("dataType") int timeType,@Query("type") String Type);
 
     /*=======企业排污口列表======*/
     @GET("/environmentpoint/list/")
@@ -122,6 +122,9 @@ public interface Api {
     /*=======用户信息修改======*/
     @POST("/phone/update/")
     LiveData<Resource<Response<String>>> getUserInfoUpdateEvent(@Body HashMap<String, String> map);
+    /*=======是否推送======*/
+    @POST("/user/update")
+    LiveData<Resource<Response<String>>> getPushMsgEvent(@Body HashMap<String, String> map);
 
     /*=======上报事件======*/
     @POST("/event/insert/")

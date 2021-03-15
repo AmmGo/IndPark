@@ -50,7 +50,7 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:text=""
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <View
@@ -90,6 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
+                    android:visibility="gone"
                     android:src="@mipmap/img_back_right" />
             </LinearLayout>
 
@@ -130,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
+                    android:visibility="gone"
                     android:src="@mipmap/img_back_right" />
             </LinearLayout>
 
@@ -169,6 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
+                    android:visibility="gone"
                     android:src="@mipmap/img_back_right" />
             </LinearLayout>
 
@@ -178,7 +181,7 @@
                 android:background="#F7F7F7" />
 
             <LinearLayout
-                android:id="@+id/ll_jycd"
+                android:id="@+id/ll_education_level"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -195,12 +198,21 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_education_level"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text=""
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_sele_1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
                     android:text="请选择"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -216,7 +228,7 @@
                 android:background="#F7F7F7" />
 
             <LinearLayout
-                android:id="@+id/ll_hyzk"
+                android:id="@+id/ll_marital_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/background_white"
@@ -230,14 +242,21 @@
                     android:text="婚姻状况"
                     android:textColor="#3A3A3A"
                     android:textSize="15sp" />
-
                 <TextView
+                    android:id="@+id/tv_marital_status"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text=""
+                    android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/tv_sele_2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
                     android:text="请选择"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -253,6 +272,7 @@
                 android:background="#F7F7F7" />
 
             <LinearLayout
+                android:id="@+id/ll_date_of_birth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/background_white"
@@ -266,14 +286,21 @@
                     android:text="出生日期"
                     android:textColor="#3A3A3A"
                     android:textSize="15sp" />
-
                 <TextView
+                    android:id="@+id/tv_date_of_birth"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text=""
+                    android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/tv_sele_3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
                     android:text="请选择"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -309,7 +336,7 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:text=""
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -332,8 +359,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
+
                 <Switch
+                    android:id="@+id/switch_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:thumb="@drawable/switch_custom_thumb_selector"
@@ -366,9 +395,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <Switch
+                    android:id="@+id/switch_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:thumb="@drawable/switch_custom_thumb_selector"
