@@ -8,26 +8,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.MyMsgEvent;
 import com.hl.indpark.entities.events.UserInfoEvent;
-import com.hl.indpark.nets.Api;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.MyApprovalActivity;
 import com.hl.indpark.uis.activities.MyMsgActivity;
 import com.hl.indpark.uis.activities.MyReportActivity;
 import com.hl.indpark.uis.activities.SetUpActivity;
-import com.hl.indpark.utils.RoundImageView;
 import com.hl.indpark.widgit.CircleImageView;
 
 import net.arvin.baselib.base.BaseFragment;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -78,8 +71,13 @@ public class SelfFragment extends BaseFragment {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        initData();
         getNewHide();
+    }
+
+    @Override
+    public void onResume() {
+        initData();
+        super.onResume();
     }
 
     public void initData() {
@@ -89,29 +87,6 @@ public class SelfFragment extends BaseFragment {
                 Log.e("用户成功", "onSuccess: ");
                 userInfoEvent = response.getData();
                 initViewData(userInfoEvent);
-                Map<String, String> paramMap1 = new HashMap<>();
-                /**
-                 * 通用参数配置
-                 * */
-                paramMap1.put("name", "张嘉宾");
-                paramMap1.put("personnelId", String.valueOf(userInfoEvent.personnelId));
-                ArticlesRepo.getUserInfoUpdateEvent(paramMap1).observe(getActivity(), new ApiObserver<String>() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        Log.e("修改用户信息", "onSuccess: ");
-                    }
-
-                    @Override
-                    public void onFailure(int code, String msg) {
-                        super.onFailure(code, msg);
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        super.onError(throwable);
-
-                    }
-                });
             }
 
             @Override
@@ -170,4 +145,5 @@ public class SelfFragment extends BaseFragment {
 //        Glide.with(getActivity()).load("https://gitee.com/ammgo/zjb/raw/master/blog_img/2020_08_10/pexels-eberhard-grossgasteiger-691668.jpg")
 //                .apply(options).into(imageView);
     }
+
 }

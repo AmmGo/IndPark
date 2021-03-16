@@ -1,6 +1,9 @@
 package com.hl.indpark.utils;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.hl.indpark.BuildConfig;
 
@@ -31,7 +34,12 @@ public class Util {
     public static int getRandomColor(Random random) {
         return colors[random.nextInt(colors.length)];
     }
-
+    public static void hideInputManager(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (view != null && imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);  //强制隐藏
+        }
+    }
     public static String getVersionName() {
         return BuildConfig.VERSION_NAME;
     }

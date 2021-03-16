@@ -1,23 +1,36 @@
 package com.hl.indpark.uis.activities;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.utils.IDCard;
+import com.hl.indpark.utils.SelectDialog;
+import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.ToastUtil;
+import net.arvin.baselib.widgets.TitleBar;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -42,23 +55,132 @@ public class SetUpActivity extends BaseActivity {
     TextView tvqxz2;
     @BindView(R.id.tv_sele_3)
     TextView tvqxz3;
+    @BindView(R.id.tv_report)
+    TextView tv_report;
     @BindView(R.id.switch_1)
     Switch aSwitch;
     @BindView(R.id.switch_2)
     Switch bSwitch;
     private UserInfoEvent userInfoEvent;
-
-    @OnClick({R.id.ll_education_level, R.id.ll_marital_status, R.id.ll_date_of_birth})
+    private int updataEdLv = 0;
+    private int updataMarital = 0;
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int min;
+    private Calendar calendar = null;
+    /**
+     * 学历 (默认0)0,本科 1,大专 2,研究生 3,其他
+     * 婚姻状况(默认0)0,未婚 1,初婚；2：再婚；3：丧偶；4：离婚；5：未说明婚姻状况
+     */
+    @OnClick({R.id.ll_education_level, R.id.ll_marital_status, R.id.ll_date_of_birth, R.id.tv_report})
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.ll_education_level:
+                List<String> edlvList = new ArrayList<>();
+                edlvList.add("本科");
+                edlvList.add("大专");
+                edlvList.add("研究生");
+                edlvList.add("其他");
+                selectDialog(edlvList, 0);
                 break;
             case R.id.ll_marital_status:
+                List<String> marList = new ArrayList<>();
+                marList.add("未婚");
+                marList.add("已婚");
+                marList.add("未说明婚姻状况");
+                selectDialog(marList, 1);
                 break;
             case R.id.ll_date_of_birth:
+                // 日期对话框
+                new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        String strMonth ;
+                        String strDay ;
+                        int intMonth = monthOfYear+1;
+                        int intDay = dayOfMonth;
+                        if (intMonth<10){
+                             strMonth = "0"+intMonth;
+                        }else{
+                            strMonth = intMonth+"";
+                        }
+                        if (intDay<10){
+                            strDay = "0"+intDay;
+                        }else{
+                            strDay = ""+intDay;
+                        }
+                        tvDataBirth.setText(year + "-" + strMonth + "-" + strDay+" 00:00:00");
+                    }
+                }, year, calendar.get(Calendar.MONTH), day).show();
+                break;
+            case R.id.tv_report:
+                Util.hideInputManager(SetUpActivity.this, v);
+                upData();
                 break;
             default:
         }
+    }
+    private void initDate() {
+        // 获取日历的一个对象
+        calendar = Calendar.getInstance();
+        // 获取年月日时分秒的信息
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH)+1;
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        hour = calendar.get(Calendar.HOUR);
+        min = calendar.get(Calendar.MINUTE);
+        //设置标题
+    }
+    private void selectDialog(List<String> list, int type) {
+        List<String> names = new ArrayList<>();
+        names.addAll(list);
+        showDialog(new SelectDialog.SelectDialogListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        if (type == 0) {
+                            updataEdLv = 0;
+                            tvEdLevl.setText(names.get(position));
+                        } else {
+                            updataMarital = 0;
+                            tvMarStatus.setText(names.get(position));
+                        }
+                        break;
+                    case 1:
+                        if (type == 0) {
+                            updataEdLv = 1;
+                            tvEdLevl.setText(names.get(position));
+                        } else {
+                            updataMarital = 1;
+                            tvMarStatus.setText(names.get(position));
+                        }
+                        break;
+                    case 2:
+                        if (type == 0) {
+                            updataEdLv = 2;
+                            tvEdLevl.setText(names.get(position));
+                        } else {
+                            updataMarital = 5;
+                            tvMarStatus.setText(names.get(position));
+                        }
+                        break;
+                    case 3:
+                        if (type == 0) {
+                            updataEdLv = 3;
+                            tvEdLevl.setText(names.get(position));
+                        } else {
+
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }, names);
     }
 
     @Override
@@ -68,14 +190,15 @@ public class SetUpActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-//        TitleBar titleBar = findViewById(R.id.title_bar);
-//        titleBar.getCenterTextView().setText("设置");
-//        titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onBackPressed();
-//            }
-//        });
+        TitleBar titleBar = findViewById(R.id.title_bar);
+        titleBar.getCenterTextView().setText("设置");
+        titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        initDate();
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -146,7 +269,7 @@ public class SetUpActivity extends BaseActivity {
             case 2:
                 edllv = "研究生";
                 break;
-            case 4:
+            case 3:
                 edllv = "其他";
                 break;
             default:
@@ -184,7 +307,7 @@ public class SetUpActivity extends BaseActivity {
             tvMarStatus.setText(marStatus);
             tvqxz2.setVisibility(View.INVISIBLE);
         }
-        if (userInfoEvent.brithDate!=null&&!userInfoEvent.brithDate.equals("")) {
+        if (userInfoEvent.brithDate != null && !userInfoEvent.brithDate.equals("")) {
             tvDataBirth.setText(userInfoEvent.brithDate);
             tvqxz3.setVisibility(View.INVISIBLE);
 
@@ -201,17 +324,46 @@ public class SetUpActivity extends BaseActivity {
         /**
          * 通用参数配置
          * */
-        paramMap1.put("name", "张嘉宾");
+        if (TextUtils.isEmpty(editName.getText().toString())) {
+            ToastUtil.showToast(SetUpActivity.this, "请输入姓名");
+            return;
+        }
+        if (TextUtils.isEmpty(editPhone.getText().toString())) {
+            ToastUtil.showToast(SetUpActivity.this, "请输入手机号");
+            return;
+        }
+        if (TextUtils.isEmpty(editCardId.getText().toString())) {
+            ToastUtil.showToast(SetUpActivity.this, "请输入身份证号");
+            return;
+        }
+        try {
+            if (!IDCard.IDCardValidate(editCardId.getText().toString())) {
+                ToastUtil.showToast(SetUpActivity.this, "证件号码格式不对");
+                return;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        paramMap1.put("name", editName.getText().toString());
+        paramMap1.put("phone", editPhone.getText().toString());
+        paramMap1.put("idNumber", editCardId.getText().toString());
+        paramMap1.put("degree", String.valueOf(updataEdLv));
+        paramMap1.put("maritalStatus", String.valueOf(updataMarital));
+        paramMap1.put("brithDate", tvDataBirth.getText().toString());
         paramMap1.put("personnelId", String.valueOf(userInfoEvent.personnelId));
         ArticlesRepo.getUserInfoUpdateEvent(paramMap1).observe(this, new ApiObserver<String>() {
             @Override
             public void onSuccess(Response<String> response) {
+                ToastUtil.showToast(SetUpActivity.this, "提交成功");
                 Log.e("修改用户信息", "onSuccess: ");
+                finish();
             }
 
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                ToastUtil.showToast(SetUpActivity.this, msg);
             }
 
             @Override
@@ -221,5 +373,17 @@ public class SetUpActivity extends BaseActivity {
             }
         });
     }
+
+
+    private SelectDialog showDialog(SelectDialog.SelectDialogListener listener, List<String> names) {
+        SelectDialog dialog = new SelectDialog(SetUpActivity.this, R.style
+                .transparentFrameWindowStyle,
+                listener, names);
+        if (!SetUpActivity.this.isFinishing()) {
+            dialog.show();
+        }
+        return dialog;
+    }
+
 
 }

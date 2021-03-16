@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F7F7F7"
     android:orientation="vertical"
     tools:context=".uis.activities.SetUpActivity">
-    <!--    <net.arvin.baselib.widgets.TitleBar-->
-    <!--        android:id="@+id/title_bar"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:centerText="title"-->
-    <!--        app:centerTextColor="@color/text"-->
-    <!--        app:centerType="textView"-->
-    <!--        app:leftBackground="@drawable/bg_button"-->
-    <!--        app:leftImageResource="@drawable/ic_back"-->
-    <!--        app:leftType="imageView"-->
-    <!--        app:showBottomLine="false"-->
-    <!--        app:statusBarColor="@color/primary_dark"-->
-    <!--        app:statusBarMode="light"-->
-    <!--        app:titleBarColor="@color/primary" />-->
+
+    <net.arvin.baselib.widgets.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="title"
+        app:centerTextColor="@color/text"
+        app:centerType="textView"
+        app:leftBackground="@drawable/bg_button"
+        app:leftImageResource="@drawable/ic_back"
+        app:leftType="imageView"
+        app:showBottomLine="false"
+        app:statusBarColor="@color/primary_dark"
+        app:statusBarMode="light"
+        app:titleBarColor="@color/primary" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -90,8 +93,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
-                    android:visibility="gone"
-                    android:src="@mipmap/img_back_right" />
+                    android:src="@mipmap/img_back_right"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <View
@@ -131,8 +134,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
-                    android:visibility="gone"
-                    android:src="@mipmap/img_back_right" />
+                    android:src="@mipmap/img_back_right"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <View
@@ -171,8 +174,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
-                    android:visibility="gone"
-                    android:src="@mipmap/img_back_right" />
+                    android:src="@mipmap/img_back_right"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <View
@@ -199,7 +202,7 @@
 
                 <TextView
                     android:id="@+id/tv_education_level"
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:text=""
@@ -242,13 +245,15 @@
                     android:text="婚姻状况"
                     android:textColor="#3A3A3A"
                     android:textSize="15sp" />
+
                 <TextView
                     android:id="@+id/tv_marital_status"
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:text=""
                     android:textSize="15sp" />
+
                 <TextView
                     android:id="@+id/tv_sele_2"
                     android:layout_width="0dp"
@@ -286,13 +291,15 @@
                     android:text="出生日期"
                     android:textColor="#3A3A3A"
                     android:textSize="15sp" />
+
                 <TextView
                     android:id="@+id/tv_date_of_birth"
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:text=""
                     android:textSize="15sp" />
+
                 <TextView
                     android:id="@+id/tv_sele_3"
                     android:layout_width="0dp"

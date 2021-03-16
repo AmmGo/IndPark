@@ -28,7 +28,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
-        <activity android:name=".uis.activities.SetUpActivity"></activity>
+        <activity android:name=".uis.activities.SetUpActivity" />
         <activity
             android:name=".uis.activities.SplashActivity"
             android:theme="@style/AppTheme">

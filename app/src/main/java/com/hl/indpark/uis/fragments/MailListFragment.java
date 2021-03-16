@@ -28,6 +28,7 @@ import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.utils.CharacterParser;
 import com.hl.indpark.utils.ContactsSortAdapter;
 import com.hl.indpark.utils.PinyinComparator;
+import com.hl.indpark.utils.SelectDialog;
 import com.hl.indpark.utils.SideBar;
 import com.hl.indpark.utils.SortModel;
 import com.hl.indpark.utils.SortToken;
@@ -164,21 +165,48 @@ public class MailListFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
                 ContactsSortAdapter.ViewHolder viewHolder = (ContactsSortAdapter.ViewHolder) view.getTag();
-              SortModel sortModel =   adapter.toggleChecked(position);
-                Intent intent = null;
-                Uri uri = Uri.parse("tel:" + sortModel.number);
-                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ToastUtil.showToast(getContext(),"请到设置中打开电话权限");
-                    intent = new Intent(Settings.ACTION_SETTINGS);
-                    getActivity().startActivity(intent);
-                    return;
-                }
-                intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(uri);
-                getContext().startActivity(intent);
+                SortModel sortModel = adapter.toggleChecked(position);
+                List<String> names = new ArrayList<>();
+                names.add("拨号通话");
+                names.add("视频通话");
+                showDialog(new SelectDialog.SelectDialogListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        switch (position) {
+                            case 0:
+                                Intent intent = null;
+                                Uri uri = Uri.parse("tel:" + sortModel.number);
+                                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                    ToastUtil.showToast(getContext(), "请到设置中打开电话权限");
+                                    intent = new Intent(Settings.ACTION_SETTINGS);
+                                    getActivity().startActivity(intent);
+                                    return;
+                                }
+                                intent = new Intent(Intent.ACTION_CALL);
+                                intent.setData(uri);
+                                getContext().startActivity(intent);
+                                break;
+                            case 1:
+                                break;
+                            default:
+                                break;
+                        }
+
+                    }
+                }, names);
             }
         });
 
+    }
+
+    private SelectDialog showDialog(SelectDialog.SelectDialogListener listener, List<String> names) {
+        SelectDialog dialog = new SelectDialog(getActivity(), R.style
+                .transparentFrameWindowStyle,
+                listener, names);
+        if (!getActivity().isFinishing()) {
+            dialog.show();
+        }
+        return dialog;
     }
 
     private void initView() {
