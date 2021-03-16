@@ -325,6 +325,7 @@ public class PieChartSHDataActivity extends BaseActivity {
     public void getEntType(EntTypeEvent event) {
         chooseText2.setText(event.name);
         gyid = event.id;
+        list.clear();
         getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
         pop.cancel();
     }

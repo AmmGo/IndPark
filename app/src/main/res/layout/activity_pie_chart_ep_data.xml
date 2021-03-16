@@ -32,9 +32,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/background_white"
-            android:gravity="left"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:paddingLeft="30dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
 
@@ -43,9 +42,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:text="请选择公司"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:maxEms="8"
+                android:textColor="#3A3A3A"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/arrow"
@@ -73,9 +76,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:textColor="#3A3A3A"
                 android:text="请选择排口"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:maxEms="8"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/arrow2"
@@ -125,11 +131,21 @@
             android:text="超标" />
     </com.google.android.material.tabs.TabLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recy_pie_data"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recy_pie_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

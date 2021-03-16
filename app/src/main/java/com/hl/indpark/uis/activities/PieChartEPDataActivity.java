@@ -2,10 +2,13 @@ package com.hl.indpark.uis.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +24,9 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.adapters.EntSEPAdapter;
 import com.hl.indpark.widgit.EntDialog;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.widgets.TitleBar;
@@ -37,6 +43,8 @@ import butterknife.OnClick;
 public class PieChartEPDataActivity extends BaseActivity {
     @BindView(R.id.recy_pie_data)
     RecyclerView mRcyPieData;
+    @BindView(R.id.refreshLayout)
+    RefreshLayout refreshLayout;
     @BindView(R.id.arrow)
     ImageView arrowImageView;
     @BindView(R.id.chooseText)
@@ -44,13 +52,19 @@ public class PieChartEPDataActivity extends BaseActivity {
     @BindView(R.id.chooseText2)
     TextView chooseText2;
     private EntDialog pop;
-    private String enterpriseId;
-    private List<EntSEPEvent.RecordsBean> entSep = new ArrayList<>();
+    private List<EntSEPEvent.RecordsBean> list = new ArrayList<>();
+    private List<EntSEPEvent.RecordsBean> selectList = new ArrayList<>();
     private EntSEPAdapter adapter;
     private PopEvent popEvent;
     private TabLayout tabLayout;
     private int typeAdapter;
-    private String iocode;
+    private int pageNum = 1;
+    private int pageSize = 10;
+    private int total = 0;
+    private int timeType;
+    private String selectType;
+    private String pkid;
+    private String qyid;
 
     @OnClick({R.id.ll_spin, R.id.ll_spin2})
     public void onClick(View v) {
@@ -86,10 +100,10 @@ public class PieChartEPDataActivity extends BaseActivity {
     @Override
     protected void init(Bundle savedInstanceState) {
         Intent intent = getIntent();
-        int typeEvent = intent.getIntExtra("type", 0);
+        timeType = intent.getIntExtra("type", 0);
         String titleText = "";
         popEvent = new PopEvent();
-        switch (typeEvent) {
+        switch (timeType) {
             case 0:
                 titleText = "实时数据";
                 break;
@@ -97,13 +111,13 @@ public class PieChartEPDataActivity extends BaseActivity {
                 titleText = "环保实时数据";
                 break;
             case 2:
-                titleText = "危险源实时数据";
+                titleText = "环保月度实时数据";
                 break;
             case 3:
-                titleText = "环保实时数据";
+                titleText = "环保季度实时数据";
                 break;
             case 4:
-                titleText = "危险源实时数据";
+                titleText = "环保年度实时数据";
                 break;
             default:
         }
@@ -119,24 +133,29 @@ public class PieChartEPDataActivity extends BaseActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                pageNum = 1;
+                pageSize = 10;
+                list.clear();
                 switch (tab.getPosition()) {
                     case 0:
-                        adapter.setNewData(entSep);
+                        //全部
+                        selectType = null;
+                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
                         break;
                     case 1:
-                        //正常
-                        getEntSEP(enterpriseId, iocode,"0");
-//                        adapter.setNewData(getNewData("0"));
+                        //高高报
+                        selectType = "0";
+                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
                         break;
                     case 2:
-                        //异常
-                        getEntSEP(enterpriseId, iocode,"1");
-//                        adapter.setNewData(getNewData("1"));
+                        //高报
+                        selectType = "1";
+                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
                         break;
                     case 3:
-                        //超标
-                        getEntSEP(enterpriseId,iocode,"2");
-//                        adapter.setNewData(getNewData("2"));
+                        //低低报
+                        selectType = "2";
+                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
                         break;
 
                 }
@@ -153,18 +172,39 @@ public class PieChartEPDataActivity extends BaseActivity {
             }
         });
         getEntName();
-        initAdapter();
-    }
-
-    public List<EntSEPEvent.RecordsBean> getNewData(String px) {
-        List<EntSEPEvent.RecordsBean> newData = new ArrayList<>();
-        for (int i = 0; i < entSep.size(); i++) {
-            if (px.equals(entSep.get(i).isException)) {
-                newData.add(entSep.get(i));
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
+                refreshLayout.getLayout().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pageNum = 1;
+                        pageSize = 10;
+                        list.clear();
+                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                        refreshLayout.finishRefresh();
+                    }
+                }, 50);
             }
-
-        }
-        return newData;
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.getLayout().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pageNum += 1;
+                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                        if (total == 1) {
+                            refreshLayout.finishLoadMoreWithNoMoreData();
+                        } else {
+                            refreshLayout.finishLoadMore();
+                        }
+                    }
+                }, 50);
+            }
+        });
+        initAdapter();
     }
 
     public void initAdapter() {
@@ -173,7 +213,7 @@ public class PieChartEPDataActivity extends BaseActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRcyPieData.setLayoutManager(layoutManager);
         //创建适配器
-        adapter = new EntSEPAdapter(entSep);
+        adapter = new EntSEPAdapter(list);
         //给RecyclerView设置适配器
         mRcyPieData.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -223,14 +263,28 @@ public class PieChartEPDataActivity extends BaseActivity {
         });
     }
 
-    public void getEntSEP(String id, String tlid,String isP) {
-        ArticlesRepo.getEntSEPEvent(id, tlid, "1", "20",isP).observe(this, new ApiObserver<EntSEPEvent>() {
+    public void getEntSEP(String qyid, String pkid, int pageNum, int pageSize, int timeType, String selectType) {
+        ArticlesRepo.getEntSEPEvent(qyid, pkid, pageNum, pageSize, timeType, selectType).observe(this, new ApiObserver<EntSEPEvent>() {
             @Override
             public void onSuccess(Response<EntSEPEvent> response) {
-                entSep.clear();
-                entSep = response.getData().records;
-                adapter.getType(typeAdapter);
-                adapter.setNewData(entSep);
+                EntSEPEvent shsEvent = response.getData();
+                selectList = new ArrayList<>();
+                selectList = shsEvent.records;
+                if (selectList != null && selectList.size() > 0) {
+                    list.addAll(selectList);
+                    adapter.setNewData(list);
+                    total = 0;
+                } else {
+                    if (list.size() <= 0) {
+                        View emptyView = getLayoutInflater().inflate(R.layout.layout_data_empty, (ViewGroup) mRcyPieData.getParent(), false);
+                        list.clear();
+                        adapter.setNewData(list);
+                        adapter.setEmptyView(emptyView);
+                    }
+                    total = 1;
+                }
+                Log.e("环保数据", "onSuccess: \n"+"企业ID"+qyid+"\n排口类型"+pkid+"\n第几页"+pageNum+"\n一页数量"+pageSize+"\n事件跨度"+timeType+"\n事件报警类型"+selectType);
+
             }
 
             @Override
@@ -250,10 +304,10 @@ public class PieChartEPDataActivity extends BaseActivity {
     public void getEntName(EntNameEvent event) {
         tabLayout.getTabAt(0).select();
         chooseText2.setText("请选择排口");
-        entSep.clear();
+        list.clear();
         adapter.notifyDataSetChanged();
         chooseText.setText(event.name);
-        enterpriseId = String.valueOf(event.psCode);
+        qyid = String.valueOf(event.psCode);
         getEntType(event.id);
         pop.cancel();
     }
@@ -261,13 +315,14 @@ public class PieChartEPDataActivity extends BaseActivity {
     @Subscribe
     public void getEntType(EntSEPTypeEvent event) {
         chooseText2.setText(event.name);
-        if (event.name!=null&&event.name.equals("废气排放口")){
-             typeAdapter = 1;
-        }else{
+        if (event.name != null && event.name.equals("废气排放口")) {
+            typeAdapter = 1;
+        } else {
             typeAdapter = 2;
         }
-        iocode = event.iocode;
-        getEntSEP(enterpriseId, event.iocode,null);
+        pkid = event.iocode;
+        list.clear();
+        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
         pop.cancel();
     }
 

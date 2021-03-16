@@ -78,8 +78,8 @@ public class ArticlesRepo {
         return Net.api().getEntSEPTypeEvent(id);
     }
 
-    public static LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(String id, String tlid, String page, String sizePage, String isP) {
-        return Net.api().getEntSEPEvent(id, tlid, page, sizePage, isP);
+    public static LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(String id, String tlid, int page, int sizePage,int timeType, String isP) {
+        return Net.api().getEntSEPEvent(id, tlid, page, sizePage, timeType,isP);
     }
 
 

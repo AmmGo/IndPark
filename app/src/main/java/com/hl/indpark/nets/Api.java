@@ -97,7 +97,7 @@ public interface Api {
 
     /*=======环保信息======*/
     @GET("/phone/EnvironmentMonitor/")
-    LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(@Query("psCode") String id, @Query("pointCode") String tlid, @Query("current") String page, @Query("size") String pageSize, @Query("isException") String isp);
+    LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(@Query("psCode") String id, @Query("pointCode") String tlid, @Query("current") int page, @Query("size") int pageSize, @Query("type") int timeType ,@Query("isException") String isp);
 
     /*=======消息列表======*/
     @GET("/push/pageList/")

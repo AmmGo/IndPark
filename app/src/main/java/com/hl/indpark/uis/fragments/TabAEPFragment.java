@@ -23,6 +23,7 @@ import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.PieChartEPDataActivity;
+import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseFragment;
 
@@ -45,6 +46,7 @@ public class TabAEPFragment extends BaseFragment {
     private PieEntry entry1;
     private PieEntry entry2;
     private String type = "2";
+    private int typeData = 2;
 
     @OnCheckedChanged({R.id.rg_month, R.id.rg_quarter, R.id.rg_year})
     public void OnCheckedChangeListener(CompoundButton view, boolean ischanged) {
@@ -52,18 +54,22 @@ public class TabAEPFragment extends BaseFragment {
             case R.id.rg_month:
                 if (ischanged) {
                     type = "2";
+                    typeData = Util.hbMonthly;
+
                     initData(type);
                 }
                 break;
             case R.id.rg_quarter:
                 if (ischanged) {
                     type = "3";
+                    typeData = Util.wxyQuarter;
                     initData(type);
                 }
                 break;
             case R.id.rg_year:
                 if (ischanged) {
                     type = "4";
+                    typeData = Util.wxyYear;
                     initData(type);
                 }
                 break;
@@ -109,7 +115,7 @@ public class TabAEPFragment extends BaseFragment {
             public void onValueSelected(Entry e, Highlight h) {
                 if (e == null) return;
                 Intent intent = new Intent(getActivity(), PieChartEPDataActivity.class);
-                intent.putExtra("type",1);
+                intent.putExtra("type", typeData);
                 startActivity(intent);
             }
 

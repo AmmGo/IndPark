@@ -23,6 +23,7 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.PieChartEPDataActivity;
 import com.hl.indpark.uis.activities.PieChartSHDataActivity;
+import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseFragment;
 
@@ -83,7 +84,7 @@ public class TabSEPFragment extends BaseFragment {
             public void onValueSelected(Entry e, Highlight h) {
                 if (e == null) return;
                 Intent intent = new Intent(getActivity(), PieChartEPDataActivity.class);
-                intent.putExtra("type",1);
+                intent.putExtra("type", Util.hbDay);
                 startActivity(intent);
             }
 

@@ -6,20 +6,20 @@
     android:background="#EEEEEE"
     android:orientation="vertical">
 
-    <net.arvin.baselib.widgets.TitleBar
-        android:id="@+id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:centerText="title"
-        app:centerTextColor="@color/text"
-        app:centerType="textView"
-        app:leftBackground="@drawable/bg_button"
-        app:leftImageResource="@drawable/ic_back"
-        app:leftType="imageView"
-        app:showBottomLine="false"
-        app:statusBarColor="@color/primary_dark"
-        app:statusBarMode="light"
-        app:titleBarColor="@color/primary" />
+        <net.arvin.baselib.widgets.TitleBar
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:centerText="title"
+            app:centerTextColor="@color/text"
+            app:centerType="textView"
+            app:leftBackground="@drawable/bg_button"
+            app:leftImageResource="@drawable/ic_back"
+            app:leftType="imageView"
+            app:showBottomLine="false"
+            app:statusBarColor="@color/primary_dark"
+            app:statusBarMode="light"
+            app:titleBarColor="@color/primary" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -36,9 +36,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/background_white"
-                android:gravity="left"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingLeft="30dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp">
 
@@ -46,10 +45,13 @@
                     android:id="@+id/chooseText"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
+                    android:ellipsize="end"
                     android:gravity="center"
+                    android:maxEms="8"
+                    android:textColor="#3A3A3A"
+                    android:singleLine="true"
                     android:text="请选择公司"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/arrow"
@@ -76,10 +78,13 @@
                     android:id="@+id/chooseText2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:ellipsize="end"
                     android:gravity="center"
+                    android:maxEms="8"
+                    android:textColor="#3A3A3A"
+                    android:singleLine="true"
                     android:text="请选择工艺"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/arrow2"
