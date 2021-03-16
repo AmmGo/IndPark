@@ -47,7 +47,7 @@ public class EntSEPAdapter extends BaseQuickAdapter<EntSEPEvent.RecordsBean, Bas
             holder.setText(R.id.tv_mg_3_1, item.nitrogenData);
         } else if (type == 2) {
             //废水
-            holder.setText(R.id.tv_num, item.exhaustData);
+            holder.setText(R.id.tv_num, item.wastewaterData);
             holder.setText(R.id.tv_mg_1, "COD实测浓度mg/L:");
             holder.setText(R.id.tv_mg_1_1, item.coddata);
             holder.setText(R.id.tv_mg_2, "氨氮实测浓度mg/L:");

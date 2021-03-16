@@ -320,6 +320,7 @@ public class PieChartEPDataActivity extends BaseActivity {
         } else {
             typeAdapter = 2;
         }
+        adapter.getType(typeAdapter);
         pkid = event.iocode;
         list.clear();
         getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
