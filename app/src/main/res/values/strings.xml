@@ -11,4 +11,5 @@
     <string name="splash_txt">实时数据汇总</string>
     <string name="login_tv_name">用户名</string>
     <string name="login_tv_pwd">密码</string>
+    <string name="agora_app_id">ced322e944a34f8fa4460426d5477eb1</string>
 </resources>

@@ -15,4 +15,8 @@
     <color name="navigation_type">#e6e6e6</color>
     <color name="navigation_type_selected">#ffffff</color>
     <color name="tab_sep">#F4B188</color>
+    <!-- Logs -->
+    <color name="logInfo">#4a90e2</color>
+    <color name="logWarn">#fedd56</color>
+    <color name="logError">#fe375f</color>
 </resources>
