@@ -79,14 +79,14 @@ public abstract class BaseCallActivity extends BaseRtcActivity implements RtmCha
         intent.putExtra(Constants.KEY_CALLING_ROLE, role);
         startActivity(intent);
     }
-
+//主动
     protected void inviteCall(final String peerUid, final String channel) {
         LocalInvitation invitation = mRtmCallManager.createLocalInvitation(peerUid);
         invitation.setContent(channel);
         mRtmCallManager.sendLocalInvitation(invitation, this);
         global().setLocalInvitation(invitation);
     }
-
+//被动
     protected void answerCall(final RemoteInvitation invitation) {
         if (mRtmCallManager != null && invitation != null) {
             mRtmCallManager.acceptRemoteInvitation(invitation, this);

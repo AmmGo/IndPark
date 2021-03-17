@@ -1,9 +1,9 @@
 package com.hl.indpark.uis.activities.videoactivities;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -15,10 +15,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.hl.indpark.R;
+import com.hl.indpark.uis.activities.videoactivities.utils.RtcUtils;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import io.agora.rtm.ErrorInfo;
+import io.agora.rtm.ResultCallback;
+import io.agora.rtm.RtmClient;
 
 
-public class MainActivity extends BaseCallActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
+public class Main2Activity extends BaseCallActivity {
+    private static final String TAG = Main2Activity.class.getSimpleName();
 
     // Permission request when we want to go to next activity
     // when all necessary permissions are granted.
@@ -43,32 +52,14 @@ public class MainActivity extends BaseCallActivity {
         setContentView(R.layout.activity_main1);
         setIdentifier();
         checkPermissions();
+        gotoDialerActivity();
     }
 
     @Override
     protected void onGlobalLayoutCompleted() {
-        // Move whole layout to the relative middle of screen
-        RelativeLayout layout = findViewById(R.id.content_layout);
-        int visibleHeight = displayMetrics.heightPixels - statusBarHeight;
-        int residual = visibleHeight - layout.getMeasuredHeight();
-        RelativeLayout.LayoutParams params =
-                (RelativeLayout.LayoutParams) layout.getLayoutParams();
-        params.topMargin = residual * 2 / 5;
-        layout.setLayoutParams(params);
-
-
-        // set the button 2/3 of the screen width
-        AppCompatTextView startCall = findViewById(R.id.start_call_button);
-        params = (RelativeLayout.LayoutParams) startCall.getLayoutParams();
-        params.width = displayMetrics.widthPixels * 2 / 3;
-        startCall.setLayoutParams(params);
     }
 
     private void setIdentifier() {
-        String idFormat = getResources().getString(R.string.identifier_format);
-        String identifier = String.format(idFormat, config().getUserId());
-        AppCompatTextView idText = findViewById(R.id.main_identifier_code_text);
-        idText.setText(identifier);
     }
 
     private void checkPermissions() {
@@ -124,9 +115,46 @@ public class MainActivity extends BaseCallActivity {
         Toast.makeText(this, "dasfddsf", Toast.LENGTH_LONG).show();
     }
 
+    public void setActivity(Main2Activity activity) {
+        mActivity = activity;
+    }
+    @Override
+    public RtmClient rtmClient() {
+        return application().rtmClient();
+    }
+    Main2Activity mActivity;
     public void gotoDialerActivity() {
-        Intent intent = new Intent();
-        intent.setClass(this, DialerActivity.class);
-        startActivity(intent);
+        final String peer = String.valueOf(2222);
+        Set<String> peerSet = new HashSet<>();
+        peerSet.add(peer);
+
+        rtmClient().queryPeersOnlineStatus(peerSet,
+                new ResultCallback<Map<String, Boolean>>() {
+                    @Override
+                    public void onSuccess(Map<String, Boolean> statusMap) {
+                        Boolean bOnline = statusMap.get(peer);
+                        if (bOnline != null && bOnline) {
+                            String uid = String.valueOf(
+                                    application().config().getUserId());
+                            String channel = RtcUtils.channelName(uid, peer);
+                            gotoCallingInterface(peer, channel, Constants.ROLE_CALLER);
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(Main2Activity.this,
+                                            R.string.peer_not_online,
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(ErrorInfo errorInfo) {
+                        Log.e("是否在线", "onFailure: 不在线111 ");
+
+                    }
+                });
     }
 }

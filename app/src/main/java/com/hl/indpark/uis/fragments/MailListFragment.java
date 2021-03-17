@@ -25,7 +25,7 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
-import com.hl.indpark.uis.activities.videoactivities.MainActivity;
+import com.hl.indpark.uis.activities.videoactivities.Main2Activity;
 import com.hl.indpark.utils.CharacterParser;
 import com.hl.indpark.utils.ContactsSortAdapter;
 import com.hl.indpark.utils.PinyinComparator;
@@ -202,7 +202,7 @@ public class MailListFragment extends BaseFragment {
     }
 
     private void startCall() {
-        startActivity(new Intent(getContext(), MainActivity.class));
+        startActivity(new Intent(getContext(), Main2Activity.class));
     }
 
     private SelectDialog showDialog(SelectDialog.SelectDialogListener listener, List<String> names) {

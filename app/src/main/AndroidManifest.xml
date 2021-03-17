@@ -113,7 +113,7 @@
             android:name="com.hl.indpark.uis.activities.videoactivities.VideoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.hl.indpark.uis.activities.videoactivities.MainActivity"
+            android:name="com.hl.indpark.uis.activities.videoactivities.Main2Activity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
