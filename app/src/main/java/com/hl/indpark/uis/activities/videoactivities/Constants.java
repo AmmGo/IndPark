@@ -19,6 +19,7 @@ public class Constants {
     public static final String KEY_CALLING_ROLE = "key-calling-role";
     public static final String KEY_CALLING_CHANNEL = "key-calling-channel";
     public static final String KEY_CALLING_PEER = "key-calling-peer";
+    public static final String KEY_CALLING_NAME = "key-calling-Name";
 
     public static final int ROLE_CALLER = 0;
     public static final int ROLE_CALLEE = 1;

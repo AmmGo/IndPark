@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.hl.indpark.App;
 import com.hl.indpark.R;
+import com.hl.indpark.uis.activities.videoactivities.BaseCallActivity;
+import com.hl.indpark.uis.activities.videoactivities.utils.WindowUtil;
 import com.hl.indpark.uis.fragments.MainFragment;
 import com.hl.indpark.utils.Util;
 
@@ -20,25 +22,17 @@ import net.arvin.baselib.utils.WeakHandler;
 import io.agora.rtm.ErrorInfo;
 import io.agora.rtm.ResultCallback;
 
-public class MainActivity extends BaseActivity implements WeakHandler.IHandle {
+public class MainActivity extends BaseCallActivity implements WeakHandler.IHandle {
     private MainFragment mainFragment;
     private static final int MSG_QUIT = 0;
     private static final int TIME_QUIT = 2000;
     private WeakHandler handler;
     private boolean canQuit = false;
-
+    protected int statusBarHeight;
     @Override
-    protected int getContentView() {
-        return R.layout.activity_main;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void init(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         handler = new WeakHandler(this);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         mainFragment = new MainFragment();
@@ -56,8 +50,6 @@ public class MainActivity extends BaseActivity implements WeakHandler.IHandle {
             }
         });
     }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

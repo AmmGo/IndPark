@@ -11,11 +11,10 @@
     <string name="splash_txt">实时数据汇总</string>
     <string name="login_tv_name">用户名</string>
     <string name="login_tv_pwd">密码</string>
-    <string name="agora_app_id">ced322e944a34f8fa4460426d5477eb1</string>
-    <string name="private_app_id" translatable="false">3108fccd221b47479c1295f09a83550d</string>
+    <string name="agora_app_id">56f642fe4ced4db995deadd973060309</string>
     <!-- Calling Activity -->
-    <string name="receiving_call">Incoming&#8230;</string>
-    <string name="calling_out">Calling&#8230;</string>
+    <string name="receiving_call">邀请视频通话&#8230;</string>
+    <string name="calling_out">正在等待对方接受邀请&#8230;</string>
     <!-- Dial Activity -->
     <string name="incomplete_dial_number">The number you dialed is incomplete</string>
     <string name="peer_not_online">对方不在线</string>

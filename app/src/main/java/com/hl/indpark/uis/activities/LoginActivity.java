@@ -48,8 +48,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                login();
-//                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                login();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 break;
             case R.id.img_see_pwd:
                 login();

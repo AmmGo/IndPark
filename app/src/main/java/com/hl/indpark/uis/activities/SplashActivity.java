@@ -6,13 +6,14 @@ import android.os.Message;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.hl.indpark.R;
+import com.hl.indpark.uis.activities.videoactivities.utils.WindowUtil;
 
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.WeakHandler;
 
 public class SplashActivity extends BaseActivity implements WeakHandler.IHandle {
     private ShimmerFrameLayout layoutShimmer;
-
+    protected int statusBarHeight;
     @Override
     protected int getContentView() {
         return R.layout.activity_splash;
@@ -23,8 +24,14 @@ public class SplashActivity extends BaseActivity implements WeakHandler.IHandle 
         WeakHandler handler = new WeakHandler(this);
         handler.sendEmptyMessageDelayed(0, 2000);
         layoutShimmer = findViewById(R.id.layout_shimmer);
+        initStatusBarHeight();
+        WindowUtil.hideWindowStatusBar(getWindow());
+
     }
 
+    private void initStatusBarHeight() {
+        statusBarHeight = WindowUtil.getSystemStatusBarHeight(this);
+    }
     @Override
     protected void onResume() {
         super.onResume();

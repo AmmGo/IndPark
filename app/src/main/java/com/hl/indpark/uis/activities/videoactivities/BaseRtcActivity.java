@@ -25,19 +25,19 @@ public abstract class BaseRtcActivity extends BaseActivity {
         );
     }
 
-    protected SurfaceView setupVideo(int uid, boolean local) {
-        SurfaceView surfaceView = RtcEngine.
-                CreateRendererView(getApplicationContext());
-        if (local) {
-            rtcEngine().setupLocalVideo(new VideoCanvas(surfaceView,
-                    VideoCanvas.RENDER_MODE_HIDDEN, uid));
-        } else {
-            rtcEngine().setupRemoteVideo(new VideoCanvas(surfaceView,
-                    VideoCanvas.RENDER_MODE_HIDDEN, uid));
-        }
-
-        return surfaceView;
-    }
+//    protected SurfaceView setupVideo(int uid, boolean local) {
+//        SurfaceView surfaceView = RtcEngine.
+//                CreateRendererView(getApplicationContext());
+//        if (local) {
+//            rtcEngine().setupLocalVideo(new VideoCanvas(surfaceView,
+//                    VideoCanvas.RENDER_MODE_HIDDEN, uid));
+//        } else {
+//            rtcEngine().setupRemoteVideo(new VideoCanvas(surfaceView,
+//                    VideoCanvas.RENDER_MODE_HIDDEN, uid));
+//        }
+//
+//        return surfaceView;
+//    }
 
     @Override
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {

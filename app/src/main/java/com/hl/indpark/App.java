@@ -110,7 +110,7 @@ private void init1() {
     }
 
     private void initEngine() {
-        String appId = getString(R.string.private_app_id);
+        String appId = getString(R.string.agora_app_id);
         if (TextUtils.isEmpty(appId)) {
             throw new RuntimeException("NEED TO use your App ID, get your own ID at https://dashboard.agora.io/");
         }

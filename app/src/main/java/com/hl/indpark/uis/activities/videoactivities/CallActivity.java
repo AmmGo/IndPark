@@ -14,9 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
 
 import com.hl.indpark.R;
+import com.hl.indpark.uis.activities.videoactivities.utils.WindowUtil;
 
 import io.agora.rtm.LocalInvitation;
 import io.agora.rtm.RemoteInvitation;
@@ -24,12 +24,6 @@ import io.agora.rtm.RemoteInvitation;
 public class CallActivity extends BaseCallActivity implements View.OnClickListener {
     private static final String TAG = CallActivity.class.getSimpleName();
 
-    private static int[] PEER_ID_RES = {
-            R.id.peer_id_digit_1,
-            R.id.peer_id_digit_2,
-            R.id.peer_id_digit_3,
-            R.id.peer_id_digit_4
-    };
 
     private int mRole;
     private String mPeer;
@@ -54,33 +48,22 @@ public class CallActivity extends BaseCallActivity implements View.OnClickListen
             mInvitationReceiving = true;
         }
         startRinging();
+        initStatusBarHeight();
+        WindowUtil.hideWindowStatusBar(getWindow());
+
+    }
+
+    private void initStatusBarHeight() {
+        statusBarHeight = WindowUtil.getSystemStatusBarHeight(this);
     }
 
     private void initUI() {
         ImageView portrait = findViewById(R.id.peer_image);
         portrait.setImageResource(R.drawable.portrait);
-
-        AppCompatTextView[] mPeerUidText = new AppCompatTextView[PEER_ID_RES.length];
-        for (int i = 0; i < mPeerUidText.length; i++) {
-            mPeerUidText[i] = findViewById(PEER_ID_RES[i]);
-        }
-
+        TextView tvPhone = findViewById(R.id.tv_phone_video);
         Intent intent = getIntent();
         mChannel = intent.getStringExtra(Constants.KEY_CALLING_CHANNEL);
         mPeer = intent.getStringExtra(Constants.KEY_CALLING_PEER);
-        if (mPeer != null) {
-            try {
-                int peer = Integer.valueOf(mPeer);
-                for (int i = mPeerUidText.length - 1; i >= 0; i--) {
-                    int digit = peer % 10;
-                    peer /= 10;
-                    mPeerUidText[i].setText(String.valueOf(digit));
-                }
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-        }
-
         mHangupBtn = findViewById(R.id.hang_up_btn);
         mHangupBtn.setVisibility(View.VISIBLE);
         mHangupBtn.setOnClickListener(this);
@@ -281,10 +264,10 @@ public class CallActivity extends BaseCallActivity implements View.OnClickListen
         stopRinging();
 
         if (isCallee() && mInvitationReceiving &&
-            global().getRemoteInvitation() != null) {
+                global().getRemoteInvitation() != null) {
             refuseRemoteInvitation(global().getRemoteInvitation());
         } else if (isCaller() && mInvitationSending &&
-            global().getLocalInvitation() != null) {
+                global().getLocalInvitation() != null) {
             cancelLocalInvitation();
         }
 

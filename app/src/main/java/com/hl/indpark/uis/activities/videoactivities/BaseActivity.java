@@ -34,10 +34,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IEventLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        WindowUtil.hideWindowStatusBar(getWindow());
+//        WindowUtil.hideWindowStatusBar(getWindow());
         setGlobalLayoutListener();
         getDisplayMetrics();
-        initStatusBarHeight();
+//        initStatusBarHeight();
     }
 
     private void setGlobalLayoutListener() {

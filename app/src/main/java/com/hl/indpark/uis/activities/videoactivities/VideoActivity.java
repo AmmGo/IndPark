@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -12,8 +14,11 @@ import android.widget.Toast;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.hl.indpark.R;
+import com.hl.indpark.uis.activities.videoactivities.utils.WindowUtil;
 import com.hl.indpark.utils.Util;
 
+import io.agora.rtc.RtcEngine;
+import io.agora.rtc.video.VideoCanvas;
 import io.agora.rtm.RemoteInvitation;
 
 public class VideoActivity extends BaseCallActivity {
@@ -31,6 +36,13 @@ public class VideoActivity extends BaseCallActivity {
         setContentView(R.layout.activity_video);
         initUI();
         initVideo();
+        initStatusBarHeight();
+        WindowUtil.hideWindowStatusBar(getWindow());
+
+    }
+
+    private void initStatusBarHeight() {
+        statusBarHeight = WindowUtil.getSystemStatusBarHeight(this);
     }
 
     private void initUI() {
@@ -74,9 +86,7 @@ public class VideoActivity extends BaseCallActivity {
     }
 
     private void setupLocalPreview() {
-        SurfaceView surfaceView = setupVideo(Integer.parseInt(Util.getUserId()), true);
-        surfaceView.setZOrderOnTop(true);
-        mLocalPreviewLayout.addView(surfaceView);
+        setupLocalVideo();
     }
 
     @Override
@@ -86,10 +96,7 @@ public class VideoActivity extends BaseCallActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mRemotePreviewLayout.getChildCount() == 0) {
-                    SurfaceView surfaceView = setupVideo(uid, false);
-                    mRemotePreviewLayout.addView(surfaceView);
-                }
+                setupRemoteVideo(uid);
             }
         });
     }
@@ -126,5 +133,85 @@ public class VideoActivity extends BaseCallActivity {
         // Do not respond to any other calls
         Log.i(TAG, "Ignore remote invitation from " +
                 remoteInvitation.getCallerId() + " while in calling");
+    }
+
+    private void setupLocalVideo() {
+        // This is used to set a local preview.
+        // The steps setting local and remote view are very similar.
+        // But note that if the local user do not have a uid or do
+        // not care what the uid is, he can set his uid as ZERO.
+        // Our server will assign one and return the uid via the event
+        // handler callback function (onJoinChannelSuccess) after
+        // joining the channel successfully.
+        SurfaceView view = RtcEngine.CreateRendererView(getBaseContext());
+        view.setZOrderMediaOverlay(true);
+        mLocalPreviewLayout.addView(view);
+        // Initializes the local video view.
+        // RENDER_MODE_HIDDEN: Uniformly scale the video until it fills the visible boundaries. One dimension of the video may have clipped contents.
+        mLocalVideo = new VideoCanvas(view, VideoCanvas.RENDER_MODE_HIDDEN, 0);
+        rtcEngine().setupLocalVideo(mLocalVideo);
+    }
+
+    private void setupRemoteVideo(int uid) {
+        ViewGroup parent = mRemotePreviewLayout;
+        if (parent.indexOfChild(mLocalVideo.view) > -1) {
+            parent = mLocalPreviewLayout;
+        }
+
+        // Only one remote video view is available for this
+        // tutorial. Here we check if there exists a surface
+        // view tagged as this uid.
+        if (mRemoteVideo != null) {
+            return;
+        }
+
+        /*
+          Creates the video renderer view.
+          CreateRendererView returns the SurfaceView type. The operation and layout of the view
+          are managed by the app, and the Agora SDK renders the view provided by the app.
+          The video display view must be created using this method instead of directly
+          calling SurfaceView.
+         */
+        SurfaceView view = RtcEngine.CreateRendererView(getBaseContext());
+        view.setZOrderMediaOverlay(parent == mLocalPreviewLayout);
+        parent.addView(view);
+        mRemoteVideo = new VideoCanvas(view, VideoCanvas.RENDER_MODE_HIDDEN, uid);
+        // Initializes the video view of a remote user.
+        rtcEngine().setupRemoteVideo(mRemoteVideo);
+    }
+
+    private VideoCanvas mLocalVideo;
+    private VideoCanvas mRemoteVideo;
+
+    private void switchView(VideoCanvas canvas) {
+        ViewGroup parent = removeFromParent(canvas);
+        if (parent == mLocalPreviewLayout) {
+            if (canvas.view instanceof SurfaceView) {
+                ((SurfaceView) canvas.view).setZOrderMediaOverlay(false);
+            }
+            mRemotePreviewLayout.addView(canvas.view);
+        } else if (parent == mRemotePreviewLayout) {
+            if (canvas.view instanceof SurfaceView) {
+                ((SurfaceView) canvas.view).setZOrderMediaOverlay(true);
+            }
+            mLocalPreviewLayout.addView(canvas.view);
+        }
+    }
+
+    private ViewGroup removeFromParent(VideoCanvas canvas) {
+        if (canvas != null) {
+            ViewParent parent = canvas.view.getParent();
+            if (parent != null) {
+                ViewGroup group = (ViewGroup) parent;
+                group.removeView(canvas.view);
+                return group;
+            }
+        }
+        return null;
+    }
+
+    public void onLocalContainerClick(View view) {
+        switchView(mLocalVideo);
+        switchView(mRemoteVideo);
     }
 }

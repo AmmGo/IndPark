@@ -145,6 +145,7 @@ public class Main2Activity extends BaseCallActivity {
                             String uid = Util.getUserId();
                             String channel = RtcUtils.channelName(uid, peer);
                             gotoCallingInterface(peer, channel, Constants.ROLE_CALLER);
+                            finish();
                         } else {
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -152,7 +153,7 @@ public class Main2Activity extends BaseCallActivity {
                                     Toast.makeText(Main2Activity.this,
                                             R.string.peer_not_online,
                                             Toast.LENGTH_SHORT).show();
-//                                    finish();
+                                    finish();
                                 }
                             });
                         }
@@ -162,7 +163,7 @@ public class Main2Activity extends BaseCallActivity {
                     public void onFailure(ErrorInfo errorInfo) {
                         Log.e("是否在线", "onFailure: 不在线111 ");
                         ToastUtil.showToast(Main2Activity.this, "对方不在线");
-//                        finish();
+                        finish();
 
                     }
                 });
