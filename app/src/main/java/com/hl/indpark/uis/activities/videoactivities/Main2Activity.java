@@ -5,17 +5,17 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.hl.indpark.R;
 import com.hl.indpark.uis.activities.videoactivities.utils.RtcUtils;
+
+import net.arvin.baselib.utils.ToastUtil;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -118,11 +118,14 @@ public class Main2Activity extends BaseCallActivity {
     public void setActivity(Main2Activity activity) {
         mActivity = activity;
     }
+
     @Override
     public RtmClient rtmClient() {
         return application().rtmClient();
     }
+
     Main2Activity mActivity;
+
     public void gotoDialerActivity() {
         final String peer = String.valueOf(2222);
         Set<String> peerSet = new HashSet<>();
@@ -145,6 +148,7 @@ public class Main2Activity extends BaseCallActivity {
                                     Toast.makeText(Main2Activity.this,
                                             R.string.peer_not_online,
                                             Toast.LENGTH_SHORT).show();
+                                    finish();
                                 }
                             });
                         }
@@ -153,8 +157,11 @@ public class Main2Activity extends BaseCallActivity {
                     @Override
                     public void onFailure(ErrorInfo errorInfo) {
                         Log.e("是否在线", "onFailure: 不在线111 ");
+                        ToastUtil.showToast(Main2Activity.this, "对方不在线");
+                        finish();
 
                     }
                 });
+        Log.e("是否在线", "不在线 ");
     }
 }

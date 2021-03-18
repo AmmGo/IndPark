@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hl.indpark.R;
@@ -18,6 +19,7 @@ import com.hl.indpark.uis.activities.MyApprovalActivity;
 import com.hl.indpark.uis.activities.MyMsgActivity;
 import com.hl.indpark.uis.activities.MyReportActivity;
 import com.hl.indpark.uis.activities.SetUpActivity;
+import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.widgit.CircleImageView;
 
 import net.arvin.baselib.base.BaseFragment;
@@ -40,7 +42,8 @@ public class SelfFragment extends BaseFragment {
     @BindView(R.id.img_new_msg)
     ImageView imgNewMsg;
     @BindView(R.id.tv_photo_sjh)
-    TextView tvPhone;
+    TextView tvPhone;    @BindView(R.id.ll_wd_shenp)
+    LinearLayout ll_wd_shenp;
     private UserInfoEvent userInfoEvent;
     private boolean hideNew;
 
@@ -71,6 +74,12 @@ public class SelfFragment extends BaseFragment {
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        String roleId = SharePreferenceUtil.getKeyValue("roleId");
+        if (roleId!=null&&!roleId.equals("")&&roleId.equals("46")){
+            ll_wd_shenp.setVisibility(View.GONE);
+        }else{
+            ll_wd_shenp.setVisibility(View.VISIBLE);
+        }
         getNewHide();
     }
 

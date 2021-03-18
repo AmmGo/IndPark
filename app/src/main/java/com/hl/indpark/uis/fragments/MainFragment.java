@@ -2,6 +2,7 @@ package com.hl.indpark.uis.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hl.indpark.R;
+import com.hl.indpark.utils.SharePreferenceUtil;
 
 import net.arvin.baselib.base.BaseFragment;
 import net.arvin.baselib.widgets.TitleBar;
@@ -34,6 +36,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private SparseArray<BaseFragment> fragments = new SparseArray<>();
     private SparseArray<Class<? extends BaseFragment>> fragmentClasses = new SparseArray<>();
     private SparseIntArray fragmentTitles = new SparseIntArray();
+    private String enterpriseName;
 
     {
         fragmentClasses.put(R.id.tab_home, HomeFragment.class);
@@ -62,6 +65,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        enterpriseName = SharePreferenceUtil.getKeyValue("enterpriseName");
+    }
+
+    @Override
     protected int getContentView() {
         return R.layout.fragment_main;
     }
@@ -69,6 +78,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     protected void init(Bundle savedInstanceState) {
         titleBar = root.findViewById(R.id.title_bar);
+        enterpriseName = SharePreferenceUtil.getKeyValue("enterpriseName");
+        if (enterpriseName!=null&&!enterpriseName.equals("")){
+            titleBar.getCenterTextView().setText(enterpriseName);
+        }
         bottomNavigationView = root.findViewById(R.id.tab_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(tabIds.get(0));
@@ -85,7 +98,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
         int itemId = item.getItemId();
         if (tabIds.contains(itemId)) {
-            titleBar.getCenterTextView().setText(fragmentTitles.get(itemId));
+            if (fragmentTitles.get(itemId)==R.string.tab_home){
+                Log.e("输出title", "onNavigationItemSelected: 一样" );
+                titleBar.getCenterTextView().setText(enterpriseName);
+            }else{
+                titleBar.getCenterTextView().setText(fragmentTitles.get(itemId));
+            }
+
             if (titleBar.getCenterTextView().getText().equals("")){
                 titleBar.getRightImageView().setVisibility(View.INVISIBLE);
             }else{

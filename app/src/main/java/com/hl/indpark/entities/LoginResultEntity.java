@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 /**
  * Created by yjl on 2021/3/8 15:28
- * Function：
+ * Function：roleId : 1 :44 网格长  45 副网格长 46 网格员
  * Desc：
  */
 public class LoginResultEntity implements Parcelable {
@@ -27,7 +27,7 @@ public class LoginResultEntity implements Parcelable {
      * authURL : null
      * ico : null
      */
-    private int id;
+    public int id;
     public String token;
     private String date;
     private String expirationTime;
@@ -35,9 +35,9 @@ public class LoginResultEntity implements Parcelable {
     private int deptId;
     private String deptName;
     private int enterpriseId;
-    private String enterpriseName;
+    public String enterpriseName;
     private int category;
-    private int roleId;
+    public int roleId;
     private String roleName;
     private Object menuList;
     private Object authURL;

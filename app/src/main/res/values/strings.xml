@@ -18,6 +18,6 @@
     <string name="calling_out">Calling&#8230;</string>
     <!-- Dial Activity -->
     <string name="incomplete_dial_number">The number you dialed is incomplete</string>
-    <string name="peer_not_online">Peer has not logged on</string>
+    <string name="peer_not_online">对方不在线</string>
     <string name="identifier_format">Your Identifier Code: %s</string>
 </resources>

@@ -95,12 +95,13 @@ public class MailListFragment extends BaseFragment {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Log.e("人员列表", "onFailure: ");
             }
 
             @Override
             public void onError(Throwable throwable) {
                 super.onError(throwable);
-
+                Log.e("人员列表", "onFailure: ");
             }
         });
     }
