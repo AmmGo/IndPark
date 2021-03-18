@@ -7,11 +7,8 @@ import android.database.Cursor;
 import android.provider.CallLog;
 import android.util.Log;
 
-import com.hl.indpark.uis.activities.MainActivity;
 import com.hl.indpark.uis.activities.videoactivities.Constants;
 import com.hl.indpark.uis.activities.videoactivities.Main2Activity;
-
-import net.arvin.baselib.base.BaseActivity;
 
 public class OpenDuoCallReceiver extends BroadcastReceiver {
     private static final String TAG = OpenDuoCallReceiver.class.getSimpleName();
@@ -29,7 +26,7 @@ public class OpenDuoCallReceiver extends BroadcastReceiver {
                 agIntent.putExtra(Constants.CS_KEY_SUBSCRIBER, subscriber);
                 context.startActivity(agIntent);
             } else {
-                Intent agIntent = new Intent(context, MainActivity.class);
+                Intent agIntent = new Intent(context, Main2Activity.class);
                 agIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 context.startActivity(agIntent);
             }

@@ -23,12 +23,7 @@ public class Config {
     private static final boolean FLAG_USE_SYSTEM_CALL_UI = false;
 
     public Config(Context context) {
-        initUserId(context);
         checkSystemCallSupport(context);
-    }
-
-    private void initUserId(Context context) {
-        mUserId = "1111";
     }
 
     private void checkSystemCallSupport(Context context) {
@@ -38,9 +33,6 @@ public class Config {
         }
     }
 
-    public String getUserId() {
-        return "1111";
-    }
 
     public VideoEncoderConfiguration.VideoDimensions getDimension() {
         return mVideoDimension;

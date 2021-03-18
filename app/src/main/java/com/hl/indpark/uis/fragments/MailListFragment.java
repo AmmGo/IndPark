@@ -189,7 +189,7 @@ public class MailListFragment extends BaseFragment {
                                 getContext().startActivity(intent);
                                 break;
                             case 1:
-                                startCall();
+                                startCall(sortModel.id);
                                 break;
                             default:
                                 break;
@@ -202,8 +202,10 @@ public class MailListFragment extends BaseFragment {
 
     }
 
-    private void startCall() {
-        startActivity(new Intent(getContext(), Main2Activity.class));
+    private void startCall(int id) {
+        Intent intent = new Intent(getActivity(), Main2Activity.class);
+        intent.putExtra("id",String.valueOf(id) );
+        startActivity(intent);
     }
 
     private SelectDialog showDialog(SelectDialog.SelectDialogListener listener, List<String> names) {
@@ -241,7 +243,7 @@ public class MailListFragment extends BaseFragment {
             if (sortLetters == null) {
                 sortLetters = getSortLetter(data.get(i).name);
             }
-            SortModel sortModel = new SortModel(data.get(i).name, data.get(i).phone, data.get(i).name, data.get(i).sex);
+            SortModel sortModel = new SortModel(data.get(i).name, data.get(i).phone, data.get(i).name, data.get(i).sex,data.get(i).id);
             sortModel.sortLetters = sortLetters;
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)

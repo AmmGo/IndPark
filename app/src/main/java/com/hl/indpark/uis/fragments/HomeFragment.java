@@ -1,14 +1,10 @@
 package com.hl.indpark.uis.fragments;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -16,13 +12,14 @@ import com.google.android.material.tabs.TabLayout;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.HSAlarmEvent;
+import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.EventsReportActivity;
 import com.hl.indpark.uis.adapters.ViewPagerAdapter;
+import com.hl.indpark.utils.SharePreferenceUtil;
 
 import net.arvin.baselib.base.BaseFragment;
-import net.arvin.baselib.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,8 +93,30 @@ public class HomeFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, root);
         initView();
         loadData();
+        initData();
     }
+    public void initData() {
+        ArticlesRepo.getUserInfoEvent().observe(this, new ApiObserver<UserInfoEvent>() {
+            @Override
+            public void onSuccess(Response<UserInfoEvent> response) {
+                Log.e("用户成功", "onSuccess: ");
+               UserInfoEvent userInfoEvent = response.getData();
+                SharePreferenceUtil.saveKeyValue("userId", String.valueOf(userInfoEvent.personnelId));
+                Log.e("登录用户Id", "onSuccess: "+userInfoEvent.personnelId );
+            }
 
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+
+            }
+        });
+    }
     private void initView() {
         final String[] titles = {"报警统计", "报警分析"};
         Fragment fragment1 = new TabStatisticsFragment();

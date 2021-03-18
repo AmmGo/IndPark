@@ -84,9 +84,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths_public" />
         </provider> <!-- 配置APP渠道号 -->
-        <meta-data
-            android:name="BUGLY_APP_CHANNEL"
-            android:value="${BUGLY_APP_CHANNEL}" />
+<!--        <meta-data-->
+<!--            android:name="BUGLY_APP_CHANNEL"-->
+<!--            android:value="${BUGLY_APP_CHANNEL}" />-->
 
         <provider
             android:name=".utils.BuglyFileProvider"
@@ -99,10 +99,6 @@
                 android:resource="@xml/provider_paths"
                 tools:replace="name,resource" />
         </provider>
-
-        <activity
-            android:name="com.hl.indpark.uis.activities.videoactivities.DialerActivity"
-            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.hl.indpark.uis.activities.videoactivities.CallActivity"

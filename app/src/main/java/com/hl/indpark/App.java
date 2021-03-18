@@ -133,17 +133,17 @@ private void init1() {
             rtmCallManager.setEventListener(mEventListener);
 
             // By default do not use rtm token
-            mRtmClient.login(null, mConfig.getUserId(), new ResultCallback<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.i(TAG, "rtm client login success");
-                }
-
-                @Override
-                public void onFailure(ErrorInfo errorInfo) {
-                    Log.i(TAG, "rtm client login failed:" + errorInfo.getErrorDescription());
-                }
-            });
+//            mRtmClient.login(null, mConfig.getUserId(), new ResultCallback<Void>() {
+//                @Override
+//                public void onSuccess(Void aVoid) {
+//                    Log.i(TAG, "rtm client login success");
+//                }
+//
+//                @Override
+//                public void onFailure(ErrorInfo errorInfo) {
+//                    Log.i(TAG, "rtm client login failed:" + errorInfo.getErrorDescription());
+//                }
+//            });
         } catch (Exception e) {
             e.printStackTrace();
         }

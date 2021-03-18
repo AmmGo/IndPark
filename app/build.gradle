@@ -21,39 +21,11 @@ android {
         }
     }
 
-    signingConfigs {
-        release {
-            storeFile file("arvinljw.jks")
-            storePassword "123456"
-            keyAlias "arvin"
-            keyPassword "123456"
-        }
-    }
-
-    flavorDimensions 'default'
-    productFlavors {
-        allpro {
-            manifestPlaceholders = [BUGLY_APP_CHANNEL: "all"]
-        }
-        xiaomi {
-            manifestPlaceholders = [BUGLY_APP_CHANNEL: "xiaomi"]
-        }
-        huawei {
-            manifestPlaceholders = [BUGLY_APP_CHANNEL: "huawei"]
-        }
-    }
 
     buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
-
         release {
-            minifyEnabled true
-            zipAlignEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 

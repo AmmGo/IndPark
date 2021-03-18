@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.hl.indpark.R;
+import com.hl.indpark.utils.Util;
 
 import io.agora.rtm.RemoteInvitation;
 
@@ -69,11 +70,11 @@ public class VideoActivity extends BaseCallActivity {
         rtcEngine().setClientRole(io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER);
         setVideoConfiguration();
         setupLocalPreview();
-        joinRtcChannel(mChannel, "", Integer.parseInt(config().getUserId()));
+        joinRtcChannel(mChannel, "", Integer.parseInt(Util.getUserId()));
     }
 
     private void setupLocalPreview() {
-        SurfaceView surfaceView = setupVideo(Integer.parseInt(config().getUserId()), true);
+        SurfaceView surfaceView = setupVideo(Integer.parseInt(Util.getUserId()), true);
         surfaceView.setZOrderOnTop(true);
         mLocalPreviewLayout.addView(surfaceView);
     }

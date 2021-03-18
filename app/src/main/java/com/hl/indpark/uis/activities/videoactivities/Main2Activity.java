@@ -1,6 +1,7 @@
 package com.hl.indpark.uis.activities.videoactivities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import com.hl.indpark.R;
 import com.hl.indpark.uis.activities.videoactivities.utils.RtcUtils;
+import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.utils.ToastUtil;
 
@@ -45,14 +47,18 @@ public class Main2Activity extends BaseCallActivity {
             Manifest.permission.READ_CALL_LOG,
             Manifest.permission.WRITE_CALL_LOG
     };
+    private String id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main1);
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
         setIdentifier();
         checkPermissions();
         gotoDialerActivity();
+        Log.e("呼叫对方Id", "onSuccess: "+id);
     }
 
     @Override
@@ -127,18 +133,16 @@ public class Main2Activity extends BaseCallActivity {
     Main2Activity mActivity;
 
     public void gotoDialerActivity() {
-        final String peer = String.valueOf(2222);
+        String peer = id;
         Set<String> peerSet = new HashSet<>();
         peerSet.add(peer);
-
         rtmClient().queryPeersOnlineStatus(peerSet,
                 new ResultCallback<Map<String, Boolean>>() {
                     @Override
                     public void onSuccess(Map<String, Boolean> statusMap) {
                         Boolean bOnline = statusMap.get(peer);
                         if (bOnline != null && bOnline) {
-                            String uid = String.valueOf(
-                                    application().config().getUserId());
+                            String uid = Util.getUserId();
                             String channel = RtcUtils.channelName(uid, peer);
                             gotoCallingInterface(peer, channel, Constants.ROLE_CALLER);
                         } else {
@@ -148,7 +152,7 @@ public class Main2Activity extends BaseCallActivity {
                                     Toast.makeText(Main2Activity.this,
                                             R.string.peer_not_online,
                                             Toast.LENGTH_SHORT).show();
-                                    finish();
+//                                    finish();
                                 }
                             });
                         }
@@ -158,10 +162,10 @@ public class Main2Activity extends BaseCallActivity {
                     public void onFailure(ErrorInfo errorInfo) {
                         Log.e("是否在线", "onFailure: 不在线111 ");
                         ToastUtil.showToast(Main2Activity.this, "对方不在线");
-                        finish();
+//                        finish();
 
                     }
                 });
-        Log.e("是否在线", "不在线 ");
+        Log.e("是否在线", "onFailure: 不在线");
     }
 }

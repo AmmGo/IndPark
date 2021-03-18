@@ -3,6 +3,7 @@ package com.hl.indpark.uis.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -66,16 +67,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (edPasswordText != null) {
             password = edPasswordText.toString().trim();
         }
-//        if (TextUtils.isEmpty(name)) {
-//            edName.setError("请输入用户名");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(password)) {
-//            edPassword.setError("请输入密码");
-//            return;
-//        }
-         name = "admin";
-         password ="hldk1119";
+        if (TextUtils.isEmpty(name)) {
+            edName.setError("请输入用户名");
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            edPassword.setError("请输入密码");
+            return;
+        }
+//         name = "admin";
+//         password ="hldk1119";
         final String psw = Util.getMd5(password);
         dialogUtil.showProgressDialog("登录中...");
         Map<String, String> map = new HashMap<>();
@@ -87,7 +88,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 dialogUtil.hideProgressDialog();
                 LoginResultEntity data = response.getData();
                 SharePreferenceUtil.saveKeyValue("token",data.token);
-                SharePreferenceUtil.saveKeyValue("userId", String.valueOf(data.id));
                 SharePreferenceUtil.saveKeyValue("roleId", String.valueOf(data.roleId));
                 SharePreferenceUtil.saveKeyValue("enterpriseName", String.valueOf(data.enterpriseName));
                 Log.e("TOKEN", data.token );
