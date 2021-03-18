@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -29,6 +31,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private EditText edName;
     private EditText edPassword;
     private DialogUtil dialogUtil;
+
     @Override
     protected int getContentView() {
         return R.layout.activity_login;
@@ -44,6 +47,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         dialogUtil = new DialogUtil(this);
     }
 
+    int pwd = 0;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -52,10 +57,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 break;
             case R.id.img_see_pwd:
-                login();
+                if (pwd == 0) {
+                    edPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    pwd++;
+                } else {
+                    edPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    pwd--;
+                }
+
                 break;
         }
     }
+
     private void login() {
         String name = null;
         String password = null;
@@ -87,10 +100,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onSuccess(Response<LoginResultEntity> response) {
                 dialogUtil.hideProgressDialog();
                 LoginResultEntity data = response.getData();
-                SharePreferenceUtil.saveKeyValue("token",data.token);
+                SharePreferenceUtil.saveKeyValue("token", data.token);
                 SharePreferenceUtil.saveKeyValue("roleId", String.valueOf(data.roleId));
                 SharePreferenceUtil.saveKeyValue("enterpriseName", String.valueOf(data.enterpriseName));
-                Log.e("TOKEN", data.token );
+                Log.e("TOKEN", data.token);
                 onBackPressed();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }

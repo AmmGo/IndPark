@@ -1,6 +1,7 @@
 package com.hl.indpark.uis.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,10 +55,10 @@ public class HomeFragment extends BaseFragment {
 //                intent = new Intent(Intent.ACTION_CALL);
 //                intent.setData(uri);
 //                getContext().startActivity(intent);
-//                Uri uri = Uri.parse("tel:" + "119");
-//                Intent intent = new Intent(Intent.ACTION_DIAL);
-//                intent.setData(uri);
-//                getActivity().startActivity(intent);
+                Uri uri = Uri.parse("tel:" + "119");
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(uri);
+                getActivity().startActivity(intent);
                 break;
             case R.id.ll_events:
                 intent = new Intent(getActivity(), EventsReportActivity.class);
