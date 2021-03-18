@@ -93,6 +93,7 @@ public class TabStatisticsFragment extends BaseFragment {
         mViewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(mViewPager);
 //        onTab(tabLayout.getTabAt(0));
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
