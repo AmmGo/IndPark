@@ -25,6 +25,7 @@ import com.squareup.leakcanary.LeakCanary;
 import com.tencent.tinker.loader.app.TinkerApplication;
 import com.tencent.tinker.loader.shareutil.ShareConstants;
 
+import cn.jpush.android.api.JPushInterface;
 import io.agora.rtc.Constants;
 import io.agora.rtc.RtcEngine;
 import io.agora.rtm.ErrorInfo;
@@ -61,7 +62,8 @@ private static App instance;
         LeakCanary.install(this);
         instance = this;
         app = this;
-
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         AppCompatDelegate.setDefaultNightMode(SharePreferenceUtil.isDarkStyle() ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
 //        db = Room.databaseBuilder(this, ArticleDatabase.class, "wanandroid").build();

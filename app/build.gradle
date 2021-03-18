@@ -19,6 +19,11 @@ android {
             // 设置支持的SO库架构
             abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "7748632d4ff79b45c549411a", //极光开发平台上注册的包名对应的appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
     }
 
 
@@ -69,4 +74,7 @@ dependencies {
 
     implementation 'io.agora.rtc:full-sdk:3.1.0'
     implementation 'io.agora.rtm:rtm-sdk:1.2.2'
+
+    implementation 'cn.jiguang.sdk:jpush:3.8.5'  // 此处以JPush 3.8.5 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:2.5.5'  // 此处以JCore 2.5.5 版本为例。
 }
