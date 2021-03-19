@@ -5,14 +5,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.android.tu.loadingdialog.LoadingDailog;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.PopEvent;
@@ -56,11 +59,20 @@ public class EventsReportActivity extends BaseActivity {
     TextView tvCount;
     @BindView(R.id.tv_type)
     TextView tvType;
+    @BindView(R.id.ed_event_titile)
+    EditText ed_event_titile;
+    @BindView(R.id.ed_event_decs)
+    EditText ed_event_decs;
     boolean islMaxCount;
     private MediaFragment mediaFragment;
     private List<LocalMedia> selectList = new ArrayList<>();
     private List<LocalMedia> mediaList = new ArrayList<>();
     private ReportEvent eventReport;
+    private String imgS;
+    private String uploadEventTitile;
+    private String uploadEventDecs;
+    private String uploadTvType;
+    private LoadingDailog dialog;
 
     @OnTextChanged(value = R.id.ed_event_decs, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void editTextDetailChange(Editable editable) {
@@ -89,7 +101,31 @@ public class EventsReportActivity extends BaseActivity {
             case R.id.tv_report:
 //                getUpdateUserImg(uploadFile.get(0));
 //                getUploadEvent();
-                getUpdateUserImgS();
+                uploadTvType = tvType.getText().toString().replaceAll(" ", "");
+                uploadEventTitile = ed_event_titile.getText().toString().replaceAll(" ", "");
+                uploadEventDecs = ed_event_decs.getText().toString().replaceAll(" ", "");
+                if (TextUtils.isEmpty(uploadTvType)) {
+                    ToastUtil.showToast(this, "请选择事件类型");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(uploadEventTitile)) {
+                    ToastUtil.showToast(this, "请输入事件标题");
+                    return;
+                }
+                if (TextUtils.isEmpty(uploadEventDecs)) {
+                    ToastUtil.showToast(this, "请输入事件描述");
+                    return;
+                }
+                if (mediaList != null && mediaList.size() > 0) {
+                    for (int i = 0; i < mediaList.size(); i++) {
+                        uploadFile.add(new File(mediaList.get(i).getPath()));
+                    }
+                    getUpdateUserImgS(uploadFile);
+                }else{
+                    getUploadEvent();
+                }
+
                 break;
             case R.id.ll_type:
                 try {
@@ -166,6 +202,14 @@ public class EventsReportActivity extends BaseActivity {
                             @Override
                             public void callback(boolean granted, boolean isAlwaysDenied) {
                                 if (granted) {
+                                    if (mediaList != null && mediaList.size()==6){
+                                        ToastUtil.showToast(EventsReportActivity.this,"你最多只能选择6张照片");
+return;
+                                    }
+                                    PictureSelector.create(EventsReportActivity.this)
+                                            .openCamera(PictureMimeType.ofImage())
+                                            .loadImageEngine(GlideEngine.createGlideEngine()) // 请参考Demo GlideEngine.java
+                                            .forResult(PictureConfig.REQUEST_CAMERA);
                                 }
                             }
                         });
@@ -180,8 +224,9 @@ public class EventsReportActivity extends BaseActivity {
                                             .isCamera(false)
                                             .minimumCompressSize(100)// 是否压缩
                                             .maxSelectNum(6)
+                                            .selectionData(mediaList)
                                             .loadImageEngine(GlideEngine.createGlideEngine())
-                                            .selectionMode(PictureConfig.SINGLE)
+                                            .selectionMode(PictureConfig.MULTIPLE)
                                             .forResult(PictureConfig.CHOOSE_REQUEST);
                                 }
                             }
@@ -211,13 +256,18 @@ public class EventsReportActivity extends BaseActivity {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
+                    selectList = new ArrayList<>();
+                    selectList = PictureSelector.obtainMultipleResult(data);
+                    mediaList.clear();
+                    mediaList.addAll(selectList);
+                    mediaFragment.setActivity(this, mediaList);
+                    break;
+                case PictureConfig.REQUEST_CAMERA:
+                    // 结果回调
+                    selectList = new ArrayList<>();
                     selectList = PictureSelector.obtainMultipleResult(data);
                     mediaList.addAll(selectList);
-                    uploadFile.clear();
                     mediaFragment.setActivity(this, mediaList);
-                    for (int i = 0; i < mediaList.size(); i++) {
-                        uploadFile.add(new File(mediaList.get(i).getPath()));
-                    }
                     break;
                 default:
             }
@@ -248,14 +298,28 @@ public class EventsReportActivity extends BaseActivity {
     }
 
     public void getUploadEvent() {
+        if (mediaList != null && mediaList.size() > 0){
+
+        }else{
+            LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(EventsReportActivity.this)
+                    .setMessage("提交中...")
+                    .setCancelable(false)
+                    .setCancelOutside(false);
+            dialog = loadBuilder.create();
+            dialog.getWindow().setDimAmount(0f);
+            dialog.show();
+        }
+
         Map<String, String> paramMap = new HashMap<>();
         /**
          * 通用参数配置
          * */
-        paramMap.put("title", "垃圾处理");
+        paramMap.put("title", uploadEventTitile);
         paramMap.put("type", String.valueOf(eventReport.id));
-        paramMap.put("content", "东北方向有大量垃圾,已经堵塞管道需要及时处理");
-        paramMap.put("image", "2021/03/12/e94704cd-dc47-471e-8ea2-466a25216f06.jpg,2021/03/12/4ab24bd5-dc26-4fab-939b-fbe79aaba3ff.jpg,2021/03/12/23023e3d-0def-4546-ba50-5b22b84bb748.jpg");
+        paramMap.put("content", uploadEventDecs);
+        if (imgS!=null&&!imgS.equals("")){
+            paramMap.put("image", imgS);
+        }
         paramMap.put("longitude", "116.397128");
         paramMap.put("latitude", "39.916527");
 
@@ -263,15 +327,21 @@ public class EventsReportActivity extends BaseActivity {
             @Override
             public void onSuccess(Response<String> response) {
                 Log.e("上报事件", "onSuccess: ");
+                ToastUtil.showToast(EventsReportActivity.this,"提交成功");
+                dialog.cancel();
+                finish();
             }
 
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                ToastUtil.showToast(EventsReportActivity.this,msg);
+                dialog.cancel();
             }
 
             @Override
             public void onError(Throwable throwable) {
+                dialog.cancel();
                 super.onError(throwable);
 
             }
@@ -321,26 +391,22 @@ public class EventsReportActivity extends BaseActivity {
         return parts;
     }
 
-    public void getUpdateUserImgS() {
-//      /storage/emulated/0/Pictures/Screenshots/1.jpg
-//      /storage/emulated/0/Pictures/Screenshots/2.jpg
-//      /storage/emulated/0/Pictures/Screenshots/3.jpg
-        List<File> files = new ArrayList<>();
-        files.add(new File("/storage/emulated/0/Pictures/Screenshots/1.jpg"));
-        files.add(new File("/storage/emulated/0/Pictures/Screenshots/2.jpg"));
-        files.add(new File("/storage/emulated/0/Pictures/Screenshots/3.jpg"));
-        files.add(new File("/storage/emulated/0/Pictures/Screenshots/4.jpg"));
-        files.add(new File("/storage/emulated/0/Pictures/Screenshots/5.jpg"));
-        files.add(new File("/storage/emulated/0/Pictures/Screenshots/6.jpg"));
-
+    public void getUpdateUserImgS(List<File> files) {
+        LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(EventsReportActivity.this)
+                .setMessage("提交中...")
+                .setCancelable(false)
+                .setCancelOutside(false);
+        dialog = loadBuilder.create();
+        dialog.getWindow().setDimAmount(0f);
+        dialog.show();
         List<MultipartBody.Part> partList = filesToMultipartBodyParts(files);
         Log.e("fdas", "getUpdateUserImgS: ");
         ArticlesRepo.getUploadImgS(partList).observe(this, new ApiObserver<String>() {
             @Override
             public void onSuccess(Response<String> response) {
                 Log.e("上传多张图片", "onSuccess: " + response.getData());
-//                2021/03/12/d900ef89-a365-4172-9719-1406ae2f8287.jpg
-//                2021/03/12/e94704cd-dc47-471e-8ea2-466a25216f06.jpg,2021/03/12/4ab24bd5-dc26-4fab-939b-fbe79aaba3ff.jpg,2021/03/12/23023e3d-0def-4546-ba50-5b22b84bb748.jpg,
+                imgS = response.getData();
+                getUploadEvent();
             }
 
             @Override

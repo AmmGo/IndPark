@@ -28,7 +28,11 @@ public class Config {
 
     private void checkSystemCallSupport(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            registerPhoneAccount(context);
+            try {
+                registerPhoneAccount(context);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mUseSystemCall = true;
         }
     }
@@ -77,9 +81,13 @@ public class Config {
 
         PhoneAccount phoneOut = paBuilder.build();
 
-        TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
-        telecomManager.registerPhoneAccount(phoneIn);
-        telecomManager.registerPhoneAccount(phoneOut);
+        try {
+            TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+            telecomManager.registerPhoneAccount(phoneIn);
+            telecomManager.registerPhoneAccount(phoneOut);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mCallSession = new OpenDuoCallSession();
         mCallSession.setPhoneAccountIn(phoneIn);

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.tu.loadingdialog.LoadingDailog;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.MyApprovalEvent;
@@ -177,6 +178,13 @@ public class ReportApprovalActivity extends BaseActivity {
     }
 
     public void updataData() {
+        LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(ReportApprovalActivity.this)
+                .setMessage("提交中...")
+                .setCancelable(false)
+                .setCancelOutside(false);
+        LoadingDailog dialog = loadBuilder.create();
+        dialog.getWindow().setDimAmount(0f);
+        dialog.show();
         Map<String, String> paramMap = new HashMap<>();
         /**
          * 通用参数配置
@@ -189,6 +197,7 @@ public class ReportApprovalActivity extends BaseActivity {
                 ToastUtil.showToast(ReportApprovalActivity.this, "提交成功");
                 MyApprovalEvent event = new MyApprovalEvent();
                 EventBus.getDefault().post(event);
+                dialog.cancel();
                 finish();
                 Log.e("提交审批", "onSuccess: ");
             }
@@ -196,10 +205,13 @@ public class ReportApprovalActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                ToastUtil.showToast(ReportApprovalActivity.this, msg);
+                dialog.cancel();
             }
 
             @Override
             public void onError(Throwable throwable) {
+                dialog.cancel();
                 super.onError(throwable);
 
             }

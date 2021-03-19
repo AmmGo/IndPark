@@ -3,7 +3,6 @@ package com.hl.indpark.uis.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -53,8 +52,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-//                login();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                login();
+//                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 break;
             case R.id.img_see_pwd:
                 if (pwd == 0) {
@@ -74,22 +73,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String password = null;
         Editable edNameText = edName.getText();
         Editable edPasswordText = edPassword.getText();
-        if (edNameText != null) {
-            name = edNameText.toString().trim();
-        }
-        if (edPasswordText != null) {
-            password = edPasswordText.toString().trim();
-        }
-        if (TextUtils.isEmpty(name)) {
-            edName.setError("请输入用户名");
-            return;
-        }
-        if (TextUtils.isEmpty(password)) {
-            edPassword.setError("请输入密码");
-            return;
-        }
-//         name = "admin";
-//         password ="hldk1119";
+//        if (edNameText != null) {
+//            name = edNameText.toString().trim();
+//        }
+//        if (edPasswordText != null) {
+//            password = edPasswordText.toString().trim();
+//        }
+//        if (TextUtils.isEmpty(name)) {
+//            edName.setError("请输入用户名");
+//            return;
+//        }
+//        if (TextUtils.isEmpty(password)) {
+//            edPassword.setError("请输入密码");
+//            return;
+//        }
+         name = "admin";
+         password ="hldk1119";
         final String psw = Util.getMd5(password);
         dialogUtil.showProgressDialog("登录中...");
         Map<String, String> map = new HashMap<>();

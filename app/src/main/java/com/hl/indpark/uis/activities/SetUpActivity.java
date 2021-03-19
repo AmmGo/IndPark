@@ -11,8 +11,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
+import com.android.tu.loadingdialog.LoadingDailog;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.UserInfoEvent;
@@ -344,7 +344,13 @@ public class SetUpActivity extends BaseActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(SetUpActivity.this)
+                .setMessage("提交中...")
+                .setCancelable(false)
+                .setCancelOutside(false);
+        LoadingDailog dialog = loadBuilder.create();
+        dialog.getWindow().setDimAmount(0f);
+        dialog.show();
         paramMap1.put("name", editName.getText().toString());
         paramMap1.put("phone", editPhone.getText().toString());
         paramMap1.put("idNumber", editCardId.getText().toString());
@@ -357,17 +363,20 @@ public class SetUpActivity extends BaseActivity {
             public void onSuccess(Response<String> response) {
                 ToastUtil.showToast(SetUpActivity.this, "提交成功");
                 Log.e("修改用户信息", "onSuccess: ");
+                dialog.cancel();
                 finish();
             }
 
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                dialog.cancel();
                 ToastUtil.showToast(SetUpActivity.this, msg);
             }
 
             @Override
             public void onError(Throwable throwable) {
+                dialog.cancel();
                 super.onError(throwable);
 
             }
