@@ -250,6 +250,8 @@ public class PieChartEPDataActivity extends BaseActivity {
                     adapter.getType(typeAdapter);
                     popEvent.nameEp=nameEp;
                     popEvent.typeEp=typeEps(commName);
+                    qyid = map.get(commName).get(0).psCode;
+                    pkid = map.get(commName).get(0).iocode;
                     getEntSEP(value.psCode,value.iocode,pageNum,pageSize,timeType,selectType);
                 } catch (Exception e) {
                     e.printStackTrace();
