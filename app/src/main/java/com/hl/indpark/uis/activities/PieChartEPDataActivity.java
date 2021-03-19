@@ -16,10 +16,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
-import com.hl.indpark.entities.events.EntNameEvent;
+import com.hl.indpark.entities.events.EntNewEp;
 import com.hl.indpark.entities.events.EntSEPEvent;
-import com.hl.indpark.entities.events.EntSEPTypeEvent;
+import com.hl.indpark.entities.events.NameEp;
 import com.hl.indpark.entities.events.PopEvent;
+import com.hl.indpark.entities.events.TypeEp;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.adapters.EntSEPAdapter;
@@ -35,7 +36,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -65,6 +68,10 @@ public class PieChartEPDataActivity extends BaseActivity {
     private String selectType;
     private String pkid;
     private String qyid;
+    private List<EntNewEp.ValueBean> newepsValue;
+    private List<String> newEpName;
+    private Map<String, List<EntNewEp.ValueBean>> map;
+    private String commName;
 
     @OnClick({R.id.ll_spin, R.id.ll_spin2})
     public void onClick(View v) {
@@ -171,7 +178,7 @@ public class PieChartEPDataActivity extends BaseActivity {
 
             }
         });
-        getEntName();
+        getEntEp();
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
@@ -223,11 +230,30 @@ public class PieChartEPDataActivity extends BaseActivity {
         });
     }
 
-    public void getEntName() {
-        ArticlesRepo.getEnterpriseEvent().observe(this, new ApiObserver<List<EntNameEvent>>() {
+    public void getEntEp() {
+        ArticlesRepo.getEntNewEp().observe(this, new ApiObserver<List<EntNewEp>>() {
             @Override
-            public void onSuccess(Response<List<EntNameEvent>> response) {
-                popEvent.entNameEvents = response.getData();
+            public void onSuccess(Response<List<EntNewEp>> response) {
+                try {
+                    List<EntNewEp> newEpList = response.getData();
+                    List<NameEp> nameEp = new ArrayList<>();
+                    map = new HashMap<String, List<EntNewEp.ValueBean>>();
+                    for (int i = 0; i < newEpList.size(); i++) {
+                        nameEp.add(new NameEp(newEpList.get(i).name));
+                        map.put(newEpList.get(i).name, newEpList.get(i).value);
+                    }
+                    EntNewEp.ValueBean value= newEpList.get(0).value.get(0);
+                    commName = value.enterpriseName;
+                    chooseText.setText( value.enterpriseName);
+                    chooseText2.setText(value.name);
+                    typeAdapter = value.type;
+                    adapter.getType(typeAdapter);
+                    popEvent.nameEp=nameEp;
+                    popEvent.typeEp=typeEps(commName);
+                    getEntSEP(value.psCode,value.iocode,pageNum,pageSize,timeType,selectType);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -243,26 +269,15 @@ public class PieChartEPDataActivity extends BaseActivity {
         });
     }
 
-    public void getEntType(int id) {
-        ArticlesRepo.getEntSEPTypeEvent(id).observe(this, new ApiObserver<List<EntSEPTypeEvent>>() {
-            @Override
-            public void onSuccess(Response<List<EntSEPTypeEvent>> response) {
-                popEvent.entSEPTypeEvents = response.getData();
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
-    }
-
+public List<TypeEp> typeEps(String key){
+        List<TypeEp> type = new ArrayList<>();
+        List<EntNewEp.ValueBean> list = new ArrayList<>();
+        list.addAll(map.get(key));
+        for (int i =0 ;i<list.size();i++){
+            type.add(new TypeEp(list.get(i).name));
+        }
+        return type;
+}
     public void getEntSEP(String qyid, String pkid, int pageNum, int pageSize, int timeType, String selectType) {
         ArticlesRepo.getEntSEPEvent(qyid, pkid, pageNum, pageSize, timeType, selectType).observe(this, new ApiObserver<EntSEPEvent>() {
             @Override
@@ -283,7 +298,7 @@ public class PieChartEPDataActivity extends BaseActivity {
                     }
                     total = 1;
                 }
-                Log.e("环保数据", "onSuccess: \n"+"企业ID"+qyid+"\n排口类型"+pkid+"\n第几页"+pageNum+"\n一页数量"+pageSize+"\n事件跨度"+timeType+"\n事件报警类型"+selectType);
+                Log.e("环保数据", "onSuccess: \n" + "企业ID" + qyid + "\n排口类型" + pkid + "\n第几页" + pageNum + "\n一页数量" + pageSize + "\n事件跨度" + timeType + "\n事件报警类型" + selectType);
 
             }
 
@@ -301,30 +316,43 @@ public class PieChartEPDataActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void getEntName(EntNameEvent event) {
-        tabLayout.getTabAt(0).select();
-        chooseText2.setText("请选择排口");
-        list.clear();
-        adapter.notifyDataSetChanged();
-        chooseText.setText(event.name);
-        qyid = String.valueOf(event.psCode);
-        getEntType(event.id);
-        pop.cancel();
+    public void getEntName(NameEp event) {
+        try {
+            tabLayout.getTabAt(0).select();
+            list.clear();
+            adapter.notifyDataSetChanged();
+            commName = event.nameEp;
+            chooseText.setText(commName);
+            typeAdapter = map.get(commName).get(0).type;
+            adapter.getType(typeAdapter);
+            chooseText2.setText(map.get(commName).get(0).name);
+            qyid = map.get(commName).get(0).psCode;
+            pkid = map.get(commName).get(0).iocode;
+            popEvent.typeEp=typeEps(commName);
+            getEntSEP(qyid,pkid,pageNum,pageSize,timeType,selectType);
+            pop.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Subscribe
-    public void getEntType(EntSEPTypeEvent event) {
-        chooseText2.setText(event.name);
-        if (event.name != null && event.name.equals("废气排放口")) {
-            typeAdapter = 1;
-        } else {
-            typeAdapter = 2;
+    public void getEntType(TypeEp event) {
+        try {
+            chooseText2.setText(event.typeEp);
+            for (int i = 0 ;i<map.get(commName).size();i++){
+                if (event.typeEp.equals(map.get(commName).get(i).name)){
+                    typeAdapter = map.get(commName).get(i).type;
+                    pkid = map.get(commName).get(i).iocode;
+                }
+            }
+            adapter.getType(typeAdapter);
+            list.clear();
+            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+            pop.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        adapter.getType(typeAdapter);
-        pkid = event.iocode;
-        list.clear();
-        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
-        pop.cancel();
     }
 
     @Override

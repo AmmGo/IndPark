@@ -6,6 +6,7 @@ import com.github.leonardoxh.livedatacalladapter.Resource;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.entities.events.EntNameEvent;
+import com.hl.indpark.entities.events.EntNewEp;
 import com.hl.indpark.entities.events.EntSEPEvent;
 import com.hl.indpark.entities.events.EntSEPTypeEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
@@ -26,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 
 /**
@@ -63,6 +63,10 @@ public class ArticlesRepo {
         return Net.api().getEnterpriseEvent();
     }
 
+    public static LiveData<Resource<Response<List<EntNewEp>>>> getEntNewEp() {
+        return Net.api().getEntNewEp();
+    }
+
     public static LiveData<Resource<Response<List<EntTypeEvent>>>> getEntTypeEvent(int id) {
         return Net.api().getEntTypeEvent(id);
     }
@@ -70,16 +74,17 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(String id, String tlid) {
         return Net.api().getEntSHSEvent(id, tlid);
     }
-    public static LiveData<Resource<Response<EntSHSEvent>>> getEntSHSEvent(String id, String tlid,int pageNum,int pageSize,int timeType,String dataType) {
-        return Net.api().getEntSHSEvent(id, tlid,pageNum,pageSize,timeType,dataType);
+
+    public static LiveData<Resource<Response<EntSHSEvent>>> getEntSHSEvent(String id, String tlid, int pageNum, int pageSize, int timeType, String dataType) {
+        return Net.api().getEntSHSEvent(id, tlid, pageNum, pageSize, timeType, dataType);
     }
 
     public static LiveData<Resource<Response<List<EntSEPTypeEvent>>>> getEntSEPTypeEvent(int id) {
         return Net.api().getEntSEPTypeEvent(id);
     }
 
-    public static LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(String id, String tlid, int page, int sizePage,int timeType, String isP) {
-        return Net.api().getEntSEPEvent(id, tlid, page, sizePage, timeType,isP);
+    public static LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(String id, String tlid, int page, int sizePage, int timeType, String isP) {
+        return Net.api().getEntSEPEvent(id, tlid, page, sizePage, timeType, isP);
     }
 
 
@@ -91,12 +96,12 @@ public class ArticlesRepo {
         return Net.api().getMyPeportIDEvent(id);
     }
 
-    public static LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(int sizePage, int isP,String state) {
-        return Net.api().getMyPeportEvent(sizePage, isP,state);
+    public static LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(int sizePage, int isP, String state) {
+        return Net.api().getMyPeportEvent(sizePage, isP, state);
     }
 
-    public static LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(int sizePage, int isP,String state) {
-        return Net.api().getMyApprovalEvent(sizePage, isP,state);
+    public static LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(int sizePage, int isP, String state) {
+        return Net.api().getMyApprovalEvent(sizePage, isP, state);
     }
 
     public static LiveData<Resource<Response<String>>> getUserInfoUpdateEvent(Map map) {

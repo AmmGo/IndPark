@@ -8,6 +8,7 @@ import com.hl.indpark.entities.LoginResultEntity;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.entities.events.EntNameEvent;
+import com.hl.indpark.entities.events.EntNewEp;
 import com.hl.indpark.entities.events.EntSEPEvent;
 import com.hl.indpark.entities.events.EntSEPTypeEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
@@ -143,6 +144,8 @@ public interface Api {
     @Multipart
     @POST("/file/multiUpload")
     LiveData<Resource<Response<String>>> getUploadImgS(@Part List<MultipartBody.Part> maps);
-
+    /*=======企业列表New======*/
+    @GET("/environmentpoint/listTree")
+    LiveData<Resource<Response<List<EntNewEp>>>> getEntNewEp();
 
 }

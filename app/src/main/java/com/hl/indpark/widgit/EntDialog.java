@@ -19,12 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.events.EntNameEvent;
-import com.hl.indpark.entities.events.EntSEPTypeEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
+import com.hl.indpark.entities.events.NameEp;
 import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
+import com.hl.indpark.entities.events.TypeEp;
 import com.hl.indpark.uis.adapters.EntEPTypeAdapter;
 import com.hl.indpark.uis.adapters.EntNameAdapter;
+import com.hl.indpark.uis.adapters.EntNameSHAdapter;
 import com.hl.indpark.uis.adapters.EntTypeAdapter;
 import com.hl.indpark.uis.adapters.ReportTypeAdapter;
 
@@ -60,8 +62,11 @@ public class EntDialog extends Dialog implements OnClickListener {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         switch (entCose) {
+            case 99:
+                initEntNameSHAdapter(popEvent.entNameEvents);
+                break;
             case 100:
-                initEntNameAdapter(popEvent.entNameEvents);
+                initEntNameAdapter(popEvent.nameEp);
                 break;
             case 101:
                 initEntTypeAdapter(popEvent.entTypeEvents);
@@ -70,15 +75,30 @@ public class EntDialog extends Dialog implements OnClickListener {
                 initReportTypeAdapter(popEvent.reportTypeEventList);
                 break;
             case 103:
-                initEPTypeAdapter(popEvent.entSEPTypeEvents);
+                initEPTypeAdapter(popEvent.typeEp);
                 break;
             default:
         }
 
     }
 
-    private void initEntNameAdapter(List<EntNameEvent> list) {
+    private void initEntNameAdapter(List<NameEp> list) {
         EntNameAdapter entAdapter = new EntNameAdapter(list, context);
+        entAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        //给RecyclerView设置适配器
+        recyclerView.setAdapter(entAdapter);
+        entAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                NameEp event = new NameEp();
+                event.nameEp = list.get(position).nameEp;
+                EventBus.getDefault().post(event);
+            }
+        });
+    }
+
+    private void initEntNameSHAdapter(List<EntNameEvent> list) {
+        EntNameSHAdapter entAdapter = new EntNameSHAdapter(list, context);
         entAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //给RecyclerView设置适配器
         recyclerView.setAdapter(entAdapter);
@@ -95,7 +115,7 @@ public class EntDialog extends Dialog implements OnClickListener {
         });
     }
 
-    private void initEPTypeAdapter(List<EntSEPTypeEvent> list) {
+    private void initEPTypeAdapter(List<TypeEp> list) {
         EntEPTypeAdapter entAdapter = new EntEPTypeAdapter(list, context);
         entAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //给RecyclerView设置适配器
@@ -103,9 +123,8 @@ public class EntDialog extends Dialog implements OnClickListener {
         entAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                EntSEPTypeEvent event = new EntSEPTypeEvent();
-                event.name = list.get(position).name;
-                event.iocode= list.get(position).iocode;
+                TypeEp event = new TypeEp();
+                event.typeEp = list.get(position).typeEp;
                 EventBus.getDefault().post(event);
             }
         });

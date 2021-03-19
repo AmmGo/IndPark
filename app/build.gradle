@@ -2,6 +2,15 @@ apply plugin: 'com.android.application'
 apply from: 'tinker-support.gradle'
 apply plugin: 'com.jakewharton.butterknife'
 android {
+    signingConfigs {
+        release {
+            storeFile file("C:\\Users\\LENOVO\\Desktop\\hlxwork\\industrialpark\\app\\industrialpark\\indupark.jks")
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+        }
+
+    }
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.hl.indpark"
@@ -26,11 +35,18 @@ android {
         ]
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 

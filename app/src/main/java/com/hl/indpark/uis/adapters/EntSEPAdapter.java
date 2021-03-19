@@ -36,7 +36,7 @@ public class EntSEPAdapter extends BaseQuickAdapter<EntSEPEvent.RecordsBean, Bas
         }
         holder.setText(R.id.tv_site, item.equipmentName);
         holder.setText(R.id.tv_time, item.monitorTime);
-        if (type == 1) {
+        if (type == 2) {
             //废气
             holder.setText(R.id.tv_num, item.exhaustData);
             holder.setText(R.id.tv_mg_1, "烟尘实测浓度mg/m3:");
@@ -45,7 +45,7 @@ public class EntSEPAdapter extends BaseQuickAdapter<EntSEPEvent.RecordsBean, Bas
             holder.setText(R.id.tv_mg_2_1, item.sulfurData);
             holder.setText(R.id.tv_mg_3, "氮氧化物实测浓度mg/m3:");
             holder.setText(R.id.tv_mg_3_1, item.nitrogenData);
-        } else if (type == 2) {
+        } else if (type == 1) {
             //废水
             holder.setText(R.id.tv_num, item.wastewaterData);
             holder.setText(R.id.tv_mg_1, "COD实测浓度mg/L:");

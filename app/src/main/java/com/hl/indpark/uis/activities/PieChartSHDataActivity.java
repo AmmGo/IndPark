@@ -70,7 +70,7 @@ public class PieChartSHDataActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.ll_spin:
                 try {
-                    pop = new EntDialog(PieChartSHDataActivity.this, popEvent, 100);
+                    pop = new EntDialog(PieChartSHDataActivity.this, popEvent, 99);
                     pop.setCanceledOnTouchOutside(true);
                     pop.show();
                 } catch (Exception e) {
@@ -180,6 +180,7 @@ public class PieChartSHDataActivity extends BaseActivity {
             }
         });
         getEntName();
+        getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull final RefreshLayout refreshLayout) {

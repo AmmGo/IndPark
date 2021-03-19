@@ -12,5 +12,8 @@ public class PopEvent {
     public List<EntTypeEvent> entTypeEvents;
     public List<EntSEPTypeEvent> entSEPTypeEvents;
     public List<EntNameEvent> entNameEvents;
+    public List<NameEp> nameEp;
+    public List<TypeEp> typeEp;
     public List<ReportTypeEvent> reportTypeEventList;
+
 }
