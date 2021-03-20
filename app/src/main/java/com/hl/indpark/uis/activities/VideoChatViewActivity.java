@@ -1,6 +1,7 @@
 package com.hl.indpark.uis.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -21,6 +22,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.hl.indpark.R;
+import com.hl.indpark.uis.activities.videoactivities.Constants;
+import com.hl.indpark.uis.activities.videoactivities.utils.WindowUtil;
+import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.LoggerRecyclerView;
 
 import io.agora.rtc.IRtcEngineEventHandler;
@@ -139,10 +143,14 @@ public class VideoChatViewActivity extends AppCompatActivity {
                 public void run() {
                     mLogView.logI("User offline, uid: " + (uid & 0xFFFFFFFFL));
                     onRemoteUserLeft(uid);
+                    finish();
                 }
             });
         }
     };
+    private String mDfId;
+    private String mHomeId;
+    private String mWfId;
 
     private void setupRemoteVideo(int uid) {
         ViewGroup parent = mRemoteContainer;
@@ -179,11 +187,19 @@ public class VideoChatViewActivity extends AppCompatActivity {
             mRemoteVideo = null;
         }
     }
-
+    protected int statusBarHeight;
+    private void initStatusBarHeight() {
+        statusBarHeight = WindowUtil.getSystemStatusBarHeight(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_chat_view);
+        initStatusBarHeight();
+        WindowUtil.hideWindowStatusBar(getWindow());
+        Intent intent = getIntent();
+        mWfId = Util.getUserId();
+        mHomeId = intent.getStringExtra(Constants.JUSH_HOME_ID);
         initUI();
 
         // Ask for permissions at runtime.
@@ -261,6 +277,12 @@ public class VideoChatViewActivity extends AppCompatActivity {
         setupVideoConfig();
         setupLocalVideo();
         joinChannel();
+        endCall();
+        RtcEngine.destroy();
+        initializeEngine();
+        setupVideoConfig();
+        setupLocalVideo();
+        joinChannel();
     }
 
     private void initializeEngine() {
@@ -302,18 +324,16 @@ public class VideoChatViewActivity extends AppCompatActivity {
         // RENDER_MODE_HIDDEN: Uniformly scale the video until it fills the visible boundaries. One dimension of the video may have clipped contents.
         mLocalVideo = new VideoCanvas(view, VideoCanvas.RENDER_MODE_HIDDEN, 0);
         mRtcEngine.setupLocalVideo(mLocalVideo);
+
     }
+
 
     private void joinChannel() {
         // 1. Users can only see each other after they join the
         // same channel successfully using the same app id.
         // 2. One token is only valid for the channel name that
         // you use to generate this token.
-        String token = "006ced322e944a34f8fa4460426d5477eb1IABSh0DxeSWcFNkrev3T9yQX7WSNkgafnPOrMQFj/TgqktJjSIgAAAAAEADYCUco2CxSYAEAAQDXLFJg";
-        if (TextUtils.isEmpty(token) || TextUtils.equals(token, "#YOUR ACCESS TOKEN#")) {
-            token = null; // default, no token
-        }
-        mRtcEngine.joinChannel(token, "123", "Extra Optional Data", 0);
+        mRtcEngine.joinChannel(null, mHomeId, "Extra Optional Data", Integer.parseInt(mWfId));
     }
 
     @Override
@@ -357,6 +377,7 @@ public class VideoChatViewActivity extends AppCompatActivity {
             endCall();
             mCallEnd = true;
             mCallBtn.setImageResource(R.drawable.btn_startcall);
+            finish();
         }
 
         showButtons(!mCallEnd);

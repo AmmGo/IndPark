@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.hl.indpark.R;
+import com.hl.indpark.uis.activities.VideoChatViewActivity;
 import com.hl.indpark.uis.activities.videoactivities.utils.WindowUtil;
 
 import io.agora.rtm.LocalInvitation;
@@ -35,6 +36,7 @@ public class CallActivity extends BaseCallActivity implements View.OnClickListen
 
     private boolean mInvitationSending;
     private boolean mInvitationReceiving;
+    private String mJpush;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class CallActivity extends BaseCallActivity implements View.OnClickListen
         Intent intent = getIntent();
         mChannel = intent.getStringExtra(Constants.KEY_CALLING_CHANNEL);
         mPeer = intent.getStringExtra(Constants.KEY_CALLING_PEER);
+        mJpush = intent.getStringExtra(Constants.JUSH_ID);
         mHangupBtn = findViewById(R.id.hang_up_btn);
         mHangupBtn.setVisibility(View.VISIBLE);
         mHangupBtn.setOnClickListener(this);
@@ -167,9 +170,21 @@ public class CallActivity extends BaseCallActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.accept_call_btn:
-                answerCall(global().getRemoteInvitation());
+                if (mJpush!=null&&!mJpush.equals("")){
+                    Intent intent = new Intent(this, VideoChatViewActivity.class);
+                    intent.putExtra(Constants.JUSH_HOME_ID, mChannel);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    answerCall(global().getRemoteInvitation());
+                    Log.e(TAG, "onClick: "+global().getRemoteInvitation().getCallerId() );
+                }
                 break;
             case R.id.hang_up_btn:
+                if (mJpush!=null&&!mJpush.equals("")){
+                    finish();
+                    return;
+                }
                 if (isCaller()) {
                     cancelLocalInvitation();
                 } else if (isCallee()) {

@@ -12,6 +12,7 @@
     <string name="login_tv_name">用户名</string>
     <string name="login_tv_pwd">密码</string>
     <string name="agora_app_id">56f642fe4ced4db995deadd973060309</string>
+    <string name="agora_access_token" translatable="false"></string>
     <!-- Calling Activity -->
     <string name="receiving_call">邀请视频通话&#8230;</string>
     <string name="calling_out">正在等待对方接受邀请&#8230;</string>

@@ -16,6 +16,9 @@ public class Constants {
     public static final int CALL_ID_IN = 1;
     public static final int CALL_ID_OUT = 2;
 
+    public static final String JUSH_ID = "key-jpush";
+    public static final String JUSH_DFID = "key-jpush-df";
+    public static final String JUSH_HOME_ID = "key-jpush-home-id";
     public static final String KEY_CALLING_ROLE = "key-calling-role";
     public static final String KEY_CALLING_CHANNEL = "key-calling-channel";
     public static final String KEY_CALLING_PEER = "key-calling-peer";

@@ -3,6 +3,7 @@ package com.hl.indpark.uis.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -12,7 +13,9 @@ import android.widget.EditText;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.LoginResultEntity;
 import com.hl.indpark.entities.Response;
+import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.ApiObserver;
+import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.nets.repositories.UserRepo;
 import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.utils.Util;
@@ -73,22 +76,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String password = null;
         Editable edNameText = edName.getText();
         Editable edPasswordText = edPassword.getText();
-//        if (edNameText != null) {
-//            name = edNameText.toString().trim();
-//        }
-//        if (edPasswordText != null) {
-//            password = edPasswordText.toString().trim();
-//        }
-//        if (TextUtils.isEmpty(name)) {
-//            edName.setError("请输入用户名");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(password)) {
-//            edPassword.setError("请输入密码");
-//            return;
-//        }
-         name = "admin";
-         password ="hldk1119";
+        if (edNameText != null) {
+            name = edNameText.toString().trim();
+        }
+        if (edPasswordText != null) {
+            password = edPasswordText.toString().trim();
+        }
+        if (TextUtils.isEmpty(name)) {
+            edName.setError("请输入用户名");
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            edPassword.setError("请输入密码");
+            return;
+        }
+//         name = "admin";
+//         password ="hldk1119";
         final String psw = Util.getMd5(password);
         dialogUtil.showProgressDialog("登录中...");
         Map<String, String> map = new HashMap<>();
@@ -97,14 +100,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         UserRepo.login(map).observe(this, new ApiObserver<LoginResultEntity>() {
             @Override
             public void onSuccess(Response<LoginResultEntity> response) {
-                dialogUtil.hideProgressDialog();
+
                 LoginResultEntity data = response.getData();
                 SharePreferenceUtil.saveKeyValue("token", data.token);
                 SharePreferenceUtil.saveKeyValue("roleId", String.valueOf(data.roleId));
                 SharePreferenceUtil.saveKeyValue("enterpriseName", String.valueOf(data.enterpriseName));
                 Log.e("TOKEN", data.token);
-                onBackPressed();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                initData();
             }
 
             @Override
@@ -119,6 +121,33 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 super.onError(throwable);
                 dialogUtil.hideProgressDialog();
 //                code":10015登录过期，请重新登录
+            }
+        });
+    }
+    public void initData() {
+        ArticlesRepo.getUserInfoEvent().observe(this, new ApiObserver<UserInfoEvent>() {
+            @Override
+            public void onSuccess(Response<UserInfoEvent> response) {
+                Log.e("用户成功", "onSuccess: ");
+                UserInfoEvent userInfoEvent = response.getData();
+                SharePreferenceUtil.saveKeyValue("userId", String.valueOf(userInfoEvent.personnelId));
+                Log.e("登录用户Id", "onSuccess: "+userInfoEvent.personnelId );
+                dialogUtil.hideProgressDialog();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                onBackPressed();
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+                dialogUtil.hideProgressDialog();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                dialogUtil.hideProgressDialog();
+                super.onError(throwable);
+
             }
         });
     }
