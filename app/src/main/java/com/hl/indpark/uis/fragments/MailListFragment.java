@@ -96,6 +96,7 @@ public class MailListFragment extends BaseFragment {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),getActivity());
                 Log.e("人员列表", "onFailure: ");
             }
 

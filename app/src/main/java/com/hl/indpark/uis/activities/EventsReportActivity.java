@@ -27,6 +27,7 @@ import com.hl.indpark.permission.DefaultResourceProvider;
 import com.hl.indpark.uis.fragments.MediaFragment;
 import com.hl.indpark.utils.GlideEngine;
 import com.hl.indpark.utils.SelectDialog;
+import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.EntDialog;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -285,6 +286,7 @@ return;
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),EventsReportActivity.this);
             }
 
             @Override
@@ -337,6 +339,7 @@ return;
                 super.onFailure(code, msg);
                 ToastUtil.showToast(EventsReportActivity.this,msg);
                 dialog.cancel();
+                Util.login(String.valueOf(code),EventsReportActivity.this);
             }
 
             @Override
@@ -364,6 +367,7 @@ return;
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),EventsReportActivity.this);
             }
 
             @Override
@@ -412,6 +416,7 @@ return;
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),EventsReportActivity.this);
             }
 
             @Override

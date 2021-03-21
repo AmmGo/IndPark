@@ -118,6 +118,7 @@ public class TabAEPFragment extends BaseFragment {
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
                 linearLayout.setVisibility(View.GONE);
+                Util.login(String.valueOf(code),getActivity());
             }
 
             @Override

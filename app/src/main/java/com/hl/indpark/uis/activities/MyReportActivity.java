@@ -17,6 +17,7 @@ import com.hl.indpark.entities.events.MyPeportEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.adapters.MyReportAdapter;
+import com.hl.indpark.utils.Util;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -183,6 +184,7 @@ public class MyReportActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),MyReportActivity.this);
             }
 
             @Override

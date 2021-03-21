@@ -19,8 +19,10 @@ import com.hl.indpark.uis.activities.MeActivity;
 import com.hl.indpark.uis.activities.MyApprovalActivity;
 import com.hl.indpark.uis.activities.MyMsgActivity;
 import com.hl.indpark.uis.activities.MyReportActivity;
+import com.hl.indpark.uis.activities.PieChartSHDataActivity;
 import com.hl.indpark.uis.activities.SetUpActivity;
 import com.hl.indpark.utils.SharePreferenceUtil;
+import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.CircleImageView;
 
 import net.arvin.baselib.base.BaseFragment;
@@ -106,6 +108,7 @@ public class SelfFragment extends BaseFragment {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),getActivity());
             }
 
             @Override
@@ -132,6 +135,7 @@ public class SelfFragment extends BaseFragment {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code), getActivity());
             }
 
             @Override

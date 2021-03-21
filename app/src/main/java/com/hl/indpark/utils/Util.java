@@ -1,12 +1,17 @@
 package com.hl.indpark.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.hl.indpark.BuildConfig;
+import com.hl.indpark.uis.activities.LoginActivity;
+
+import net.arvin.baselib.utils.ToastUtil;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -38,14 +43,29 @@ public class Util {
     public static String getUserId() {
         String userId = SharePreferenceUtil.getKeyValue("userId");
         return userId;
-    }    public static String getEnterpriseId() {
+    }
+
+    public static String getEnterpriseId() {
         String userId = SharePreferenceUtil.getKeyValue("enterpriseId");
         return userId;
+    }
+
+    public static void login(String code, Activity activity) {
+
+        if (code.equals("10015")) {
+            ToastUtil.showToast(activity, "登录过期，请重新登录");
+            activity.finish();
+            SharePreferenceUtil.clearAllValue(activity);
+            Intent intent = new Intent(activity, LoginActivity.class);
+            activity.startActivity(intent);
+        }
+
     }
 
     public static int getRandomColor(Random random) {
         return colors[random.nextInt(colors.length)];
     }
+
     /**
      * String数组转Set
      *
@@ -55,7 +75,8 @@ public class Util {
     public static Set<String> array2Set(String... values) {
         return new HashSet<>(Arrays.asList(values));
     }
-     /**
+
+    /**
      * 以“,”隔开的字符串转数组
      *
      * @param values
@@ -67,6 +88,7 @@ public class Util {
         }
         return new String[0];
     }
+
     public static void hideInputManager(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (view != null && imm != null) {

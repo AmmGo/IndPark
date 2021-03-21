@@ -23,6 +23,7 @@ import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.adapters.EntSHSAdapter;
+import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.EntDialog;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -242,6 +243,7 @@ public class PieChartSHDataActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),PieChartSHDataActivity.this);
             }
 
             @Override
@@ -262,6 +264,7 @@ public class PieChartSHDataActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),PieChartSHDataActivity.this);
             }
 
             @Override
@@ -300,6 +303,7 @@ public class PieChartSHDataActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),PieChartSHDataActivity.this);
             }
 
             @Override

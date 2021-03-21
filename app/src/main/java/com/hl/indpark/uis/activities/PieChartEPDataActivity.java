@@ -24,6 +24,7 @@ import com.hl.indpark.entities.events.TypeEp;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.adapters.EntSEPAdapter;
+import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.EntDialog;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -261,6 +262,7 @@ public class PieChartEPDataActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),PieChartEPDataActivity.this);
             }
 
             @Override
@@ -307,6 +309,7 @@ public List<TypeEp> typeEps(String key){
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),PieChartEPDataActivity.this);
             }
 
             @Override

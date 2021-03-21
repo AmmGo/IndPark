@@ -155,6 +155,7 @@ public class TabAHSFragment extends BaseFragment {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),getActivity());
                 linearLayout.setVisibility(View.GONE);
             }
 

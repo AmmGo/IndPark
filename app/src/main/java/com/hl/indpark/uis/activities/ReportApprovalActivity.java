@@ -18,6 +18,7 @@ import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.fragments.ImageFragment;
+import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.ToastUtil;
@@ -125,6 +126,7 @@ public class ReportApprovalActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),ReportApprovalActivity.this);
             }
 
             @Override
@@ -207,6 +209,7 @@ public class ReportApprovalActivity extends BaseActivity {
                 super.onFailure(code, msg);
                 ToastUtil.showToast(ReportApprovalActivity.this, msg);
                 dialog.cancel();
+                Util.login(String.valueOf(code),ReportApprovalActivity.this);
             }
 
             @Override

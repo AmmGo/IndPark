@@ -242,6 +242,7 @@ public class SetUpActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),SetUpActivity.this);
             }
 
             @Override
@@ -375,6 +376,7 @@ public class SetUpActivity extends BaseActivity {
                 super.onFailure(code, msg);
                 dialog.cancel();
                 ToastUtil.showToast(SetUpActivity.this, msg);
+                Util.login(String.valueOf(code),SetUpActivity.this);
             }
 
             @Override

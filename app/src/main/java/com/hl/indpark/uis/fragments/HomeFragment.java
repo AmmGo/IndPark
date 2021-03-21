@@ -19,6 +19,7 @@ import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.EventsReportActivity;
 import com.hl.indpark.uis.adapters.ViewPagerAdapter;
 import com.hl.indpark.utils.SharePreferenceUtil;
+import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseFragment;
 
@@ -123,6 +124,7 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                Util.login(String.valueOf(code),getActivity());
             }
 
             @Override
