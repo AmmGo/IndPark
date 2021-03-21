@@ -15,6 +15,7 @@ import com.hl.indpark.entities.events.MyMsgEvent;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.uis.activities.MeActivity;
 import com.hl.indpark.uis.activities.MyApprovalActivity;
 import com.hl.indpark.uis.activities.MyMsgActivity;
 import com.hl.indpark.uis.activities.MyReportActivity;
@@ -42,12 +43,13 @@ public class SelfFragment extends BaseFragment {
     @BindView(R.id.img_new_msg)
     ImageView imgNewMsg;
     @BindView(R.id.tv_photo_sjh)
-    TextView tvPhone;    @BindView(R.id.ll_wd_shenp)
+    TextView tvPhone;
+    @BindView(R.id.ll_wd_shenp)
     LinearLayout ll_wd_shenp;
     private UserInfoEvent userInfoEvent;
     private boolean hideNew;
 
-    @OnClick({R.id.ll_wd_shenp, R.id.ll_wdsp, R.id.ll_wdxx, R.id.img_set_up})
+    @OnClick({R.id.ll_wd_shenp, R.id.ll_wdsp, R.id.ll_wdxx, R.id.img_set_up, R.id.ll_info})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_wd_shenp:
@@ -61,6 +63,9 @@ public class SelfFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), MyMsgActivity.class));
                 break;
             case R.id.img_set_up:
+                startActivity(new Intent(getActivity(), MeActivity.class));
+                break;
+            case R.id.ll_info:
                 startActivity(new Intent(getActivity(), SetUpActivity.class));
                 break;
             default:
@@ -75,9 +80,9 @@ public class SelfFragment extends BaseFragment {
     @Override
     protected void init(Bundle savedInstanceState) {
         String roleId = SharePreferenceUtil.getKeyValue("roleId");
-        if (roleId!=null&&!roleId.equals("")&&roleId.equals("46")){
+        if (roleId != null && !roleId.equals("") && roleId.equals("46")) {
             ll_wd_shenp.setVisibility(View.GONE);
-        }else{
+        } else {
             ll_wd_shenp.setVisibility(View.VISIBLE);
         }
         getNewHide();

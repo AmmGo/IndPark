@@ -62,7 +62,7 @@ public class TabSHSFragment extends BaseFragment {
             @Override
             public void onSuccess(Response<HSAlarmEvent> response) {
                 try {
-                    if (response != null && response.getData() != null) {
+                    if (response != null && response.getData() != null&&response.getData().key!=null&&!response.getData().key.equals("0")) {
                         HSAlarmEvent alarmEvent = response.getData();
                         List<HSAlarmEvent.ValueBean> valueBeanList = new ArrayList<>();
                         valueBeanList.addAll(alarmEvent.value);
@@ -98,6 +98,8 @@ public class TabSHSFragment extends BaseFragment {
                         linearLayout.setVisibility(View.VISIBLE);
                         Log.e("dafda", "onSuccess: ");
     //                    sepPieChart(alarmEvent);
+                    }else{
+                        linearLayout.setVisibility(View.GONE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

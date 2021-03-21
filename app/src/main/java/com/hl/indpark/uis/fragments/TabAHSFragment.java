@@ -107,7 +107,7 @@ public class TabAHSFragment extends BaseFragment {
             @Override
             public void onSuccess(Response<HSAlarmEvent> response) {
                 try {
-                    if (response != null && response.getData() != null) {
+                    if (response != null && response.getData() != null&&response.getData().key!=null&&!response.getData().key.equals("0")) {
                         HSAlarmEvent alarmEvent = response.getData();
                         List<HSAlarmEvent.ValueBean> valueBeanList = new ArrayList<>();
                         valueBeanList.addAll(alarmEvent.value);

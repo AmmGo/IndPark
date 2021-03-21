@@ -1,5 +1,6 @@
 package com.hl.indpark.utils;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -70,6 +71,12 @@ public class SharePreferenceUtil {
        }
        getPreferences().edit().putString(KEY_USER, new Gson().toJson(loginResultEntity)).apply();
    }
+    public static void clearAllValue(Context context){
+        SharedPreferences sharedData =  context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedData.edit();
+        editor.clear();
+        editor.commit();
+    }
 
    public static LoginResultEntity getUser() {
        return new Gson().fromJson(getPreferences().getString(KEY_USER, null), LoginResultEntity.class);

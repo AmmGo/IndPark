@@ -61,7 +61,7 @@ public class TabSEPFragment extends BaseFragment {
             @Override
             public void onSuccess(Response<EPAlarmEvent> response) {
                 try {
-                    if (response != null && response.getData() != null) {
+                    if (response != null && response.getData() != null&&response.getData().totalNumber>0) {
                         EPAlarmEvent alarmEvent = response.getData();
 
                         double[] datas = new double[]{alarmEvent.gasNumber,alarmEvent.waterNumber};

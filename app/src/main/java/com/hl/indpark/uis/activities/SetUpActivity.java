@@ -19,6 +19,7 @@ import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.utils.IDCard;
+import com.hl.indpark.utils.JPushUtils;
 import com.hl.indpark.utils.SelectDialog;
 import com.hl.indpark.utils.Util;
 
@@ -203,8 +204,10 @@ public class SetUpActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    JPushUtils.resumePush();
                     ToastUtil.showToast(SetUpActivity.this, "开启推送");
                 } else {
+                    JPushUtils.stopPush();
                     ToastUtil.showToast(SetUpActivity.this, "关闭推送");
                 }
             }

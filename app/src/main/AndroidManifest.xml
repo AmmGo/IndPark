@@ -34,6 +34,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
+        <activity android:name=".uis.activities.AboutActivity"></activity>
+        <activity android:name=".uis.activities.MeActivity" />
         <activity android:name=".uis.activities.SetUpActivity" />
         <activity
             android:name=".uis.activities.SplashActivity"
@@ -84,10 +86,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths_public" />
         </provider> <!-- 配置APP渠道号 -->
-<!--        <meta-data-->
-<!--            android:name="BUGLY_APP_CHANNEL"-->
-<!--            android:value="${BUGLY_APP_CHANNEL}" />-->
-
+        <!-- <meta-data -->
+        <!-- android:name="BUGLY_APP_CHANNEL" -->
+        <!-- android:value="${BUGLY_APP_CHANNEL}" /> -->
         <provider
             android:name=".utils.BuglyFileProvider"
             android:authorities="${applicationId}.fileProvider"
@@ -101,15 +102,14 @@
         </provider>
 
         <activity
-            android:name="com.hl.indpark.uis.activities.videoactivities.CallActivity"
+            android:name=".uis.activities.videoactivities.CallActivity"
             android:noHistory="true"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.hl.indpark.uis.activities.videoactivities.VideoActivity"
+            android:name=".uis.activities.videoactivities.VideoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.hl.indpark.uis.activities.videoactivities.Main2Activity"
+            android:name=".uis.activities.videoactivities.Main2Activity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
@@ -132,13 +132,13 @@
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".utils.MyReceiver"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+
                 <category android:name="com.hl.indpark" />
             </intent-filter>
         </receiver>

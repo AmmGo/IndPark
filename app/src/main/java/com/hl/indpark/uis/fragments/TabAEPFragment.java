@@ -88,7 +88,7 @@ public class TabAEPFragment extends BaseFragment {
         ArticlesRepo.getEpAlarm(ty).observe(this, new ApiObserver<EPAlarmEvent>() {
             @Override
             public void onSuccess(Response<EPAlarmEvent> response) {
-                if (response != null && response.getData() != null) {
+                if (response != null && response.getData() != null&&response.getData().totalNumber>0) {
                     try {
                         EPAlarmEvent alarmEvent = response.getData();
                         if (alarmEvent!=null&&alarmEvent.totalNumber>0){
