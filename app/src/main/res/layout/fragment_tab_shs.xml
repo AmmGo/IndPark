@@ -4,19 +4,43 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <LinearLayout
+        android:id="@+id/ll_gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/tab_s_ep">
+        android:orientation="vertical">
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart_sep"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="30dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/tab_s_ep"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.hl.indpark.widgit.PieChartView
+                android:id="@+id/chart_sep"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/tab_s_ep"
+        android:text="暂无数据"
+        android:layout_gravity="center"
+        android:gravity="center"/>
 </LinearLayout>
