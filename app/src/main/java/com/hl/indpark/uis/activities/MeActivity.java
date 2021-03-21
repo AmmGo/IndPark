@@ -46,7 +46,6 @@ public class MeActivity extends BaseActivity {
         relexit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
                 finish();
                 SharePreferenceUtil.clearAllValue(MeActivity.this);
                 Intent intent = new Intent(MeActivity.this, LoginActivity.class);
