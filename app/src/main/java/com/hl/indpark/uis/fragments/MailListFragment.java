@@ -33,6 +33,7 @@ import com.hl.indpark.utils.SelectDialog;
 import com.hl.indpark.utils.SideBar;
 import com.hl.indpark.utils.SortModel;
 import com.hl.indpark.utils.SortToken;
+import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseFragment;
 import net.arvin.baselib.utils.ToastUtil;
@@ -203,6 +204,10 @@ public class MailListFragment extends BaseFragment {
     }
 
     private void startCall(int id) {
+        if (Util.getUserId().equals(String.valueOf(id))){
+            ToastUtil.showToast(getActivity(),"请选择有效用户");
+            return;
+        }
         Intent intent = new Intent(getActivity(), Main2Activity.class);
         intent.putExtra("id",String.valueOf(id) );
         startActivity(intent);

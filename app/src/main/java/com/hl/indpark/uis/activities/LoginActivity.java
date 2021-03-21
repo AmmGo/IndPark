@@ -131,6 +131,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Log.e("用户成功", "onSuccess: ");
                 UserInfoEvent userInfoEvent = response.getData();
                 SharePreferenceUtil.saveKeyValue("userId", String.valueOf(userInfoEvent.personnelId));
+                SharePreferenceUtil.saveKeyValue("enterpriseId", String.valueOf(userInfoEvent.enterpriseId));
                 Log.e("登录用户Id", "onSuccess: "+userInfoEvent.personnelId );
                 dialogUtil.hideProgressDialog();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));

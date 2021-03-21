@@ -162,6 +162,17 @@
 -keep class com.tencent.tinker.** { *; }
 #agora
 -keep class io.agora.**{*;}
+
+# 极光推送混淆
+-dontoptimize
+-dontpreverify
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }
+-keep class cn.jiguang.** { *; }
+-keep class * extends cn.jpush.android.service.JPushMessageReceiver{*;}
+
 #----------------------------------第三方包--结束--------------------------
 
 #---------------------------------一些不要混淆的代码--开始-------------------

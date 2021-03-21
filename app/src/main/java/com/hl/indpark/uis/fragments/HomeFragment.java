@@ -94,29 +94,6 @@ public class HomeFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, root);
         initView();
         loadData();
-        initData();
-    }
-    public void initData() {
-        ArticlesRepo.getUserInfoEvent().observe(this, new ApiObserver<UserInfoEvent>() {
-            @Override
-            public void onSuccess(Response<UserInfoEvent> response) {
-                Log.e("用户成功", "onSuccess: ");
-               UserInfoEvent userInfoEvent = response.getData();
-                SharePreferenceUtil.saveKeyValue("userId", String.valueOf(userInfoEvent.personnelId));
-                Log.e("登录用户Id", "onSuccess: "+userInfoEvent.personnelId );
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
     }
     private void initView() {
         final String[] titles = {"报警统计", "报警分析"};

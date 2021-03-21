@@ -4,7 +4,7 @@ apply plugin: 'com.jakewharton.butterknife'
 android {
     signingConfigs {
         release {
-            storeFile file("C:\\Users\\LENOVO\\Desktop\\hlxwork\\industrialpark\\app\\industrialpark\\indupark.jks")
+            storeFile file("./indupark.jks")
             storePassword "123456"
             keyAlias "key0"
             keyPassword "123456"
@@ -43,6 +43,8 @@ android {
 
     buildTypes {
         release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
         debug {
