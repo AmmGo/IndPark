@@ -1,6 +1,7 @@
 package com.hl.indpark;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,6 +25,11 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.tinker.loader.app.TinkerApplication;
 import com.tencent.tinker.loader.shareutil.ShareConstants;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import cn.jpush.android.api.JPushInterface;
 import io.agora.rtc.Constants;
@@ -199,6 +205,44 @@ private void init1() {
                 Log.i(TAG, "rtm client logout failed:" + errorInfo.getErrorDescription());
             }
         });
+    }
+    public static Map<String, Activity> activityMap = new HashMap<String, Activity>();
+    //收集创建的Activity
+    public static void putActivityInfoToMap(Activity activity) {
+        if (activity != null) {
+            String activityName = activity.getClass().getSimpleName();
+            Log.i("info", "putActivity--->" + activityName);
+
+            activityMap.put(activityName, activity);
+        }
+    }
+
+    //移除activity
+    public static void removeActivityInfoFromMap(Activity activity) {
+        if (activity != null) {
+            String activityName = activity.getClass().getSimpleName();
+            Log.i("info", "removeActivity--->" + activityName);
+            if (activityMap.containsKey(activityName)) {
+                activityMap.remove(activityName);
+            }
+        }
+    }
+
+    //关闭所有界面
+    public static void closeAllActivityByMap() {
+        if (!activityMap.isEmpty()) {
+            Collection<Activity> activities = activityMap.values();
+            Iterator<Activity> it = activities.iterator();
+            while (it.hasNext()) {
+                Activity activity = it.next();
+                String activityName = activity.getClass().getSimpleName();
+
+                Log.i("info", "removeActivity--->" + activityName);
+
+                activity.finish();
+            }
+        }
+
     }
 }
 

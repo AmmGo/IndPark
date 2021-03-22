@@ -13,9 +13,7 @@ import android.widget.EditText;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.LoginResultEntity;
 import com.hl.indpark.entities.Response;
-import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.ApiObserver;
-import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.nets.repositories.UserRepo;
 import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.utils.Util;
@@ -105,8 +103,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 SharePreferenceUtil.saveKeyValue("token", data.token);
                 SharePreferenceUtil.saveKeyValue("roleId", String.valueOf(data.roleId));
                 SharePreferenceUtil.saveKeyValue("enterpriseName", String.valueOf(data.enterpriseName));
+                SharePreferenceUtil.saveKeyValue("userId", String.valueOf(data.id));
+                SharePreferenceUtil.saveKeyValue("enterpriseId", String.valueOf(data.enterpriseId));
+                Log.e("登录用户Id", "onSuccess: "+data.id );
                 Log.e("TOKEN", data.token);
-                initData();
+                dialogUtil.hideProgressDialog();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                onBackPressed();
             }
 
             @Override
@@ -121,34 +124,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 super.onError(throwable);
                 dialogUtil.hideProgressDialog();
 //                code":10015登录过期，请重新登录
-            }
-        });
-    }
-    public void initData() {
-        ArticlesRepo.getUserInfoEvent().observe(this, new ApiObserver<UserInfoEvent>() {
-            @Override
-            public void onSuccess(Response<UserInfoEvent> response) {
-                Log.e("用户成功", "onSuccess: ");
-                UserInfoEvent userInfoEvent = response.getData();
-                SharePreferenceUtil.saveKeyValue("userId", String.valueOf(userInfoEvent.personnelId));
-                SharePreferenceUtil.saveKeyValue("enterpriseId", String.valueOf(userInfoEvent.enterpriseId));
-                Log.e("登录用户Id", "onSuccess: "+userInfoEvent.personnelId );
-                dialogUtil.hideProgressDialog();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                onBackPressed();
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-                dialogUtil.hideProgressDialog();
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                dialogUtil.hideProgressDialog();
-                super.onError(throwable);
-
             }
         });
     }

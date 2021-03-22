@@ -2,24 +2,12 @@ package com.hl.indpark.uis.fragments;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.EPAlarmEvent;
@@ -30,8 +18,6 @@ import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.PieChartView;
 
 import net.arvin.baselib.base.BaseFragment;
-
-import java.util.ArrayList;
 
 import butterknife.OnCheckedChanged;
 
@@ -111,6 +97,8 @@ public class TabAEPFragment extends BaseFragment {
                     }
 
                     Log.e("dafda", "onSuccess: ");
+                }else{
+                    linearLayout.setVisibility(View.GONE);
                 }
             }
 

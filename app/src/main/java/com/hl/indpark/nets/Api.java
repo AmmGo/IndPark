@@ -41,12 +41,15 @@ import retrofit2.http.Query;
  */
 public interface Api {
     /**
-     * 后台服务*/
+     * java测试*/
 //    String BASE_URL = "http://192.168.119.237:11035/";
     /**
      * 内网服务
      */
 //    String BASE_URL = "http://192.168.119.248:11035/";
+    /**
+     * 外网测试
+     */
     String BASE_URL = "http://222.75.227.14:11036/";
     String BASE_URL_IMG = "http://222.75.227.14:30000/";
 //    String BASE_URL_IMG = "http://appimg.hlx.com/";

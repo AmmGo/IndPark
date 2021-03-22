@@ -9,7 +9,6 @@ android {
             keyAlias "key0"
             keyPassword "123456"
         }
-
     }
     compileSdkVersion 29
     defaultConfig {

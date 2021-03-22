@@ -11,6 +11,7 @@ public class PhoneEvent {
      * deviceId : null
      */
     public int id;
+    public String userId;
     public String name;
     public String phone;
     public int sex;

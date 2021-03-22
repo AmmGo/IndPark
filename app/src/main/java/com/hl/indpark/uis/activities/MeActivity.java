@@ -2,7 +2,6 @@ package com.hl.indpark.uis.activities;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -10,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 
+import com.hl.indpark.App;
 import com.hl.indpark.R;
 import com.hl.indpark.utils.JPushUtils;
 import com.hl.indpark.utils.SharePreferenceUtil;
@@ -49,6 +49,7 @@ public class MeActivity extends BaseActivity {
                 onBackPressed();
                 finish();
                 SharePreferenceUtil.clearAllValue(MeActivity.this);
+                App.closeAllActivityByMap();
                 Intent intent = new Intent(MeActivity.this, LoginActivity.class);
                 startActivity(intent);
             }

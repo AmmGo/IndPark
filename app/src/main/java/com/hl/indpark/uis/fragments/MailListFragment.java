@@ -191,7 +191,7 @@ public class MailListFragment extends BaseFragment {
                                 getContext().startActivity(intent);
                                 break;
                             case 1:
-                                startCall(sortModel.id);
+                                startCall(sortModel.userId);
                                 break;
                             default:
                                 break;
@@ -204,13 +204,13 @@ public class MailListFragment extends BaseFragment {
 
     }
 
-    private void startCall(int id) {
+    private void startCall(String id) {
         if (Util.getUserId().equals(String.valueOf(id))){
             ToastUtil.showToast(getActivity(),"请选择有效用户");
             return;
         }
         Intent intent = new Intent(getActivity(), Main2Activity.class);
-        intent.putExtra("id",String.valueOf(id) );
+        intent.putExtra("id",id );
         startActivity(intent);
     }
 
@@ -249,7 +249,7 @@ public class MailListFragment extends BaseFragment {
             if (sortLetters == null) {
                 sortLetters = getSortLetter(data.get(i).name);
             }
-            SortModel sortModel = new SortModel(data.get(i).name, data.get(i).phone, data.get(i).name, data.get(i).sex,data.get(i).id);
+            SortModel sortModel = new SortModel(data.get(i).name, data.get(i).phone, data.get(i).name, data.get(i).sex,data.get(i).id,data.get(i).userId);
             sortModel.sortLetters = sortLetters;
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)

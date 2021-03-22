@@ -35,6 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IEventLi
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        WindowUtil.hideWindowStatusBar(getWindow());
+        App.putActivityInfoToMap(this);
         setGlobalLayoutListener();
         getDisplayMetrics();
 //        initStatusBarHeight();
@@ -120,6 +121,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IEventLi
     protected void onDestroy() {
         super.onDestroy();
         removeEventListener(this);
+        App.removeActivityInfoFromMap(this);
     }
 
     @Override
