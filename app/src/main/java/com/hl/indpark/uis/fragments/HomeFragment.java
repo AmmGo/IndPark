@@ -3,7 +3,6 @@ package com.hl.indpark.uis.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -13,12 +12,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.HSAlarmEvent;
-import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.EventsReportActivity;
 import com.hl.indpark.uis.adapters.ViewPagerAdapter;
-import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseFragment;
@@ -134,7 +131,6 @@ public class HomeFragment extends BaseFragment {
             }
         });
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

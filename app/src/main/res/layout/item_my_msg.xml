@@ -7,43 +7,43 @@
     android:background="@drawable/bg_item_pie_data"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dp">
 
-            <TextView
-                android:id="@+id/tv_content"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="xxx公司回收苯罐温度发生报警。 报警类型为高高报，数值为36.940.请迅速 处理"
-                android:textColor="#3A3A3A"
-                android:textSize="17sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="2021-03-08  09:22:12"
-                android:textColor="#3A3A3A"
-                android:textSize="15sp" />
-        </LinearLayout>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="xxx公司回收苯罐温度发生报警。 报警类型为高高报，数值为36.940.请迅速 处理"
+        android:textColor="#3A3A3A"
+        android:textSize="17sp" />
 
 </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dp">
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:text="2021-03-08  09:22:12"
+        android:textColor="#3A3A3A"
+        android:textSize="15sp" />
+</LinearLayout>
+</LinearLayout>
+
+    </LinearLayout>

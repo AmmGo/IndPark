@@ -90,6 +90,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
 //         name = "admin";
 //         password ="hldk1119";
+//         name = "yidong";
+//         password ="123456";
         final String psw = Util.getMd5(password);
         dialogUtil.showProgressDialog("登录中...");
         Map<String, String> map = new HashMap<>();

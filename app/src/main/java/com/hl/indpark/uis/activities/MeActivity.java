@@ -18,6 +18,8 @@ import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.widgets.TitleBar;
 
+import static com.hl.indpark.utils.JPushUtils.isPushStopped;
+
 
 public class MeActivity extends BaseActivity {
 
@@ -40,7 +42,15 @@ public class MeActivity extends BaseActivity {
                 onBackPressed();
             }
         });
+
+
         aSwitch = findViewById(R.id.switch_1);
+        if (isPushStopped()){
+            aSwitch.setChecked(false);
+        }else{
+            aSwitch.setChecked(true);
+
+        }
         llabout = findViewById(R.id.ll_about);
         relexit = findViewById(R.id.exit);
         relexit.setOnClickListener(new View.OnClickListener() {

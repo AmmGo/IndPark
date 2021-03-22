@@ -123,4 +123,10 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<String>>> getUploadImgS(List<MultipartBody.Part> maps) {
         return Net.api().getUploadImgS(maps);
     }
+    public static LiveData<Resource<Response<String>>> getMsgUpdate(Map map) {
+        return Net.api().getMspUpdate((HashMap<String, String>) map);
+    }
+    public static LiveData<Resource<Response<String>>> getMsgRead() {
+        return Net.api().getMspRead();
+    }
 }

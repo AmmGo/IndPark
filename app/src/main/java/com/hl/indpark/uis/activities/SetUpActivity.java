@@ -27,7 +27,6 @@ import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.widgets.TitleBar;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -340,13 +339,9 @@ public class SetUpActivity extends BaseActivity {
             ToastUtil.showToast(SetUpActivity.this, "请输入身份证号");
             return;
         }
-        try {
-            if (!IDCard.IDCardValidate(editCardId.getText().toString())) {
-                ToastUtil.showToast(SetUpActivity.this, "证件号码格式不对");
-                return;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (!IDCard.isIdCardNum(editCardId.getText().toString())) {
+            ToastUtil.showToast(SetUpActivity.this, "证件号码格式不对");
+            return;
         }
         LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(SetUpActivity.this)
                 .setMessage("提交中...")

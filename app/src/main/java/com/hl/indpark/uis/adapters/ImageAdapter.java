@@ -8,7 +8,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hl.indpark.R;
 import com.hl.indpark.nets.Api;
-import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.List;
 
@@ -31,10 +30,10 @@ public class ImageAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
                 .placeholder(R.drawable.a_error)
                 .fallback(R.drawable.a_error)
                 .error(R.drawable.a_error);
-        Glide.with(mContext).load("https://gitee.com/ammgo/zjb/raw/master/blog_img/2020_08_10/pexels-eberhard-grossgasteiger-691668.jpg")
-                .apply(options).into(img);
-//        Glide.with(mContext).load(Api.BASE_URL_IMG+item)
+//        Glide.with(mContext).load("https://gitee.com/ammgo/zjb/raw/master/blog_img/2020_08_10/pexels-eberhard-grossgasteiger-691668.jpg")
 //                .apply(options).into(img);
+        Glide.with(mContext).load(Api.BASE_URL_IMG+item)
+                .apply(options).into(img);
 
     }
 }

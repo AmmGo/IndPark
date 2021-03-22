@@ -16,10 +16,8 @@ import com.hl.indpark.R;
 import com.hl.indpark.uis.activities.MainActivity;
 import com.hl.indpark.uis.activities.videoactivities.CallActivity;
 import com.hl.indpark.uis.activities.videoactivities.Constants;
-import com.hl.indpark.uis.activities.videoactivities.agora.Global;
 
 import cn.jpush.android.api.CustomMessage;
-import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.JPushMessage;
 import cn.jpush.android.api.NotificationMessage;
 import cn.jpush.android.service.JPushMessageReceiver;
@@ -98,13 +96,16 @@ public class MyReceiver extends JPushMessageReceiver {
     public void onMessage(Context context, CustomMessage customMessage) {
         super.onMessage(context, customMessage);
         // 收到消息 显示通知
-        if (customMessage.message.contains(Util.getUserId())){
             Intent intent = new Intent(context, CallActivity.class);
             intent.putExtra(Constants.KEY_CALLING_CHANNEL, customMessage.message);
-            intent.putExtra(Constants.JUSH_ID, customMessage.message);
+            intent.putExtra(Constants.JUSH_ID, "111");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
             context.startActivity(intent);
-        }
+//            Intent intent = new Intent(context, CallActivity.class);
+//            intent.putExtra(Constants.KEY_CALLING_CHANNEL, customMessage.message);
+//            intent.putExtra(Constants.KEY_CALLING_PEER, 11);
+//            intent.putExtra(Constants.KEY_CALLING_ROLE, ROLE_CALLEE);
+//            context.startActivity(intent);
         Log.e("接收到推送下来的自定义消息", "onMessage: ");
 //        processCustomMessage(context, customMessage.extra);
     }

@@ -1,5 +1,6 @@
 package com.hl.indpark.uis.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -109,7 +110,10 @@ public class MyMsgActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                MyMsgEvent.RecordsBean msgBean = ( MyMsgEvent.RecordsBean ) myList.get(position);
+                Intent intent=new Intent(MyMsgActivity.this,MyMsgIdActivity.class);
+                intent.putExtra("Extra_data", msgBean);
+                startActivity(intent);
             }
         });
     }

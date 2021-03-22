@@ -34,7 +34,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
-        <activity android:name=".uis.activities.AboutActivity"></activity>
+        <activity android:name=".uis.activities.MyMsgIdActivity"></activity>
+        <activity android:name=".uis.activities.AboutActivity" />
         <activity android:name=".uis.activities.MeActivity" />
         <activity android:name=".uis.activities.SetUpActivity" />
         <activity
@@ -60,9 +61,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.LoginActivity"
-            android:screenOrientation="portrait"
-        />
-<!--        android:launchMode="singleTask"-->
+            android:screenOrientation="portrait" /> <!-- android:launchMode="singleTask" -->
         <activity
             android:name=".uis.activities.MainActivity"
             android:screenOrientation="portrait" />
