@@ -15,6 +15,10 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
@@ -74,6 +78,8 @@ public class EventsReportActivity extends BaseActivity {
     private String uploadEventDecs;
     private String uploadTvType;
     private LoadingDailog dialog;
+    private double getLongitude;
+    private double getLatitude;
 
     @OnTextChanged(value = R.id.ed_event_decs, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void editTextDetailChange(Editable editable) {
@@ -120,10 +126,10 @@ public class EventsReportActivity extends BaseActivity {
                 }
                 if (mediaList != null && mediaList.size() > 0) {
                     for (int i = 0; i < mediaList.size(); i++) {
-                        uploadFile.add(new File(mediaList.get(i).getPath()));
+                        uploadFile.add(new File(mediaList.get(i).getCompressPath()));
                     }
                     getUpdateUserImgS(uploadFile);
-                }else{
+                } else {
                     getUploadEvent();
                 }
 
@@ -153,8 +159,57 @@ public class EventsReportActivity extends BaseActivity {
         return R.layout.activity_one_events;
     }
 
+    //声明AMapLocationClientOption对象
+    public AMapLocationClientOption mLocationOption = null;
+    //声明AMapLocationClient类对象
+    public AMapLocationClient mLocationClient = null;
+    //声明定位回调监听器
+    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+                    aMapLocation.getLatitude();//获取纬度
+                    aMapLocation.getLongitude();//获取经度
+                    Log.e("获取纬度", "onLocationChanged: "+aMapLocation.getLatitude() );
+                    Log.e("获取经度", "onLocationChanged: "+aMapLocation.getLongitude() );
+                    getLongitude = aMapLocation.getLongitude();
+                    getLatitude = aMapLocation.getLatitude();
+                }else {
+                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                    Log.e("AmapError","location Error, ErrCode:"
+                            + aMapLocation.getErrorCode() + ", errInfo:"
+                            + aMapLocation.getErrorInfo());
+                }
+            }
+        }
+    };
+
     @Override
     protected void init(Bundle savedInstanceState) {
+        //初始化定位
+        mLocationClient = new AMapLocationClient(getApplicationContext());
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+        //获取一次定位结果：
+        //该方法默认为false。
+        mLocationOption.setOnceLocation(true);
+        //获取最近3s内精度最高的一次定位结果：
+        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+        mLocationOption.setOnceLocationLatest(true);
+        //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
+        mLocationOption.setInterval(1000);
+        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
+        mLocationOption.setHttpTimeOut(20000);
+        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
+        mLocationOption.setHttpTimeOut(20000);
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+        //启动定位
+        mLocationClient.startLocation();
         initPermissionConfig();
         uploadFile = new ArrayList<>();
         TitleBar titleBar = findViewById(R.id.title_bar);
@@ -203,9 +258,9 @@ public class EventsReportActivity extends BaseActivity {
                             @Override
                             public void callback(boolean granted, boolean isAlwaysDenied) {
                                 if (granted) {
-                                    if (mediaList != null && mediaList.size()==6){
-                                        ToastUtil.showToast(EventsReportActivity.this,"你最多只能选择6张照片");
-return;
+                                    if (mediaList != null && mediaList.size() == 6) {
+                                        ToastUtil.showToast(EventsReportActivity.this, "你最多只能选择6张照片");
+                                        return;
                                     }
                                     PictureSelector.create(EventsReportActivity.this)
                                             .openCamera(PictureMimeType.ofImage())
@@ -224,6 +279,7 @@ return;
                                             .openGallery(PictureMimeType.ofImage())
                                             .isCamera(false)
                                             .minimumCompressSize(100)// 是否压缩
+                                            .compress(true)
                                             .maxSelectNum(6)
                                             .selectionData(mediaList)
                                             .loadImageEngine(GlideEngine.createGlideEngine())
@@ -286,7 +342,7 @@ return;
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code),EventsReportActivity.this);
+                Util.login(String.valueOf(code), EventsReportActivity.this);
             }
 
             @Override
@@ -300,9 +356,9 @@ return;
     }
 
     public void getUploadEvent() {
-        if (mediaList != null && mediaList.size() > 0){
+        if (mediaList != null && mediaList.size() > 0) {
 
-        }else{
+        } else {
             LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(EventsReportActivity.this)
                     .setMessage("提交中...")
                     .setCancelable(false)
@@ -319,17 +375,17 @@ return;
         paramMap.put("title", uploadEventTitile);
         paramMap.put("type", String.valueOf(eventReport.id));
         paramMap.put("content", uploadEventDecs);
-        if (imgS!=null&&!imgS.equals("")){
+        if (imgS != null && !imgS.equals("")) {
             paramMap.put("image", imgS);
         }
-        paramMap.put("longitude", "116.397128");
-        paramMap.put("latitude", "39.916527");
+        paramMap.put("longitude", String.valueOf(getLongitude));
+        paramMap.put("latitude", String.valueOf(getLatitude));
 
         ArticlesRepo.getReportEvent(paramMap).observe(this, new ApiObserver<String>() {
             @Override
             public void onSuccess(Response<String> response) {
                 Log.e("上报事件", "onSuccess: ");
-                ToastUtil.showToast(EventsReportActivity.this,"提交成功");
+                ToastUtil.showToast(EventsReportActivity.this, "提交成功");
                 dialog.cancel();
                 finish();
             }
@@ -337,9 +393,9 @@ return;
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                ToastUtil.showToast(EventsReportActivity.this,msg);
+                ToastUtil.showToast(EventsReportActivity.this, msg);
                 dialog.cancel();
-                Util.login(String.valueOf(code),EventsReportActivity.this);
+                Util.login(String.valueOf(code), EventsReportActivity.this);
             }
 
             @Override
@@ -367,7 +423,7 @@ return;
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code),EventsReportActivity.this);
+                Util.login(String.valueOf(code), EventsReportActivity.this);
             }
 
             @Override
@@ -416,7 +472,7 @@ return;
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code),EventsReportActivity.this);
+                Util.login(String.valueOf(code), EventsReportActivity.this);
             }
 
             @Override
@@ -432,6 +488,8 @@ return;
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        mLocationClient.stopLocation();
+        mLocationClient.onDestroy();
         super.onDestroy();
     }
 

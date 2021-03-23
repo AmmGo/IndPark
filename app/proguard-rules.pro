@@ -9,7 +9,7 @@
 -keepattributes Signature
 -keepattributes SourceFile,LineNumberTable
 #忽略警告
--ignorewarning
+-ignorewarnings
 #记录生成的日志数据,gradle build时在本项目根目录输出apk 包内所有 class 的内部结构
 -dump class_files.txt
 #未混淆的类和成员
@@ -172,6 +172,33 @@
 -keep class cn.jiguang.** { *; }
 -keep class cn.jiguang.** { *; }
 -keep class * extends cn.jpush.android.service.JPushMessageReceiver{*;}
+
+  # 3D 地图 V5.0.0之前：
+    -keep   class com.amap.api.maps.**{*;}
+    -keep   class com.autonavi.amap.mapcore.*{*;}
+    -keep   class com.amap.api.trace.**{*;}
+
+   #  3D 地图 V5.0.0之后：
+    -keep   class com.amap.api.maps.**{*;}
+    -keep   class com.autonavi.**{*;}
+    -keep   class com.amap.api.trace.**{*;}
+
+   #  定位
+    -keep class com.amap.api.location.**{*;}
+    -keep class com.amap.api.fence.**{*;}
+    -keep class com.loc.**{*;}
+    -keep class com.autonavi.aps.amapapi.model.**{*;}
+
+   #  搜索
+    -keep   class com.amap.api.services.**{*;}
+
+ #    2D地图
+    -keep class com.amap.api.maps2d.**{*;}
+    -keep class com.amap.api.mapcore2d.**{*;}
+
+  #   导航
+    -keep class com.amap.api.navi.**{*;}
+    -keep class com.autonavi.**{*;}
 
 #----------------------------------第三方包--结束--------------------------
 

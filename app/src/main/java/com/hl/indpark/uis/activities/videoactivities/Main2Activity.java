@@ -48,6 +48,7 @@ public class Main2Activity extends BaseCallActivity {
             Manifest.permission.WRITE_CALL_LOG
     };
     private String id;
+    private int count=0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,13 @@ public class Main2Activity extends BaseCallActivity {
         checkPermissions();
         gotoDialerActivity();
         Log.e("呼叫对方Id", "onSuccess: "+id);
+        if (count==0){
+            ToastUtil.showToast(Main2Activity.this, "对方不在线");
+            Log.e("对方不在线", "count: "+count);
+            finish();
+        }
     }
+
 
     @Override
     protected void onGlobalLayoutCompleted() {
@@ -145,6 +152,7 @@ public class Main2Activity extends BaseCallActivity {
                             String uid = Util.getUserId();
                             String channel = RtcUtils.channelName(uid, peer);
                             gotoCallingInterface(peer, channel, Constants.ROLE_CALLER);
+                            count++;
                             finish();
                         } else {
                             runOnUiThread(new Runnable() {
@@ -153,6 +161,7 @@ public class Main2Activity extends BaseCallActivity {
                                     Toast.makeText(Main2Activity.this,
                                             R.string.peer_not_online,
                                             Toast.LENGTH_SHORT).show();
+                                    count++;
                                     finish();
                                 }
                             });
@@ -163,6 +172,7 @@ public class Main2Activity extends BaseCallActivity {
                     public void onFailure(ErrorInfo errorInfo) {
                         Log.e("是否在线", "onFailure: 不在线111 ");
                         ToastUtil.showToast(Main2Activity.this, "对方不在线");
+                        count++;
                         finish();
 
                     }

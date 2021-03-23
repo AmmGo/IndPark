@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.hl.indpark.App;
 import com.hl.indpark.BuildConfig;
 import com.hl.indpark.uis.activities.LoginActivity;
 
@@ -56,6 +57,7 @@ public class Util {
             ToastUtil.showToast(activity, "登录过期，请重新登录");
             activity.finish();
             SharePreferenceUtil.clearAllValue(activity);
+            App.closeAllActivityByMap();
             Intent intent = new Intent(activity, LoginActivity.class);
             activity.startActivity(intent);
         }

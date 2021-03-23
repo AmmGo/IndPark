@@ -13,7 +13,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.hl.indpark.uis.activities.videoactivities.connectionservice.OpenDuoConnectionService;
-import com.hl.indpark.utils.Util;
 
 import java.util.List;
 
@@ -84,6 +83,7 @@ public abstract class BaseCallActivity extends BaseRtcActivity implements RtmCha
     protected void inviteCall(final String peerUid, final String channel) {
         LocalInvitation invitation = mRtmCallManager.createLocalInvitation(peerUid);
         invitation.setContent(channel);
+        invitation.setChannelId(channel);
         mRtmCallManager.sendLocalInvitation(invitation, this);
         global().setLocalInvitation(invitation);
     }
@@ -172,13 +172,13 @@ public abstract class BaseCallActivity extends BaseRtcActivity implements RtmCha
     public void onRemoteInvitationReceived(RemoteInvitation remoteInvitation) {
         Log.i("BaseActivity", "onRemoteInvitationReceived from caller:" + remoteInvitation.getCallerId());
         global().setRemoteInvitation(remoteInvitation);
-        gotoCallingActivity(remoteInvitation.getContent(), remoteInvitation.getCallerId(), Constants.ROLE_CALLEE);
+        gotoCallingActivity(remoteInvitation.getChannelId(), remoteInvitation.getCallerId(), Constants.ROLE_CALLEE);
     }
 
     @Override
     public void onRemoteInvitationAccepted(RemoteInvitation remoteInvitation) {
         Log.i("BaseActivity", "onRemoteInvitationAccepted from caller:" + remoteInvitation.getCallerId());
-        gotoVideoActivity(remoteInvitation.getContent(), remoteInvitation.getCallerId());
+        gotoVideoActivity(remoteInvitation.getChannelId(), remoteInvitation.getCallerId());
     }
 
     @Override

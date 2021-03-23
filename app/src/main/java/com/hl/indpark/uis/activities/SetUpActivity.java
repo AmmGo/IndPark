@@ -1,18 +1,18 @@
 package com.hl.indpark.uis.activities;
 
-import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.tu.loadingdialog.LoadingDailog;
+import com.bigkoo.pickerview.TimePickerView;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.UserInfoEvent;
@@ -27,8 +27,10 @@ import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.widgets.TitleBar;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,27 +95,26 @@ public class SetUpActivity extends BaseActivity {
                 selectDialog(marList, 1);
                 break;
             case R.id.ll_date_of_birth:
-                // 日期对话框
-                new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                //弹出时间选择器选择生日
+                TimePickerView timePickerView = new TimePickerView.Builder(SetUpActivity.this, new TimePickerView.OnTimeSelectListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        String strMonth ;
-                        String strDay ;
-                        int intMonth = monthOfYear+1;
-                        int intDay = dayOfMonth;
-                        if (intMonth<10){
-                             strMonth = "0"+intMonth;
-                        }else{
-                            strMonth = intMonth+"";
-                        }
-                        if (intDay<10){
-                            strDay = "0"+intDay;
-                        }else{
-                            strDay = ""+intDay;
-                        }
-                        tvDataBirth.setText(year + "-" + strMonth + "-" + strDay+" 00:00:00");
+                    public void onTimeSelect(final Date date, View v) {
+                        tvDataBirth.setText(getDataTime(date)+" 00:00:00");
                     }
-                }, year, calendar.get(Calendar.MONTH), day).show();
+                })
+                        .setType(TimePickerView.Type.YEAR_MONTH_DAY)
+                        .setCancelText("取消")
+                        .setSubmitText("确定")
+                        .setContentSize(20)//滚轮文字大小
+                        .setTitleSize(20)//标题文字大小
+                        .setOutSideCancelable(true)
+                        .isCyclic(true)
+                        .setTextColorCenter(Color.BLACK)//设置选中项的颜色
+                        .setSubmitColor(Color.GRAY)//确定按钮文字颜色
+                        .setCancelColor(Color.GRAY)//取消按钮文字颜色
+                        .isCenterLabel(false)
+                        .build();
+                timePickerView.show();
                 break;
             case R.id.tv_report:
                 Util.hideInputManager(SetUpActivity.this, v);
@@ -121,6 +122,10 @@ public class SetUpActivity extends BaseActivity {
                 break;
             default:
         }
+    }
+    public String getDataTime(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(date);
     }
     private void initDate() {
         // 获取日历的一个对象

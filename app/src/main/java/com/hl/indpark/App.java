@@ -22,7 +22,6 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.squareup.leakcanary.LeakCanary;
 import com.tencent.tinker.loader.app.TinkerApplication;
 import com.tencent.tinker.loader.shareutil.ShareConstants;
 
@@ -61,11 +60,11 @@ private static App instance;
     public void onCreate() {
         super.onCreate();
         init1();
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-
-        LeakCanary.install(this);
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            return;
+//        }
+//
+//        LeakCanary.install(this);
         instance = this;
         app = this;
         JPushInterface.setDebugMode(true);
