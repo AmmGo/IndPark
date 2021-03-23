@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 
 import com.hl.indpark.R;
 import com.hl.indpark.entities.LoginResultEntity;
@@ -15,6 +16,7 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.UserRepo;
 import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.utils.Util;
+import com.hl.indpark.widgit.ClearWriteEditText;
 
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.DialogUtil;
@@ -26,13 +28,13 @@ import java.util.Map;
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
 
-    private EditText edName;
-    private EditText edPassword;
+    private ClearWriteEditText edName;
+    private ClearWriteEditText edPassword;
     private DialogUtil dialogUtil;
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_login1;
+        return R.layout.activity_login;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         edName = findViewById(R.id.edit_name);
         edPassword = findViewById(R.id.edit_pwd);
         findViewById(R.id.btn_login).setOnClickListener(this);
-//        findViewById(R.id.img_see_pwd).setOnClickListener(this);
+        findViewById(R.id.img_see_pwd).setOnClickListener(this);
         dialogUtil = new DialogUtil(this);
     }
 
@@ -54,16 +56,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 login();
 //                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 break;
-//            case R.id.img_see_pwd:
-//                if (pwd == 0) {
-//                    edPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-//                    pwd++;
-//                } else {
-//                    edPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-//                    pwd--;
-//                }
-//
-//                break;
+            case R.id.img_see_pwd:
+                if (pwd == 0) {
+                    edPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    pwd++;
+                } else {
+                    edPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    pwd--;
+                }
+
+                break;
         }
     }
 
