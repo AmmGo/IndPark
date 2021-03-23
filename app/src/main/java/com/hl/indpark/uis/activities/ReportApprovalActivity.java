@@ -58,12 +58,16 @@ public class ReportApprovalActivity extends BaseActivity {
     EditText editOnte;
     @BindView(R.id.ll_img)
     LinearLayout llImg;
+    @BindView(R.id.ll_hide)
+    LinearLayout ll_hide;
     @BindView(R.id.rl_note)
     RelativeLayout rlNote;
     @BindView(R.id.rl_ed_event_onte)
     RelativeLayout rledNote;
     boolean islMaxCount;
     private int idEvent;
+    private int reorap;
+    private String titileText;
 
     @OnClick({R.id.tv_report})
     public void onClickView(View v) {
@@ -100,16 +104,23 @@ public class ReportApprovalActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        idEvent = intent.getIntExtra("id", 0);
+        reorap = intent.getIntExtra("reorap", 0);
+        if (reorap == 2) {
+            titileText = "我的审批";
+        } else {
+            titileText = "我的上报";
+
+        }
         TitleBar titleBar = findViewById(R.id.title_bar);
-        titleBar.getCenterTextView().setText("我的上报");
+        titleBar.getCenterTextView().setText(titileText);
         titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        Intent intent = getIntent();
-        idEvent = intent.getIntExtra("id", 0);
         //根据id查询事件
         getData(idEvent);
         setMediaFragment();
@@ -126,7 +137,7 @@ public class ReportApprovalActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code),ReportApprovalActivity.this);
+                Util.login(String.valueOf(code), ReportApprovalActivity.this);
             }
 
             @Override
@@ -162,6 +173,10 @@ public class ReportApprovalActivity extends BaseActivity {
             tvReport.setVisibility(View.VISIBLE);
             rledNote.setVisibility(View.VISIBLE);
             rlNote.setVisibility(View.GONE);
+        }
+        if (reorap == 1) {
+            tvReport.setVisibility(View.GONE);
+            rledNote.setVisibility(View.GONE);
         }
 
     }
@@ -209,7 +224,7 @@ public class ReportApprovalActivity extends BaseActivity {
                 super.onFailure(code, msg);
                 ToastUtil.showToast(ReportApprovalActivity.this, msg);
                 dialog.cancel();
-                Util.login(String.valueOf(code),ReportApprovalActivity.this);
+                Util.login(String.valueOf(code), ReportApprovalActivity.this);
             }
 
             @Override

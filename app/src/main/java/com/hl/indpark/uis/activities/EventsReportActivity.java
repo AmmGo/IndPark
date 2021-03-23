@@ -125,8 +125,15 @@ public class EventsReportActivity extends BaseActivity {
                     return;
                 }
                 if (mediaList != null && mediaList.size() > 0) {
-                    for (int i = 0; i < mediaList.size(); i++) {
-                        uploadFile.add(new File(mediaList.get(i).getCompressPath()));
+                    try {
+                        for (int i = 0; i < mediaList.size(); i++) {
+                            uploadFile.add(new File(mediaList.get(i).getCompressPath()));
+                        }
+                    } catch (Exception e) {
+                        for (int i = 0; i < mediaList.size(); i++) {
+                            uploadFile.add(new File(mediaList.get(i).getPath()));
+                        }
+                        e.printStackTrace();
                     }
                     getUpdateUserImgS(uploadFile);
                 } else {

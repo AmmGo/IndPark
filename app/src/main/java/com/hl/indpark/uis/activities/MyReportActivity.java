@@ -1,5 +1,6 @@
 package com.hl.indpark.uis.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -153,7 +154,10 @@ public class MyReportActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                Intent intent = new Intent(MyReportActivity.this, ReportApprovalActivity.class);
+                intent.putExtra("id",list.get(position).id);
+                intent.putExtra("reorap",1);
+                startActivity(intent);
             }
         });
     }

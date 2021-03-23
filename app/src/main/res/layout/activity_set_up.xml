@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F7F7"
+    android:background="#EEEEEE"
     android:orientation="vertical"
     tools:context=".uis.activities.SetUpActivity">
 
@@ -66,6 +66,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/background_white"
                 android:orientation="horizontal"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:padding="15dp">
 
                 <TextView
@@ -107,6 +109,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/background_white"
                 android:orientation="horizontal"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:padding="15dp">
 
                 <TextView
@@ -148,6 +152,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/background_white"
                 android:orientation="horizontal"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:padding="15dp">
 
                 <TextView

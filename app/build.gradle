@@ -5,9 +5,15 @@ android {
     signingConfigs {
         release {
             storeFile file("./indupark.jks")
-            storePassword "123456"
+            storePassword "android"
             keyAlias "key0"
-            keyPassword "123456"
+            keyPassword "android"
+        }
+        debug {
+            storeFile file("./indupark.jks")
+            storePassword "android"
+            keyAlias "key0"
+            keyPassword "android"
         }
     }
     compileSdkVersion 29

@@ -46,11 +46,11 @@ public interface Api {
     /**
      * 内网服务
      */
-    String BASE_URL = "http://192.168.119.248:11035/";
+//    String BASE_URL = "http://192.168.119.248:11035/";
     /**
      * 外网测试
      */
-//    String BASE_URL = "http://222.75.227.14:11036/";
+    String BASE_URL = "http://222.75.227.14:11036/";
     String BASE_URL_IMG = "http://222.75.227.14:30000/";
 //    String BASE_URL_IMG = "http://appimg.hlx.com/";
 

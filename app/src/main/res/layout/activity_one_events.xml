@@ -62,6 +62,8 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/background_white"
                 android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:padding="10dp">
 
                 <EditText
@@ -81,6 +83,8 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/background_white"
                 android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:padding="10dp">
 
                 <EditText
@@ -110,6 +114,8 @@
                 android:background="@color/background_white"
                 android:orientation="vertical"
                 android:padding="10dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:visibility="gone">
 
                 <EditText

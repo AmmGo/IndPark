@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
-import com.hl.indpark.entities.events.MyMsgEvent;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
@@ -19,7 +18,6 @@ import com.hl.indpark.uis.activities.MeActivity;
 import com.hl.indpark.uis.activities.MyApprovalActivity;
 import com.hl.indpark.uis.activities.MyMsgActivity;
 import com.hl.indpark.uis.activities.MyReportActivity;
-import com.hl.indpark.uis.activities.PieChartSHDataActivity;
 import com.hl.indpark.uis.activities.SetUpActivity;
 import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.utils.Util;
@@ -50,6 +48,7 @@ public class SelfFragment extends BaseFragment {
     LinearLayout ll_wd_shenp;
     private UserInfoEvent userInfoEvent;
     private boolean hideNew;
+    private String msgNum;
 
     @OnClick({R.id.ll_wd_shenp, R.id.ll_wdsp, R.id.ll_wdxx, R.id.img_set_up, R.id.ll_info})
     public void onClick(View view) {
@@ -120,31 +119,12 @@ public class SelfFragment extends BaseFragment {
     }
 
     public void getNewHide() {
-        ArticlesRepo.getMyMsgEvent(1, 10).observe(this, new ApiObserver<MyMsgEvent>() {
-            @Override
-            public void onSuccess(Response<MyMsgEvent> response) {
-                Log.e("我的消息", "onSuccess: ");
-                MyMsgEvent event = response.getData();
-                if (event != null && event.records.size() > 0) {
-                    imgNewMsg.setVisibility(View.VISIBLE);
-                } else {
-                    imgNewMsg.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-                Util.login(String.valueOf(code), getActivity());
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
-
+        msgNum = SharePreferenceUtil.getKeyValue("msgNum");
+        if (msgNum!=null&& !msgNum.equals("")&& !msgNum.equals("0")){
+            imgNewMsg.setVisibility(View.VISIBLE);
+        }else{
+            imgNewMsg.setVisibility(View.GONE);
+        }
     }
 
     public void initViewData(UserInfoEvent user) {

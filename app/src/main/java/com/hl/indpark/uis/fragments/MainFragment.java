@@ -174,6 +174,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                         tv_hot_god_msg.setText(response.getData());
                         tv_hot_god_msg.setVisibility(View.VISIBLE);
                     }
+                    SharePreferenceUtil.saveKeyValue("msgNum", String.valueOf(response.getData()));
                 }
                 Log.e("未读消息", "onSuccess: " + response.getData());
             }
