@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -34,7 +32,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_login;
+        return R.layout.activity_login1;
     }
 
     @Override
@@ -43,7 +41,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         edName = findViewById(R.id.edit_name);
         edPassword = findViewById(R.id.edit_pwd);
         findViewById(R.id.btn_login).setOnClickListener(this);
-        findViewById(R.id.img_see_pwd).setOnClickListener(this);
+//        findViewById(R.id.img_see_pwd).setOnClickListener(this);
         dialogUtil = new DialogUtil(this);
     }
 
@@ -56,16 +54,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 login();
 //                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 break;
-            case R.id.img_see_pwd:
-                if (pwd == 0) {
-                    edPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    pwd++;
-                } else {
-                    edPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    pwd--;
-                }
-
-                break;
+//            case R.id.img_see_pwd:
+//                if (pwd == 0) {
+//                    edPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+//                    pwd++;
+//                } else {
+//                    edPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+//                    pwd--;
+//                }
+//
+//                break;
         }
     }
 
