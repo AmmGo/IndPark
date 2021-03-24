@@ -63,12 +63,12 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
         App.getInstance().rtmClient().login(null, Util.getUserId(), new ResultCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.i("main", "rtm client login success");
+                Log.e("main", "rtm client login success");
             }
 
             @Override
             public void onFailure(ErrorInfo errorInfo) {
-                Log.i("main", "rtm client login failed:" + errorInfo.getErrorDescription());
+                Log.e("main", "rtm client login failed:" + errorInfo.getErrorDescription());
             }
         });
     }
