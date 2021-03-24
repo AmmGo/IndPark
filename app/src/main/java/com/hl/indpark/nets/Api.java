@@ -47,125 +47,127 @@ public interface Api {
      * 内网服务
      */
 //    String BASE_URL = "http://192.168.119.248:11035/";
+//    String BASE_JAVA = "";
+    //    String BASE_URL_IMG = "http://appimg.hlx.com/";
     /**
      * 外网测试
      */
-    String BASE_URL = "http://222.75.227.14:11036/";
-    String BASE_URL_IMG = "http://222.75.227.14:30000/";
+//    String BASE_URL = "http://222.75.227.14:11036/";
+//    String BASE_URL_IMG = "http://222.75.227.14:30000/";
     /**
      * 外网发布
      */
-//    String BASE_URL = "http://industry.zwhldk.com/java/";
-//    String BASE_URL_IMG = "http://industry.zwhldk.com/img/";
-//    String BASE_URL_IMG = "http://appimg.hlx.com/";
+    String BASE_URL = "https://www.nxzwgyyqgwh.com.cn/";
+    String BASE_URL_IMG = "https://www.nxzwgyyqgwh.com.cn/img/";
+    String BASE_JAVA = "java";
 
     /*=======登陆注册======*/
-    @POST("/loginPhone")
+    @POST(BASE_JAVA + "/loginPhone")
     LiveData<Resource<Response<LoginResultEntity>>> login(@Body HashMap<String, String> map);
 
     /*=======环保报警======*/
-    @GET("/phone/environment/")
+    @GET(BASE_JAVA + "/phone/environment/")
     LiveData<Resource<Response<EPAlarmEvent>>> getEpAlarm(@Query("type") String type);
 
     /*=======危险源报警======*/
-    @GET("/phone/hazard/")
+    @GET(BASE_JAVA + "/phone/hazard/")
     LiveData<Resource<Response<HSAlarmEvent>>> getHSAlarm(@Query("type") String type);
 
     /*=======上报事件type======*/
-    @GET("/eventType/list/")
+    @GET(BASE_JAVA + "/eventType/list/")
     LiveData<Resource<Response<List<ReportTypeEvent>>>> getReportType();
 
     /*=======通讯录======*/
-    @GET("/phone/person/")
+    @GET(BASE_JAVA + "/phone/person/")
     LiveData<Resource<Response<List<PhoneEvent>>>> getPhoneEvent();
 
     /*=======用户信息======*/
-    @GET("/phone/user/")
+    @GET(BASE_JAVA + "/phone/user/")
     LiveData<Resource<Response<UserInfoEvent>>> getUserInfoEvent();
 
     /*=======我的上报or我的审批======*/
-    @GET("/phone/events/")
+    @GET(BASE_JAVA + "/phone/events/")
     LiveData<Resource<Response<SelfReportEvent>>> getSelfReportEvent();
 
     /*=======企业列表======*/
-    @GET("/transmission/enterpriseList/")
+    @GET(BASE_JAVA + "/transmission/enterpriseList/")
     LiveData<Resource<Response<List<EntNameEvent>>>> getEnterpriseEvent();
 
     /*=======企业工艺列表======*/
-    @GET("/perilousCraft/queryTechnologyIdByEnterpriseId/")
+    @GET(BASE_JAVA + "/perilousCraft/queryTechnologyIdByEnterpriseId/")
     LiveData<Resource<Response<List<EntTypeEvent>>>> getEntTypeEvent(@Query("enterpriseId") int id);
 
     /*=======危险源信息======*/
-    @GET("/transmission/querySourceDangerRealDate/")
+    @GET(BASE_JAVA + "/transmission/querySourceDangerRealDate/")
     LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid);
 
     /*=======危险源信息分页======*/
-    @GET("/phone/hazardDetail")
+    @GET(BASE_JAVA + "/phone/hazardDetail")
     LiveData<Resource<Response<EntSHSEvent>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid, @Query("current") int pageNum, @Query("size") int pageSiz, @Query("dataType") int timeType, @Query("type") String Type);
 
     /*=======企业排污口列表======*/
-    @GET("/environmentpoint/list/")
+    @GET(BASE_JAVA + "/environmentpoint/list/")
     LiveData<Resource<Response<List<EntSEPTypeEvent>>>> getEntSEPTypeEvent(@Query("enterpriseId") int id);
 
     /*=======环保信息======*/
-    @GET("/phone/EnvironmentMonitor/")
+    @GET(BASE_JAVA + "/phone/EnvironmentMonitor/")
     LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(@Query("psCode") String id, @Query("pointCode") String tlid, @Query("current") int page, @Query("size") int pageSize, @Query("type") int timeType, @Query("isException") String isp);
 
     /*=======消息列表======*/
-    @GET("/push/pageList/")
+    @GET(BASE_JAVA + "/push/pageList/")
     LiveData<Resource<Response<MyMsgEvent>>> getMyMsgEvent(@Query("current") int page, @Query("size") int pageSize);
 
     /*=======上报列表======*/
-    @GET("/phone/events/")
+    @GET(BASE_JAVA + "/phone/events/")
     LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(@Query("current") int page, @Query("size") int pageSize, @Query("status") String state);
 
     /*=======审批列表======*/
-    @GET("/phone/approveEvents/")
+    @GET(BASE_JAVA + "/phone/approveEvents/")
     LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(@Query("current") int page, @Query("size") int pageSize, @Query("status") String state);
 
     /*=======审批列表-ID-查询事件======*/
-    @GET("/event/findById/")
+    @GET(BASE_JAVA + "/event/findById/")
     LiveData<Resource<Response<MyPeportIDEvent>>> getMyPeportIDEvent(@Query("id") String id);
 
     /*=======提交审批======*/
-    @POST("/event/update/")
+    @POST(BASE_JAVA + "/event/update/")
     LiveData<Resource<Response<String>>> getMyPeportIDUpdateEvent(@Body HashMap<String, String> mape);
 
     /*=======用户信息修改======*/
-    @POST("/phone/update/")
+    @POST(BASE_JAVA + "/phone/update/")
     LiveData<Resource<Response<String>>> getUserInfoUpdateEvent(@Body HashMap<String, String> map);
 
     /*=======是否推送======*/
-    @POST("/user/update")
+    @POST(BASE_JAVA + "/user/update")
     LiveData<Resource<Response<String>>> getPushMsgEvent(@Body HashMap<String, String> map);
 
     /*=======上报事件======*/
-    @POST("/event/insert/")
+    @POST(BASE_JAVA + "/event/insert/")
     LiveData<Resource<Response<String>>> getReportEvent(@Body HashMap<String, String> map);
 
     /**
      * 上传单张图片
      */
     @Multipart
-    @POST("/file/upload")
+    @POST(BASE_JAVA + "/file/upload")
     LiveData<Resource<Response<String>>> getUploadImg(@Part MultipartBody.Part MultipartFile);
 
     /**
      * 上传多张图片
      */
     @Multipart
-    @POST("/file/multiUpload")
+    @POST(BASE_JAVA + "/file/multiUpload")
     LiveData<Resource<Response<String>>> getUploadImgS(@Part List<MultipartBody.Part> maps);
 
     /*=======企业列表New======*/
-    @GET("/environmentpoint/listTree")
+    @GET(BASE_JAVA + "/environmentpoint/listTree")
     LiveData<Resource<Response<List<EntNewEp>>>> getEntNewEp();
 
     /*=======修改消息状态======*/
-    @POST("/push/update")
+    @POST(BASE_JAVA + "/push/update")
     LiveData<Resource<Response<String>>> getMspUpdate(@Body HashMap<String, String> map);
 
     /*=======消息未读数量======*/
-    @GET("/push/read/")
+    @GET(BASE_JAVA + "/push/read/")
     LiveData<Resource<Response<String>>> getMspRead();
 }

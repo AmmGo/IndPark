@@ -34,18 +34,22 @@ public class MyMsgIdActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        bean = (MyMsgEvent.RecordsBean) getIntent().getExtras().get("Extra_data");
-        tvConent.setText(bean.name);
-        tvTime.setText(bean.pushTime);
-        TitleBar titleBar = findViewById(R.id.title_bar);
-        titleBar.getCenterTextView().setText("消息详情");
-        titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        upData();
+        try {
+            bean = (MyMsgEvent.RecordsBean) getIntent().getExtras().get("Extra_data");
+            tvConent.setText(bean.name);
+            tvTime.setText(bean.pushTime);
+            TitleBar titleBar = findViewById(R.id.title_bar);
+            titleBar.getCenterTextView().setText("消息详情");
+            titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+            upData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void upData() {

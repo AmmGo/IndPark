@@ -99,122 +99,126 @@ public class PieChartSHDataActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        Intent intent = getIntent();
-        timeType = intent.getIntExtra("timeType", 0);
-        String titleText = "";
-        qyid = null;
-        gyid = null;
-        popEvent = new PopEvent();
-        switch (timeType) {
-            case 0:
-                titleText = "实时数据";
-                break;
-            case 1:
-                titleText = "危险源实时数据";
-                break;
-            case 2:
-                titleText = "危险源月度数据";
-                break;
-            case 3:
-                titleText = "危险源季度数据";
-                break;
-            case 4:
-                titleText = "危险源年度数据";
-                break;
-            default:
-        }
-        TitleBar titleBar = findViewById(R.id.title_bar);
-        titleBar.getCenterTextView().setText(titleText);
-        titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-                finish();
+        try {
+            Intent intent = getIntent();
+            timeType = intent.getIntExtra("timeType", 0);
+            String titleText = "";
+            qyid = null;
+            gyid = null;
+            popEvent = new PopEvent();
+            switch (timeType) {
+                case 0:
+                    titleText = "实时数据";
+                    break;
+                case 1:
+                    titleText = "危险源实时数据";
+                    break;
+                case 2:
+                    titleText = "危险源月度数据";
+                    break;
+                case 3:
+                    titleText = "危险源季度数据";
+                    break;
+                case 4:
+                    titleText = "危险源年度数据";
+                    break;
+                default:
             }
-        });
-        tabLayout = findViewById(R.id.layout_tab_list);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                pageNum = 1;
-                pageSize = 10;
-                list.clear();
-                switch (tab.getPosition()) {
-                    case 0:
-                        //全部
-                        selectType = null;
-                        getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                        break;
-                    case 1:
-                        //高高报
-                        selectType = "1";
-                        getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                        break;
-                    case 2:
-                        //高报
-                        selectType = "2";
-                        getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                        break;
-                    case 3:
-                        //低低报
-                        selectType = "4";
-                        getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                        break;
-                    case 4:
-                        //低报
-                        selectType = "3";
-                        getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                        break;
+            TitleBar titleBar = findViewById(R.id.title_bar);
+            titleBar.getCenterTextView().setText(titleText);
+            titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                    finish();
+                }
+            });
+            tabLayout = findViewById(R.id.layout_tab_list);
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    pageNum = 1;
+                    pageSize = 10;
+                    list.clear();
+                    switch (tab.getPosition()) {
+                        case 0:
+                            //全部
+                            selectType = null;
+                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            break;
+                        case 1:
+                            //高高报
+                            selectType = "1";
+                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            break;
+                        case 2:
+                            //高报
+                            selectType = "2";
+                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            break;
+                        case 3:
+                            //低低报
+                            selectType = "4";
+                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            break;
+                        case 4:
+                            //低报
+                            selectType = "3";
+                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            break;
+
+                    }
 
                 }
 
-            }
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+                }
 
-            }
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        getEntName();
-        getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
-                refreshLayout.getLayout().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pageNum = 1;
-                        pageSize = 10;
-                        list.clear();
-                        getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                        refreshLayout.finishRefresh();
-                    }
-                }, 50);
-            }
-        });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                refreshLayout.getLayout().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pageNum += 1;
-                        getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                        if (total == 1) {
-                            refreshLayout.finishLoadMoreWithNoMoreData();
-                        } else {
-                            refreshLayout.finishLoadMore();
+                }
+            });
+            getEntName();
+            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+            refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
+                    refreshLayout.getLayout().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            pageNum = 1;
+                            pageSize = 10;
+                            list.clear();
+                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            refreshLayout.finishRefresh();
                         }
-                    }
-                }, 50);
-            }
-        });
-        initAdapter();
+                    }, 50);
+                }
+            });
+            refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                    refreshLayout.getLayout().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            pageNum += 1;
+                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            if (total == 1) {
+                                refreshLayout.finishLoadMoreWithNoMoreData();
+                            } else {
+                                refreshLayout.finishLoadMore();
+                            }
+                        }
+                    }, 50);
+                }
+            });
+            initAdapter();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void initAdapter() {
@@ -233,14 +237,19 @@ public class PieChartSHDataActivity extends BaseActivity {
         });
     }
 
+    int tagOne = 0;
+
     public void getEntName() {
         ArticlesRepo.getEnterpriseEvent().observe(this, new ApiObserver<List<EntNameEvent>>() {
             @Override
             public void onSuccess(Response<List<EntNameEvent>> response) {
                 popEvent.entNameEvents = response.getData();
                 try {
-                    if (response.getData()!=null&&response.getData().size()==1){
+                    if (response.getData() != null && response.getData().size() == 1) {
                         chooseText.setText(response.getData().get(0).name);
+                        qyid = String.valueOf(response.getData().get(0).id);
+                        getEntType(Integer.parseInt(qyid));
+                        tagOne = 1;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -250,7 +259,7 @@ public class PieChartSHDataActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code),PieChartSHDataActivity.this);
+                Util.login(String.valueOf(code), PieChartSHDataActivity.this);
             }
 
             @Override
@@ -266,12 +275,18 @@ public class PieChartSHDataActivity extends BaseActivity {
             @Override
             public void onSuccess(Response<List<EntTypeEvent>> response) {
                 popEvent.entTypeEvents = response.getData();
+                if (response.getData() != null && response.getData().size() > 0&&tagOne==1) {
+                    chooseText2.setText(response.getData().get(0).name);
+                    gyid = response.getData().get(0).id;
+                    getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                }
+
             }
 
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code),PieChartSHDataActivity.this);
+                Util.login(String.valueOf(code), PieChartSHDataActivity.this);
             }
 
             @Override
@@ -303,7 +318,7 @@ public class PieChartSHDataActivity extends BaseActivity {
                         }
                         total = 1;
                     }
-                    Log.e("危险源数据", "onSuccess: \n"+"企业ID"+id+"\n工艺类型"+tlid+"\n第几页"+pageNum+"\n一页数量"+pageSize+"\n事件跨度"+timeType+"\n事件报警类型"+type);
+                    Log.e("危险源数据", "onSuccess: \n" + "企业ID" + id + "\n工艺类型" + tlid + "\n第几页" + pageNum + "\n一页数量" + pageSize + "\n事件跨度" + timeType + "\n事件报警类型" + type);
 
 
                 }
@@ -311,7 +326,7 @@ public class PieChartSHDataActivity extends BaseActivity {
                 @Override
                 public void onFailure(int code, String msg) {
                     super.onFailure(code, msg);
-                    Util.login(String.valueOf(code),PieChartSHDataActivity.this);
+                    Util.login(String.valueOf(code), PieChartSHDataActivity.this);
                 }
 
                 @Override

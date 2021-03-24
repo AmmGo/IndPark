@@ -107,117 +107,121 @@ public class PieChartEPDataActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        Intent intent = getIntent();
-        timeType = intent.getIntExtra("type", 0);
-        String titleText = "";
-        popEvent = new PopEvent();
-        switch (timeType) {
-            case 0:
-                titleText = "实时数据";
-                break;
-            case 1:
-                titleText = "环保实时数据";
-                break;
-            case 2:
-                titleText = "环保月度实时数据";
-                break;
-            case 3:
-                titleText = "环保季度实时数据";
-                break;
-            case 4:
-                titleText = "环保年度实时数据";
-                break;
-            default:
-        }
-        TitleBar titleBar = findViewById(R.id.title_bar);
-        titleBar.getCenterTextView().setText(titleText);
-        titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
+        try {
+            Intent intent = getIntent();
+            timeType = intent.getIntExtra("type", 0);
+            String titleText = "";
+            popEvent = new PopEvent();
+            switch (timeType) {
+                case 0:
+                    titleText = "实时数据";
+                    break;
+                case 1:
+                    titleText = "环保实时数据";
+                    break;
+                case 2:
+                    titleText = "环保月度实时数据";
+                    break;
+                case 3:
+                    titleText = "环保季度实时数据";
+                    break;
+                case 4:
+                    titleText = "环保年度实时数据";
+                    break;
+                default:
             }
-        });
-        tabLayout = findViewById(R.id.layout_tab_list);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                try {
-                    pageNum = 1;
-                    pageSize = 10;
-                    list.clear();
-                    switch (tab.getPosition()) {
-                        case 0:
-                            //全部
-                            selectType = null;
-                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
-                            break;
-                        case 1:
-                            //高高报
-                            selectType = "0";
-                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
-                            break;
-                        case 2:
-                            //高报
-                            selectType = "1";
-                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
-                            break;
-                        case 3:
-                            //低低报
-                            selectType = "2";
-                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
-                            break;
-
-                    }
-                } catch (Exception e) {
-
-
+            TitleBar titleBar = findViewById(R.id.title_bar);
+            titleBar.getCenterTextView().setText(titleText);
+            titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
                 }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        getEntEp();
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
-                refreshLayout.getLayout().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+            });
+            tabLayout = findViewById(R.id.layout_tab_list);
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    try {
                         pageNum = 1;
                         pageSize = 10;
                         list.clear();
-                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
-                        refreshLayout.finishRefresh();
-                    }
-                }, 50);
-            }
-        });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                refreshLayout.getLayout().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pageNum += 1;
-                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
-                        if (total == 1) {
-                            refreshLayout.finishLoadMoreWithNoMoreData();
-                        } else {
-                            refreshLayout.finishLoadMore();
+                        switch (tab.getPosition()) {
+                            case 0:
+                                //全部
+                                selectType = null;
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                break;
+                            case 1:
+                                //高高报
+                                selectType = "0";
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                break;
+                            case 2:
+                                //高报
+                                selectType = "1";
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                break;
+                            case 3:
+                                //低低报
+                                selectType = "2";
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                break;
+
                         }
+                    } catch (Exception e) {
+
+
                     }
-                }, 50);
-            }
-        });
-        initAdapter();
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+            getEntEp();
+            refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
+                    refreshLayout.getLayout().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            pageNum = 1;
+                            pageSize = 10;
+                            list.clear();
+                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                            refreshLayout.finishRefresh();
+                        }
+                    }, 50);
+                }
+            });
+            refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                    refreshLayout.getLayout().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            pageNum += 1;
+                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                            if (total == 1) {
+                                refreshLayout.finishLoadMoreWithNoMoreData();
+                            } else {
+                                refreshLayout.finishLoadMore();
+                            }
+                        }
+                    }, 50);
+                }
+            });
+            initAdapter();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void initAdapter() {
