@@ -52,10 +52,15 @@ public interface Api {
      */
     String BASE_URL = "http://222.75.227.14:11036/";
     String BASE_URL_IMG = "http://222.75.227.14:30000/";
+    /**
+     * 外网发布
+     */
+//    String BASE_URL = "http://industry.zwhldk.com/java/";
+//    String BASE_URL_IMG = "http://industry.zwhldk.com/img/";
 //    String BASE_URL_IMG = "http://appimg.hlx.com/";
 
     /*=======登陆注册======*/
-    @POST("loginPhone")
+    @POST("/loginPhone")
     LiveData<Resource<Response<LoginResultEntity>>> login(@Body HashMap<String, String> map);
 
     /*=======环保报警======*/

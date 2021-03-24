@@ -34,6 +34,7 @@ public class TabAEPFragment extends BaseFragment {
     private String type = "2";
     private int typeData = 2;
     private LinearLayout linearLayout;
+    private EPAlarmEvent alarmEvent;
 
     @OnCheckedChanged({R.id.rg_month, R.id.rg_quarter, R.id.rg_year})
     public void OnCheckedChangeListener(CompoundButton view, boolean ischanged) {
@@ -74,21 +75,32 @@ public class TabAEPFragment extends BaseFragment {
         ArticlesRepo.getEpAlarm(ty).observe(this, new ApiObserver<EPAlarmEvent>() {
             @Override
             public void onSuccess(Response<EPAlarmEvent> response) {
-                if (response != null && response.getData() != null&&response.getData().totalNumber>0) {
+                if (response != null && response.getData() != null) {
                     try {
-                        EPAlarmEvent alarmEvent = response.getData();
-                        if (alarmEvent!=null&&alarmEvent.totalNumber>0){
-                            double[] datas = new double[]{alarmEvent.gasNumber,alarmEvent.waterNumber};
-                            String[] texts = new String[]{alarmEvent.gasNumber+","+alarmEvent.gasStr, alarmEvent.waterNumber+","+alarmEvent.waterStr};
-                            String[] strs = new String[]{alarmEvent.gasStr,alarmEvent.waterStr};
+                        alarmEvent = response.getData();
+                        if (alarmEvent != null && alarmEvent.totalNumber > 0) {
+                            double[] datas = new double[]{alarmEvent.gasNumber, alarmEvent.waterNumber};
+                            String[] texts = new String[]{alarmEvent.gasNumber + "," + alarmEvent.gasStr, alarmEvent.waterNumber + "," + alarmEvent.waterStr};
+                            String[] strs = new String[]{alarmEvent.gasStr, alarmEvent.waterStr};
                             mPieChart.setStrList(strs);
                             mPieChart.setDatas(datas);
                             mPieChart.setTexts(texts);
                             mPieChart.setMaxNum(datas.length);
-                            mPieChart.setCenterText(alarmEvent.totalNumber+",环保报警");
+                            mPieChart.setCenterText(alarmEvent.totalNumber + ",环保报警");
                             mPieChart.invalidate();
                             linearLayout.setVisibility(View.VISIBLE);
-                        }else{
+                        } else if (response.getData().totalNumber == 0) {
+                            double[] datas = new double[]{70, 30};
+                            String[] texts = new String[]{alarmEvent.gasNumber + "," + alarmEvent.gasStr, alarmEvent.waterNumber + "," + alarmEvent.waterStr};
+                            String[] strs = new String[]{alarmEvent.gasStr, alarmEvent.waterStr};
+                            mPieChart.setStrList(strs);
+                            mPieChart.setDatas(datas);
+                            mPieChart.setTexts(texts);
+                            mPieChart.setMaxNum(datas.length);
+                            mPieChart.setCenterText(alarmEvent.totalNumber + ",环保报警");
+                            mPieChart.invalidate();
+                            linearLayout.setVisibility(View.VISIBLE);
+                        } else {
                             linearLayout.setVisibility(View.GONE);
                         }
                     } catch (Exception e) {
@@ -97,7 +109,7 @@ public class TabAEPFragment extends BaseFragment {
                     }
 
                     Log.e("dafda", "onSuccess: ");
-                }else{
+                } else {
                     linearLayout.setVisibility(View.GONE);
                 }
             }
@@ -106,7 +118,7 @@ public class TabAEPFragment extends BaseFragment {
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
                 linearLayout.setVisibility(View.GONE);
-                Util.login(String.valueOf(code),getActivity());
+                Util.login(String.valueOf(code), getActivity());
             }
 
             @Override

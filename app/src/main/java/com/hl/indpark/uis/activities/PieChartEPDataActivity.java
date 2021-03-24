@@ -141,30 +141,35 @@ public class PieChartEPDataActivity extends BaseActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                pageNum = 1;
-                pageSize = 10;
-                list.clear();
-                switch (tab.getPosition()) {
-                    case 0:
-                        //全部
-                        selectType = null;
-                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
-                        break;
-                    case 1:
-                        //高高报
-                        selectType = "0";
-                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
-                        break;
-                    case 2:
-                        //高报
-                        selectType = "1";
-                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
-                        break;
-                    case 3:
-                        //低低报
-                        selectType = "2";
-                        getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
-                        break;
+                try {
+                    pageNum = 1;
+                    pageSize = 10;
+                    list.clear();
+                    switch (tab.getPosition()) {
+                        case 0:
+                            //全部
+                            selectType = null;
+                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                            break;
+                        case 1:
+                            //高高报
+                            selectType = "0";
+                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                            break;
+                        case 2:
+                            //高报
+                            selectType = "1";
+                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                            break;
+                        case 3:
+                            //低低报
+                            selectType = "2";
+                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                            break;
+
+                    }
+                } catch (Exception e) {
+
 
                 }
             }
@@ -283,41 +288,45 @@ public List<TypeEp> typeEps(String key){
         return type;
 }
     public void getEntSEP(String qyid, String pkid, int pageNum, int pageSize, int timeType, String selectType) {
-        ArticlesRepo.getEntSEPEvent(qyid, pkid, pageNum, pageSize, timeType, selectType).observe(this, new ApiObserver<EntSEPEvent>() {
-            @Override
-            public void onSuccess(Response<EntSEPEvent> response) {
-                EntSEPEvent shsEvent = response.getData();
-                selectList = new ArrayList<>();
-                selectList = shsEvent.records;
-                if (selectList != null && selectList.size() > 0) {
-                    list.addAll(selectList);
-                    adapter.setNewData(list);
-                    total = 0;
-                } else {
-                    if (list.size() <= 0) {
-                        View emptyView = getLayoutInflater().inflate(R.layout.layout_data_empty, (ViewGroup) mRcyPieData.getParent(), false);
-                        list.clear();
+        try {
+            ArticlesRepo.getEntSEPEvent(qyid, pkid, pageNum, pageSize, timeType, selectType).observe(this, new ApiObserver<EntSEPEvent>() {
+                @Override
+                public void onSuccess(Response<EntSEPEvent> response) {
+                    EntSEPEvent shsEvent = response.getData();
+                    selectList = new ArrayList<>();
+                    selectList = shsEvent.records;
+                    if (selectList != null && selectList.size() > 0) {
+                        list.addAll(selectList);
                         adapter.setNewData(list);
-                        adapter.setEmptyView(emptyView);
+                        total = 0;
+                    } else {
+                        if (list.size() <= 0) {
+                            View emptyView = getLayoutInflater().inflate(R.layout.layout_data_empty, (ViewGroup) mRcyPieData.getParent(), false);
+                            list.clear();
+                            adapter.setNewData(list);
+                            adapter.setEmptyView(emptyView);
+                        }
+                        total = 1;
                     }
-                    total = 1;
+                    Log.e("环保数据", "onSuccess: \n" + "企业ID" + qyid + "\n排口类型" + pkid + "\n第几页" + pageNum + "\n一页数量" + pageSize + "\n事件跨度" + timeType + "\n事件报警类型" + selectType);
+
                 }
-                Log.e("环保数据", "onSuccess: \n" + "企业ID" + qyid + "\n排口类型" + pkid + "\n第几页" + pageNum + "\n一页数量" + pageSize + "\n事件跨度" + timeType + "\n事件报警类型" + selectType);
 
-            }
+                @Override
+                public void onFailure(int code, String msg) {
+                    super.onFailure(code, msg);
+                    Util.login(String.valueOf(code),PieChartEPDataActivity.this);
+                }
 
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-                Util.login(String.valueOf(code),PieChartEPDataActivity.this);
-            }
+                @Override
+                public void onError(Throwable throwable) {
+                    super.onError(throwable);
 
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Subscribe

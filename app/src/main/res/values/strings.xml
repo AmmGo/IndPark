@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">园区行</string>
+    <string name="app_name">工业行</string>
     <string name="tab_home">首页</string>
     <string name="tab_monitor">监控系统</string>
     <string name="tab_maillist">通讯录</string>

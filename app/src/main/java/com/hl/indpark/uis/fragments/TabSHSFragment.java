@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieEntry;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.HSAlarmEvent;
@@ -23,9 +21,7 @@ import net.arvin.baselib.base.BaseFragment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -37,6 +33,7 @@ public class TabSHSFragment extends BaseFragment {
 
     private PieChartView mPieChart;
     private LinearLayout linearLayout;
+    private HSAlarmEvent alarmEvent;
 
     @Override
     protected int getContentView() {
@@ -51,9 +48,9 @@ public class TabSHSFragment extends BaseFragment {
         mPieChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), PieChartSHDataActivity.class);
-                intent.putExtra("timeType", Util.wxyDay);
-                startActivity(intent);
+                    Intent intent = new Intent(getActivity(), PieChartSHDataActivity.class);
+                    intent.putExtra("timeType", Util.wxyDay);
+                    startActivity(intent);
             }
         });
     }
@@ -62,41 +59,57 @@ public class TabSHSFragment extends BaseFragment {
             @Override
             public void onSuccess(Response<HSAlarmEvent> response) {
                 try {
-                    if (response != null && response.getData() != null&&response.getData().key!=null&&!response.getData().key.equals("0")) {
-                        HSAlarmEvent alarmEvent = response.getData();
-                        List<HSAlarmEvent.ValueBean> valueBeanList = new ArrayList<>();
-                        valueBeanList.addAll(alarmEvent.value);
-                        Comparator<HSAlarmEvent.ValueBean> comparator = new Comparator<HSAlarmEvent.ValueBean>() {
-                            public int compare(HSAlarmEvent.ValueBean s1, HSAlarmEvent.ValueBean s2) {
-                                // 先排年龄
-                                if (s1.num != s2.num) {
-                                    return s1.num - s2.num;
-                                } else if (s1.type != s2.type) {
-                                    // 年龄相同则按姓名排序
-                                    return s1.type - (s2.type);
-                                } else {
-                                    return 0;
+                    if (response != null && response.getData() != null&&response.getData().key!=null) {
+                        alarmEvent = response.getData();
+                        if (!response.getData().key.equals("0")){
+                            List<HSAlarmEvent.ValueBean> valueBeanList = new ArrayList<>();
+                            valueBeanList.addAll(alarmEvent.value);
+                            Comparator<HSAlarmEvent.ValueBean> comparator = new Comparator<HSAlarmEvent.ValueBean>() {
+                                public int compare(HSAlarmEvent.ValueBean s1, HSAlarmEvent.ValueBean s2) {
+                                    // 先排年龄
+                                    if (s1.num != s2.num) {
+                                        return s1.num - s2.num;
+                                    } else if (s1.type != s2.type) {
+                                        // 年龄相同则按姓名排序
+                                        return s1.type - (s2.type);
+                                    } else {
+                                        return 0;
+                                    }
                                 }
+                                ;
+                            };
+                            Collections.sort(valueBeanList, comparator);
+                            double[] datas = new double[valueBeanList.size()];
+                            String[] texts = new String[valueBeanList.size()];
+                            String[] strs = new String[valueBeanList.size()];
+                            for (int i = 0; i < valueBeanList.size(); i++) {
+                                datas[i] = valueBeanList.get(i).num;
+                                texts[i] = valueBeanList.get(i).num+","+HSAlarmEvent.getType(valueBeanList.get(i).type);
+                                strs[i] = HSAlarmEvent.getType(valueBeanList.get(i).type);
                             }
-                            ;
-                        };
-                        Collections.sort(valueBeanList, comparator);
-                        double[] datas = new double[valueBeanList.size()];
-                        String[] texts = new String[valueBeanList.size()];
-                        String[] strs = new String[valueBeanList.size()];
-                        for (int i = 0; i < valueBeanList.size(); i++) {
-                            datas[i] = valueBeanList.get(i).num;
-                            texts[i] = valueBeanList.get(i).num+","+HSAlarmEvent.getType(valueBeanList.get(i).type);
-                            strs[i] = HSAlarmEvent.getType(valueBeanList.get(i).type);
+                            mPieChart.setStrList(strs);
+                            mPieChart.setDatas(datas);
+                            mPieChart.setTexts(texts);
+                            mPieChart.setMaxNum(datas.length);
+                            mPieChart.setCenterText(alarmEvent.key+",危险源报警");
+                            mPieChart.invalidate();
+                            linearLayout.setVisibility(View.VISIBLE);
+                            Log.e("危险源统计", "onSuccess: ");
+                        }else if (response.getData().key.equals("0")){
+                            double[] datas = new double[]{35,30,15,20};
+                            String[] texts = new String[]{"0,高高报","0,高报","0,低报","0,低低报"};
+                            String[] strs = new String[]{"高高报","高报","低报","低低报"};
+                            mPieChart.setStrList(strs);
+                            mPieChart.setDatas(datas);
+                            mPieChart.setTexts(texts);
+                            mPieChart.setMaxNum(datas.length);
+                            mPieChart.setCenterText(alarmEvent.key+",危险源报警");
+                            mPieChart.invalidate();
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }else{
+                            linearLayout.setVisibility(View.GONE);
                         }
-                        mPieChart.setStrList(strs);
-                        mPieChart.setDatas(datas);
-                        mPieChart.setTexts(texts);
-                        mPieChart.setMaxNum(datas.length);
-                        mPieChart.setCenterText(alarmEvent.key+",危险源报警");
-                        mPieChart.invalidate();
-                        linearLayout.setVisibility(View.VISIBLE);
-                        Log.e("dafda", "onSuccess: ");
+
     //                    sepPieChart(alarmEvent);
                     }else{
                         linearLayout.setVisibility(View.GONE);

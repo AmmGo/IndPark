@@ -2,24 +2,14 @@ package com.hl.indpark.uis.fragments;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.HSAlarmEvent;
@@ -52,6 +42,7 @@ public class TabAHSFragment extends BaseFragment {
     private String type = "2";
     private int typeData = 2;
     private LinearLayout linearLayout;
+    private HSAlarmEvent alarmEvent;
 
     @OnCheckedChanged({R.id.rg_month, R.id.rg_quarter, R.id.rg_year})
     public void OnCheckedChangeListener(CompoundButton view, boolean ischanged) {
@@ -95,9 +86,9 @@ public class TabAHSFragment extends BaseFragment {
         mPieChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), PieChartSHDataActivity.class);
-                intent.putExtra("timeType",typeData);
-                startActivity(intent);
+                    Intent intent = new Intent(getActivity(), PieChartSHDataActivity.class);
+                    intent.putExtra("timeType",typeData);
+                    startActivity(intent);
             }
         });
     }
@@ -107,41 +98,56 @@ public class TabAHSFragment extends BaseFragment {
             @Override
             public void onSuccess(Response<HSAlarmEvent> response) {
                 try {
-                    if (response != null && response.getData() != null&&response.getData().key!=null&&!response.getData().key.equals("0")) {
-                        HSAlarmEvent alarmEvent = response.getData();
-                        List<HSAlarmEvent.ValueBean> valueBeanList = new ArrayList<>();
-                        valueBeanList.addAll(alarmEvent.value);
-                        Comparator<HSAlarmEvent.ValueBean> comparator = new Comparator<HSAlarmEvent.ValueBean>() {
-                            public int compare(HSAlarmEvent.ValueBean s1, HSAlarmEvent.ValueBean s2) {
-                                // 先排年龄
-                                if (s1.num != s2.num) {
-                                    return s1.num - s2.num;
-                                } else if (s1.type != s2.type) {
-                                    // 年龄相同则按姓名排序
-                                    return s1.type - (s2.type);
-                                } else {
-                                    return 0;
+                    if (response != null && response.getData() != null&&response.getData().key!=null) {
+                        alarmEvent = response.getData();
+                        if (!response.getData().key.equals("0")){
+                            List<HSAlarmEvent.ValueBean> valueBeanList = new ArrayList<>();
+                            valueBeanList.addAll(alarmEvent.value);
+                            Comparator<HSAlarmEvent.ValueBean> comparator = new Comparator<HSAlarmEvent.ValueBean>() {
+                                public int compare(HSAlarmEvent.ValueBean s1, HSAlarmEvent.ValueBean s2) {
+                                    // 先排年龄
+                                    if (s1.num != s2.num) {
+                                        return s1.num - s2.num;
+                                    } else if (s1.type != s2.type) {
+                                        // 年龄相同则按姓名排序
+                                        return s1.type - (s2.type);
+                                    } else {
+                                        return 0;
+                                    }
                                 }
+                                ;
+                            };
+                            Collections.sort(valueBeanList, comparator);
+                            double[] datas = new double[valueBeanList.size()];
+                            String[] texts = new String[valueBeanList.size()];
+                            String[] strs = new String[valueBeanList.size()];
+                            for (int i = 0; i < valueBeanList.size(); i++) {
+                                datas[i] = valueBeanList.get(i).num;
+                                texts[i] = valueBeanList.get(i).num+","+HSAlarmEvent.getType(valueBeanList.get(i).type);
+                                strs[i] = HSAlarmEvent.getType(valueBeanList.get(i).type);
                             }
-                            ;
-                        };
-                        Collections.sort(valueBeanList, comparator);
-                        double[] datas = new double[valueBeanList.size()];
-                        String[] texts = new String[valueBeanList.size()];
-                        String[] strs = new String[valueBeanList.size()];
-                        for (int i = 0; i < valueBeanList.size(); i++) {
-                            datas[i] = valueBeanList.get(i).num;
-                            texts[i] = valueBeanList.get(i).num+","+HSAlarmEvent.getType(valueBeanList.get(i).type);
-                            strs[i] = HSAlarmEvent.getType(valueBeanList.get(i).type);
+                            mPieChart.setStrList(strs);
+                            mPieChart.setDatas(datas);
+                            mPieChart.setTexts(texts);
+                            mPieChart.setMaxNum(datas.length);
+                            mPieChart.setCenterText(alarmEvent.key+",危险源报警");
+                            mPieChart.invalidate();
+                            Log.e("dafda", "onSuccess: ");
+                            linearLayout.setVisibility(View.VISIBLE);
+                        } else if (response.getData().key.equals("0")){
+                            double[] datas = new double[]{35,30,15,20};
+                            String[] texts = new String[]{"0,高高报","0,高报","0,低报","0,低低报"};
+                            String[] strs = new String[]{"高高报","高报","低报","低低报"};
+                            mPieChart.setStrList(strs);
+                            mPieChart.setDatas(datas);
+                            mPieChart.setTexts(texts);
+                            mPieChart.setMaxNum(datas.length);
+                            mPieChart.setCenterText(alarmEvent.key+",危险源报警");
+                            mPieChart.invalidate();
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }else{
+                            linearLayout.setVisibility(View.GONE);
                         }
-                        mPieChart.setStrList(strs);
-                        mPieChart.setDatas(datas);
-                        mPieChart.setTexts(texts);
-                        mPieChart.setMaxNum(datas.length);
-                        mPieChart.setCenterText(alarmEvent.key+",危险源报警");
-                        mPieChart.invalidate();
-                        Log.e("dafda", "onSuccess: ");
-                        linearLayout.setVisibility(View.VISIBLE);
     //                    sepPieChart(alarmEvent);
                     }else{
                         linearLayout.setVisibility(View.GONE);

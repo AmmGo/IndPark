@@ -238,6 +238,13 @@ public class PieChartSHDataActivity extends BaseActivity {
             @Override
             public void onSuccess(Response<List<EntNameEvent>> response) {
                 popEvent.entNameEvents = response.getData();
+                try {
+                    if (response.getData()!=null&&response.getData().size()==1){
+                        chooseText.setText(response.getData().get(0).name);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -276,42 +283,46 @@ public class PieChartSHDataActivity extends BaseActivity {
     }
 
     public void getEntSHS(String id, String tlid, int pageNum, int pageSize, int timeType, String type) {
-        ArticlesRepo.getEntSHSEvent(id, tlid, pageNum, pageSize, timeType, type).observe(this, new ApiObserver<EntSHSEvent>() {
-            @Override
-            public void onSuccess(Response<EntSHSEvent> response) {
-                EntSHSEvent shsEvent = response.getData();
-                selectList = new ArrayList<>();
-                selectList = shsEvent.records;
-                if (selectList != null && selectList.size() > 0) {
-                    list.addAll(selectList);
-                    adapter.setNewData(list);
-                    total = 0;
-                } else {
-                    if (list.size() <= 0) {
-                        View emptyView = getLayoutInflater().inflate(R.layout.layout_data_empty, (ViewGroup) mRcyPieData.getParent(), false);
-                        list.clear();
+        try {
+            ArticlesRepo.getEntSHSEvent(id, tlid, pageNum, pageSize, timeType, type).observe(this, new ApiObserver<EntSHSEvent>() {
+                @Override
+                public void onSuccess(Response<EntSHSEvent> response) {
+                    EntSHSEvent shsEvent = response.getData();
+                    selectList = new ArrayList<>();
+                    selectList = shsEvent.records;
+                    if (selectList != null && selectList.size() > 0) {
+                        list.addAll(selectList);
                         adapter.setNewData(list);
-                        adapter.setEmptyView(emptyView);
+                        total = 0;
+                    } else {
+                        if (list.size() <= 0) {
+                            View emptyView = getLayoutInflater().inflate(R.layout.layout_data_empty, (ViewGroup) mRcyPieData.getParent(), false);
+                            list.clear();
+                            adapter.setNewData(list);
+                            adapter.setEmptyView(emptyView);
+                        }
+                        total = 1;
                     }
-                    total = 1;
+                    Log.e("危险源数据", "onSuccess: \n"+"企业ID"+id+"\n工艺类型"+tlid+"\n第几页"+pageNum+"\n一页数量"+pageSize+"\n事件跨度"+timeType+"\n事件报警类型"+type);
+
+
                 }
-                Log.e("危险源数据", "onSuccess: \n"+"企业ID"+id+"\n工艺类型"+tlid+"\n第几页"+pageNum+"\n一页数量"+pageSize+"\n事件跨度"+timeType+"\n事件报警类型"+type);
 
+                @Override
+                public void onFailure(int code, String msg) {
+                    super.onFailure(code, msg);
+                    Util.login(String.valueOf(code),PieChartSHDataActivity.this);
+                }
 
-            }
+                @Override
+                public void onError(Throwable throwable) {
+                    super.onError(throwable);
 
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-                Util.login(String.valueOf(code),PieChartSHDataActivity.this);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Subscribe
