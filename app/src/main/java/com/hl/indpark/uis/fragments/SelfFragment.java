@@ -86,12 +86,13 @@ public class SelfFragment extends BaseFragment {
         } else {
             ll_wd_shenp.setVisibility(View.VISIBLE);
         }
-        getNewHide();
+
     }
 
     @Override
     public void onResume() {
         initData();
+        getNewHide();
         super.onResume();
     }
 
@@ -117,16 +118,33 @@ public class SelfFragment extends BaseFragment {
             }
         });
     }
+    public void getNewHide(){
+        ArticlesRepo.getMsgRead().observe(this, new ApiObserver<String>() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                if (response.getData() != null && !response.getData().equals("")) {
+                    if (response.getData().equals("0")) {
+                        imgNewMsg.setVisibility(View.GONE);
+                    } else {
+                        imgNewMsg.setVisibility(View.VISIBLE);
+                    }
+                }
+                Log.e("未读消息", "onSuccess: " + response.getData());
+            }
 
-    public void getNewHide() {
-        msgNum = SharePreferenceUtil.getKeyValue("msgNum");
-        if (msgNum!=null&& !msgNum.equals("")&& !msgNum.equals("0")){
-            imgNewMsg.setVisibility(View.VISIBLE);
-        }else{
-            imgNewMsg.setVisibility(View.GONE);
-        }
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+                Util.login(String.valueOf(code), getActivity());
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+
+            }
+        });
     }
-
     public void initViewData(UserInfoEvent user) {
         tvName.setText(user.nickName);
         tvPhone.setText(user.phone);

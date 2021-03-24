@@ -286,9 +286,11 @@ public class EventsReportActivity extends BaseActivity {
                                             .openGallery(PictureMimeType.ofImage())
                                             .isCamera(false)
                                             .minimumCompressSize(100)// 是否压缩
-                                            .compress(true)
+                                            .isCompress(true)
                                             .maxSelectNum(6)
                                             .selectionData(mediaList)
+                                            .synOrAsy(false)
+                                            .compressQuality(60)
                                             .loadImageEngine(GlideEngine.createGlideEngine())
                                             .selectionMode(PictureConfig.MULTIPLE)
                                             .forResult(PictureConfig.CHOOSE_REQUEST);

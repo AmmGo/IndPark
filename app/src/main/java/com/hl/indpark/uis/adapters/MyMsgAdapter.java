@@ -4,7 +4,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.events.MyMsgEvent;
-import com.hl.indpark.entities.events.MyPeportEvent;
 
 import java.util.List;
 
@@ -23,6 +22,11 @@ public class MyMsgAdapter extends BaseQuickAdapter<MyMsgEvent.RecordsBean, BaseV
 
             holder.setText(R.id.tv_content, item.name);
             holder.setText(R.id.tv_time, item.pushTime);
+            if (item.read==0){
+                holder.setGone(R.id.tv_red,true);
+            }else{
+                holder.setGone(R.id.tv_red,false);
+            }
 
     }
 

@@ -1,5 +1,6 @@
 package com.hl.indpark.uis.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,8 +26,6 @@ public class MyMsgIdActivity extends BaseActivity {
     @BindView(R.id.tv_time)
     TextView tvTime;
     private MyMsgEvent.RecordsBean bean;
-
-
     @Override
     protected int getContentView() {
         return R.layout.activity_my_msg_id;
@@ -51,7 +50,12 @@ public class MyMsgIdActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("T", bean.id);
+        setResult(2, intent);
+        finish();
+    }
     public void upData() {
         Map<String, String> paramMap1 = new HashMap<>();
         paramMap1.put("id", String.valueOf(bean.id));

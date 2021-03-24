@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +41,7 @@ public class MyMsgActivity extends BaseActivity {
     @BindView(R.id.recy_my_approval)
     RecyclerView recyclerView;
     private int pageNum = 1;
-    private int pageSize = 10;
+    private int pageSize = 20;
     private int total = 0;
     @BindView(R.id.refreshLayout)
     RefreshLayout refreshLayout;
@@ -52,6 +53,15 @@ public class MyMsgActivity extends BaseActivity {
     @Override
     protected int getContentView() {
         return R.layout.activity_my_msg;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+//        pageNum = 1;
+//        pageSize = 20;
+//        list.clear();
+//        getData(pageNum, pageSize);
     }
 
     @Override
@@ -72,7 +82,7 @@ public class MyMsgActivity extends BaseActivity {
                     @Override
                     public void run() {
                         pageNum = 1;
-                        pageSize = 10;
+                        pageSize = 20;
                         list.clear();
                         getData(pageNum, pageSize);
                         refreshLayout.finishRefresh();
@@ -94,7 +104,7 @@ public class MyMsgActivity extends BaseActivity {
                             refreshLayout.finishLoadMore();
                         }
                     }
-                }, 50);
+                }, 0);
             }
         });
         initAdapter();
@@ -111,15 +121,31 @@ public class MyMsgActivity extends BaseActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 try {
-                    MyMsgEvent.RecordsBean msgBean = ( MyMsgEvent.RecordsBean ) myList.get(position);
-                    Intent intent=new Intent(MyMsgActivity.this,MyMsgIdActivity.class);
+                    MyMsgEvent.RecordsBean msgBean = (MyMsgEvent.RecordsBean) list.get(position);
+                    Intent intent = new Intent(MyMsgActivity.this, MyMsgIdActivity.class);
                     intent.putExtra("Extra_data", msgBean);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 2) {
+            int resultId = data.getIntExtra("T", 0);
+            Log.e("返回成功", "onActivityResult: " + resultId);
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).id == resultId) {
+                    list.get(i).read = 1;
+                }
+            }
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
     public void getData(int pageNum, int pageSize) {
@@ -148,7 +174,7 @@ public class MyMsgActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code),MyMsgActivity.this);
+                Util.login(String.valueOf(code), MyMsgActivity.this);
             }
 
             @Override
