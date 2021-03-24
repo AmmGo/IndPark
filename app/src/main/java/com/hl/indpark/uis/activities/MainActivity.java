@@ -36,7 +36,7 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
 
     /**
      * 极光推送别名为UID
-     * 极光推送Tag为UID和企业ID
+     * 极光推送Tag为UID和企业ID 
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
