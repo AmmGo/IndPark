@@ -11,27 +11,32 @@ import com.hl.indpark.uis.activities.videoactivities.Constants;
 import com.hl.indpark.uis.activities.videoactivities.Main2Activity;
 
 public class OpenDuoCallReceiver extends BroadcastReceiver {
-    private static final String TAG = OpenDuoCallReceiver.class.getSimpleName();
+    private static final String TAG = "视频监听";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String subscriber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
-        Log.d(TAG, "PROCESS_OUT_GOING_CALL received, Phone number: " + subscriber);
-
+        Log.e(TAG, "PROCESS_OUT_GOING_CALL received, Phone number: " + subscriber);
 
         if (shouldIntercept(context, subscriber)) {
-            if (false) { // DialerActivity.running == true
-                Intent agIntent = new Intent(context, Main2Activity.class);
-                agIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                agIntent.putExtra(Constants.CS_KEY_SUBSCRIBER, subscriber);
-                context.startActivity(agIntent);
-            } else {
-                Intent agIntent = new Intent(context, Main2Activity.class);
-                agIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                context.startActivity(agIntent);
-            }
+            Intent agIntent = new Intent(context, Main2Activity.class);
+            agIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            context.startActivity(agIntent);
             setResultData(null);
         }
+//        if (shouldIntercept(context, subscriber)) {
+//            if (false) { // DialerActivity.running == true
+//                Intent agIntent = new Intent(context, Main2Activity.class);
+//                agIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                agIntent.putExtra(Constants.CS_KEY_SUBSCRIBER, subscriber);
+//                context.startActivity(agIntent);
+//            } else {
+//                Intent agIntent = new Intent(context, Main2Activity.class);
+//                agIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                context.startActivity(agIntent);
+//            }
+//            setResultData(null);
+//        }
     }
 
     private boolean shouldIntercept(Context context, String phoneNumber) {

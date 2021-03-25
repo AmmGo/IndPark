@@ -25,6 +25,7 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.permission.DefaultResourceProvider;
 import com.hl.indpark.uis.activities.videoactivities.Main2Activity;
 import com.hl.indpark.utils.CharacterParser;
 import com.hl.indpark.utils.ContactsSortAdapter;
@@ -37,6 +38,7 @@ import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseFragment;
 import net.arvin.baselib.utils.ToastUtil;
+import net.arvin.permissionhelper.PermissionUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,6 +82,12 @@ public class MailListFragment extends BaseFragment {
         initView();
         initListener();
         getData();
+        initPermissionConfig();
+    }
+    private PermissionUtil permissionUtil;
+    private void initPermissionConfig() {
+        PermissionUtil.setPermissionTextProvider(new DefaultResourceProvider());
+        permissionUtil = new PermissionUtil.Builder().with(this).build();
     }
 
     public void getData() {
@@ -191,7 +199,20 @@ public class MailListFragment extends BaseFragment {
                                 getContext().startActivity(intent);
                                 break;
                             case 1:
-                                startCall(sortModel.userId);
+                                permissionUtil.request("需要权限", PermissionUtil.asArray(      Manifest.permission.RECORD_AUDIO,
+                                        Manifest.permission.CAMERA,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                        Manifest.permission.CALL_PHONE,
+                                        Manifest.permission.READ_CALL_LOG,
+                                        Manifest.permission.WRITE_CALL_LOG), new PermissionUtil.RequestPermissionListener() {
+                                    @Override
+                                    public void callback(boolean granted, boolean isAlwaysDenied) {
+                                        if (granted) {
+                                            startCall(sortModel.userId);
+                                        }
+                                    }
+                                });
+
                                 break;
                             default:
                                 break;

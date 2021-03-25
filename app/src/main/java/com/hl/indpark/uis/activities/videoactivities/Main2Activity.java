@@ -61,7 +61,7 @@ public class Main2Activity extends BaseCallActivity {
         gotoDialerActivity();
         Log.e("呼叫对方Id", "onSuccess: "+id);
         if (count==0){
-            ToastUtil.showToast(Main2Activity.this, "对方不在线");
+//            ToastUtil.showToast(Main2Activity.this, "对方不在线");
             Log.e("对方不在线", "count: "+count);
             finish();
         }

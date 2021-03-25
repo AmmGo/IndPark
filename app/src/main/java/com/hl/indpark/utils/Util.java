@@ -60,6 +60,13 @@ public class Util {
             App.closeAllActivityByMap();
             Intent intent = new Intent(activity, LoginActivity.class);
             activity.startActivity(intent);
+        }else if (code.equals("10016")){
+            ToastUtil.showToast(activity, "你的账号已在别处登录");
+            activity.finish();
+            SharePreferenceUtil.clearAllValue(activity);
+            App.closeAllActivityByMap();
+            Intent intent = new Intent(activity, LoginActivity.class);
+            activity.startActivity(intent);
         }
 
     }

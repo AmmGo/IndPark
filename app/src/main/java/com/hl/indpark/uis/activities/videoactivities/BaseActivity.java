@@ -82,7 +82,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IEventLi
     @Override
     public void onStop() {
         super.onStop();
-        removeEventListener(this);
+//        removeEventListener(this);
     }
 
     public App application() {

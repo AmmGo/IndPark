@@ -6,7 +6,6 @@ import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.hl.indpark.App;
@@ -18,8 +17,6 @@ import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.utils.WeakHandler;
-
-import java.util.List;
 
 import io.agora.rtm.ErrorInfo;
 import io.agora.rtm.ResultCallback;
@@ -36,7 +33,7 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
 
     /**
      * 极光推送别名为UID
-     * 极光推送Tag为UID和企业ID 
+     * 极光推送Tag为UID和企业ID
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {

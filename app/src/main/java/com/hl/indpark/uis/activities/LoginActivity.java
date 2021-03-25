@@ -1,5 +1,6 @@
 package com.hl.indpark.uis.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import com.hl.indpark.entities.LoginResultEntity;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.UserRepo;
+import com.hl.indpark.permission.DefaultResourceProvider;
 import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.ClearWriteEditText;
@@ -21,6 +23,7 @@ import com.hl.indpark.widgit.ClearWriteEditText;
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.DialogUtil;
 import net.arvin.baselib.utils.ToastUtil;
+import net.arvin.permissionhelper.PermissionUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,8 +48,29 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.btn_login).setOnClickListener(this);
         findViewById(R.id.img_see_pwd).setOnClickListener(this);
         dialogUtil = new DialogUtil(this);
+        initPermissionConfig();
     }
+    private PermissionUtil permissionUtil;
 
+    private void initPermissionConfig() {
+        PermissionUtil.setPermissionTextProvider(new DefaultResourceProvider());
+        permissionUtil = new PermissionUtil.Builder().with(this).build();
+        permissionUtil.request("需要权限", PermissionUtil.asArray(      Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_CALL_LOG,
+                Manifest.permission.WRITE_CALL_LOG,
+                Manifest.permission.RECEIVE_BOOT_COMPLETED,
+                Manifest.permission.ACCESS_COARSE_LOCATION), new PermissionUtil.RequestPermissionListener() {
+            @Override
+            public void callback(boolean granted, boolean isAlwaysDenied) {
+                if (granted) {
+                }
+            }
+        });
+    }
     int pwd = 0;
 
     @Override

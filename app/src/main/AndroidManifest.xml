@@ -30,7 +30,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
     <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
@@ -49,11 +49,15 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="54bc2346c637e4f12e19667a75caa6b6"/>
-        <service android:name="com.amap.api.location.APSService"></service>
-        <activity android:name=".uis.activities.MyMsgIdActivity"></activity>
-        <activity android:name=".uis.activities.AboutActivity" />
-        <activity android:name=".uis.activities.MeActivity" />
-        <activity android:name=".uis.activities.SetUpActivity" />
+        <service android:name="com.amap.api.location.APSService"/>
+        <activity android:name=".uis.activities.MyMsgIdActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".uis.activities.AboutActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".uis.activities.MeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".uis.activities.SetUpActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".uis.activities.SplashActivity"
             android:theme="@style/AppTheme">
@@ -120,8 +124,10 @@
 
         <activity
             android:name=".uis.activities.videoactivities.CallActivity"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
             android:noHistory="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".uis.activities.videoactivities.VideoActivity"
             android:screenOrientation="portrait" />

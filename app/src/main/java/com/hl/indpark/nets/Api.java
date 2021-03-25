@@ -43,6 +43,8 @@ public interface Api {
     /**
      * java测试*/
 //    String BASE_URL = "http://192.168.119.237:11035/";
+//        String BASE_JAVA = "";
+//        String BASE_URL_IMG = "http://appimg.hlx.com/";
     /**
      * 内网服务
      */
@@ -54,6 +56,7 @@ public interface Api {
      */
 //    String BASE_URL = "http://222.75.227.14:11036/";
 //    String BASE_URL_IMG = "http://222.75.227.14:30000/";
+    //    String BASE_JAVA = "";
     /**
      * 外网发布
      */
