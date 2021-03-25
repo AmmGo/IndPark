@@ -77,6 +77,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
+                Util.hideInputManager(LoginActivity.this, v);
                 login();
 //                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 break;

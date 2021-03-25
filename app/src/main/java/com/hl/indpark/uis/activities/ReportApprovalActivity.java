@@ -73,6 +73,7 @@ public class ReportApprovalActivity extends BaseActivity {
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.tv_report:
+                Util.hideInputManager(ReportApprovalActivity.this, v);
                 String edOnte = editOnte.getText().toString().trim().replaceAll(" ", "");
                 if (edOnte != null && !edOnte.equals("")) {
                     updataData();

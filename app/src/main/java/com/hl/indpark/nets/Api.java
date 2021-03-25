@@ -57,7 +57,7 @@ public interface Api {
      */
 //    String BASE_URL = "http://222.75.227.14:11036/";
 //    String BASE_URL_IMG = "http://222.75.227.14:30000/";
-    //    String BASE_JAVA = "";
+//        String BASE_JAVA = "";
     /**
      * 外网发布
      */
@@ -178,6 +178,6 @@ public interface Api {
     /**
      * 版本更新
      */
-    @GET(BASE_JAVA + "/appmanagement/list")
+    @GET(BASE_JAVA + "/appmanagement/newest")
     LiveData<Resource<Response<UpdateVersion>>> getUpdateVersion(@Query("version") String version);
 }

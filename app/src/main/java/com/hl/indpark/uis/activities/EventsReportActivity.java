@@ -106,6 +106,7 @@ public class EventsReportActivity extends BaseActivity {
                 addImageDialog(PHOTO, PHOTOLIB);
                 break;
             case R.id.tv_report:
+                Util.hideInputManager(EventsReportActivity.this, v);
 //                getUpdateUserImg(uploadFile.get(0));
 //                getUploadEvent();
                 uploadTvType = tvType.getText().toString().replaceAll(" ", "");
