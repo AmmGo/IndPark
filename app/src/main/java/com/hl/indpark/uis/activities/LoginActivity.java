@@ -2,6 +2,7 @@ package com.hl.indpark.uis.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -54,7 +55,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void initPermissionConfig() {
         PermissionUtil.setPermissionTextProvider(new DefaultResourceProvider());
-        permissionUtil = new PermissionUtil.Builder().with(this).build();
+        permissionUtil = new PermissionUtil.Builder()
+                .with(this)//必传：可使用FragmentActivity或v4.Fragment实例
+                .setTitleText("提示")//弹框标题
+                .setEnsureBtnText("确定")//权限说明弹框授权按钮文字
+                .setCancelBtnText("取消")//权限说明弹框取消授权按钮文字
+                .setSettingEnsureText("设置")//打开设置说明弹框打开按钮文字
+                .setSettingCancelText("取消")//打开设置说明弹框关闭按钮文字
+                .setSettingMsg("当前应用缺少必要权限。\n请点击\"设置\"-\"权限\"-打开所需权限。")//打开设置说明弹框内容文字
+                .setInstallAppMsg("允许安装来自此来源的应用")//打开允许安装此来源的应用设置
+                .setShowRequest(true)//是否显示申请权限弹框
+                .setShowSetting(true)//是否显示设置弹框
+                .setShowInstall(true)//是否显示允许安装此来源弹框
+                .setRequestCancelable(true)//申请权限说明弹款是否cancelable
+                .setSettingCancelable(true)//打开设置界面弹款是否cancelable
+                .setInstallCancelable(true)//打开允许安装此来源引用弹款是否cancelable
+                .setTitleColor(Color.BLACK)//弹框标题文本颜色
+                .setMsgColor(Color.GRAY)//弹框内容文本颜色
+                .setEnsureBtnColor(Color.BLACK)//弹框确定文本颜色
+                .setCancelBtnColor(Color.BLACK)//弹框取消文本颜色
+                .build();
         permissionUtil.request("需要权限", PermissionUtil.asArray(      Manifest.permission.RECORD_AUDIO,
                 Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,

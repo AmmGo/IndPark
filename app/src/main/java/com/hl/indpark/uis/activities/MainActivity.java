@@ -2,6 +2,7 @@ package com.hl.indpark.uis.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -27,6 +28,7 @@ import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.videoactivities.BaseCallActivity;
 import com.hl.indpark.uis.fragments.MainFragment;
 import com.hl.indpark.utils.JPushUtils;
+import com.hl.indpark.utils.ScreenReceiver;
 import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.utils.ToastUtil;
@@ -47,6 +49,7 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
     private String version;
     private UpdateVersion versionUpdate;
     private String versionNum;
+    private ScreenReceiver screenReceiver;
 
     /**
      * 极光推送别名为UID
@@ -56,6 +59,8 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // 保活，监控关屏幕
+        registerReceiver();
         JPushUtils.requestPermission(this);
         JPushUtils.getRegistrationID();
         JPushUtils.bindAlias(Util.getUserId());
@@ -93,7 +98,13 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
         }
         getDataUpdate();
     }
-
+    private void registerReceiver() {
+        screenReceiver = new ScreenReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(screenReceiver, intentFilter);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -265,5 +276,11 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
     @Override
     public void onButtonClick(int id) {
 
+    }
+
+    @Override
+    public void onDestroy() {
+       super.onDestroy();
+        unregisterReceiver(screenReceiver);
     }
 }
