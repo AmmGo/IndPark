@@ -19,6 +19,7 @@ import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
 import com.hl.indpark.entities.events.SelfReportEvent;
+import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.Net;
 
@@ -129,4 +130,8 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<String>>> getMsgRead() {
         return Net.api().getMspRead();
     }
+    public static LiveData<Resource<Response<UpdateVersion>>> getUpdateVersion(String id) {
+        return Net.api().getUpdateVersion(id);
+    }
+
 }

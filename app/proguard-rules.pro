@@ -202,6 +202,9 @@
     -keep class com.amap.api.navi.**{*;}
     -keep class com.autonavi.**{*;}
 
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Service
 #----------------------------------第三方包--结束--------------------------
 
 #---------------------------------一些不要混淆的代码--开始-------------------

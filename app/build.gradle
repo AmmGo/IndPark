@@ -103,8 +103,8 @@ dependencies {
     //时间选择器
     implementation 'com.contrarywind:Android-PickerView:3.2.4'
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
-
-
+    implementation 'com.azhon:appupdate:2.5.0'
+    implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
     //高德
     implementation 'com.amap.api:location:latest.integration'
 }

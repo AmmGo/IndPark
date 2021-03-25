@@ -1,6 +1,8 @@
 package com.hl.indpark.uis.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
@@ -10,6 +12,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.hl.indpark.App;
 import com.hl.indpark.R;
+import com.hl.indpark.entities.Response;
+import com.hl.indpark.entities.events.UpdateVersion;
+import com.hl.indpark.nets.ApiObserver;
+import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.videoactivities.BaseCallActivity;
 import com.hl.indpark.uis.fragments.MainFragment;
 import com.hl.indpark.utils.JPushUtils;
@@ -30,6 +36,7 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
     private WeakHandler handler;
     private boolean canQuit = false;
     protected int statusBarHeight;
+    private String version;
 
     /**
      * 极光推送别名为UID
@@ -68,6 +75,12 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
                 Log.e("main", "rtm client login failed:" + errorInfo.getErrorDescription());
             }
         });
+        try {
+            String versionNum = getVersionName();
+            Log.e("版本号", "当前版本"+versionNum );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -85,7 +98,34 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
         }
         super.onBackPressed();
     }
+    private String getVersionName() throws Exception {
+        // 获取packagemanager的实例
+        PackageManager packageManager = getPackageManager();
+        // getPackageName()是你当前类的包名，0代表是获取版本信息
+        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
+        version = packInfo.versionName;
+        return version;
+    }
+    public void getData() {
+        ArticlesRepo.getUpdateVersion(String.valueOf(version)).observe(this, new ApiObserver<UpdateVersion>() {
+            @Override
+            public void onSuccess(Response<UpdateVersion> response) {
+                Log.e("当前版本", "onSuccess: ");
+            }
 
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+                Util.login(String.valueOf(code), MainActivity.this);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+
+            }
+        });
+    }
     @Override
     public void handleMessage(Message msg) {
         switch (msg.what) {

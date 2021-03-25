@@ -21,6 +21,7 @@ import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
 import com.hl.indpark.entities.events.SelfReportEvent;
+import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
 
 import java.util.HashMap;
@@ -173,4 +174,10 @@ public interface Api {
     /*=======消息未读数量======*/
     @GET(BASE_JAVA + "/push/read/")
     LiveData<Resource<Response<String>>> getMspRead();
+
+    /**
+     * 版本更新
+     */
+    @GET(BASE_JAVA + "/appmanagement/list")
+    LiveData<Resource<Response<UpdateVersion>>> getUpdateVersion(@Query("version") String version);
 }
