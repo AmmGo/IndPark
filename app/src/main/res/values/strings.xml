@@ -14,8 +14,8 @@
     <string name="agora_app_id">56f642fe4ced4db995deadd973060309</string>
     <string name="agora_access_token" translatable="false"></string>
     <!-- Calling Activity -->
-    <string name="receiving_call">邀请视频通话&#8230;</string>
-    <string name="calling_out">正在等待对方接受邀请&#8230;</string>
+    <string name="receiving_call">接收来电...&#8230;</string>
+    <string name="calling_out">拨叫中...&#8230;</string>
     <!-- Dial Activity -->
     <string name="incomplete_dial_number">The number you dialed is incomplete</string>
     <string name="peer_not_online">对方不在线</string>
