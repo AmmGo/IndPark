@@ -52,9 +52,8 @@ public class CallActivity extends BaseCallActivity implements View.OnClickListen
         startRinging();
         initStatusBarHeight();
         WindowUtil.hideWindowStatusBar(getWindow());
-
+        Log.e(TAG, "onCreate: 开始" );
     }
-
     private void initStatusBarHeight() {
         statusBarHeight = WindowUtil.getSystemStatusBarHeight(this);
     }
@@ -197,13 +196,30 @@ public class CallActivity extends BaseCallActivity implements View.OnClickListen
     @Override
     public void onStart() {
         super.onStart();
+        Log.e(TAG, "onStart: 开始" );
         mAnimator.start();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.e(TAG, "onRestart: 再次进入" );
+        super.onRestart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        Log.e(TAG, "onStart: 暂停" );
+        finish();
         mAnimator.stop();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.e(TAG, "onDestroy: 结束");
+        super.onDestroy();
+        mAnimator.stop();
+        finish();
     }
 
     @Override

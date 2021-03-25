@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.provider.CallLog;
 import android.util.Log;
 
+import com.hl.indpark.uis.activities.MainActivity;
+import com.hl.indpark.uis.activities.videoactivities.CallActivity;
 import com.hl.indpark.uis.activities.videoactivities.Constants;
 import com.hl.indpark.uis.activities.videoactivities.Main2Activity;
 
@@ -19,9 +21,10 @@ public class OpenDuoCallReceiver extends BroadcastReceiver {
         Log.e(TAG, "PROCESS_OUT_GOING_CALL received, Phone number: " + subscriber);
 
         if (shouldIntercept(context, subscriber)) {
-            Intent agIntent = new Intent(context, Main2Activity.class);
+            Intent agIntent = new Intent(context, MainActivity.class);
             agIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             context.startActivity(agIntent);
+            Log.e(TAG, "OpenDouCall" + subscriber);
             setResultData(null);
         }
 //        if (shouldIntercept(context, subscriber)) {

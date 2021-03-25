@@ -130,9 +130,6 @@
 
         <activity
             android:name=".uis.activities.videoactivities.CallActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.videoactivities.VideoActivity"

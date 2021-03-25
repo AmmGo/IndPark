@@ -149,7 +149,7 @@ public abstract class BaseCallActivity extends BaseRtcActivity implements RtmCha
     @Override
     public void onLocalInvitationAccepted(LocalInvitation localInvitation, String response) {
         Log.i("BaseActivity", "onLocalInvitationAccepted by peer:" + localInvitation.getCalleeId());
-        gotoVideoActivity(localInvitation.getContent(), localInvitation.getCalleeId());
+        gotoVideoActivity(localInvitation.getChannelId(), localInvitation.getCalleeId());
     }
 
     @Override
