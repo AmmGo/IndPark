@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -24,14 +23,11 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
-import com.hl.indpark.utils.JPushUtils;
 import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.widgets.TitleBar;
-
-import static com.hl.indpark.entities.events.EventType.TYPE_BIND_ALIAS;
 
 public class AboutActivity extends BaseActivity implements OnButtonClickListener {
 
@@ -100,8 +96,8 @@ public class AboutActivity extends BaseActivity implements OnButtonClickListener
                 Log.e("当前版本1更新2不更新", "onSuccess: " + response.getData().status);
                 try {
                     if (versionUpdate != null) {
-                        if (versionUpdate.status == 1) {
-                            if (versionUpdate.needed == 1) {
+                        if (versionUpdate.needed == 1) {
+                            if (versionUpdate.status == 1) {
                                 isforce = true;
                             }else{
                                 isforce = false;

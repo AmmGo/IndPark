@@ -30,7 +30,6 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
-import com.hl.indpark.uis.activities.MainActivity;
 import com.hl.indpark.uis.activities.MyMsgActivity;
 import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.utils.Util;
@@ -241,8 +240,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     /**
-     * status 1更新 2不更新
-     * needed 1强制 2不强制
+     * status 1强制 2不强制
+     * needed 1更新 2不更新
      */
     boolean isforce = false;
     public void getDataVersion() {
@@ -256,8 +255,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 //                versionUpdate.needed =2;
                     Log.e("当前版本1更新2不更新", "onSuccess: " + response.getData().status);
                     if (versionUpdate != null) {
-                        if (versionUpdate.status == 1) {
-                            if (versionUpdate.needed == 1) {
+                        if (versionUpdate.needed == 1) {
+                            if (versionUpdate.status == 1) {
                                 if (versionUpdate.fileUrl.contains(".apk")){
                                     isforce = true;
                                     startUpdate(isforce,versionUpdate.fileUrl);

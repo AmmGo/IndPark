@@ -131,8 +131,8 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
     }
 
     /**
-     * status 1更新 2不更新
-     * needed 1强制 2不强制
+     * status 1强制 2不强制
+     * needed 1更新 2不更新
      */
     boolean isforce = false;
 
@@ -148,8 +148,8 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
 //                    versionUpdate.needed = 2;
 //                    versionUpdate.fileUrl ="https://www.pgyer.com/ZrcR";
                     if (versionUpdate != null) {
-                        if (versionUpdate.status == 1) {
-                            if (versionUpdate.needed != 1) {
+                        if (versionUpdate.needed == 1) {
+                            if (versionUpdate.status != 1) {
                                 if (versionUpdate.fileUrl.contains(".apk")) {
                                     isforce = false;
                                     startUpdate(isforce, versionUpdate.fileUrl);
