@@ -96,6 +96,9 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<MyPeportIDEvent>>> getMyPeportIDEvent(String id) {
         return Net.api().getMyPeportIDEvent(id);
     }
+    public static LiveData<Resource<Response<String>>> getVideoPush(String content,String userId) {
+        return Net.api().getVideoPush(content,userId);
+    }
 
     public static LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(int sizePage, int isP, String state) {
         return Net.api().getMyPeportEvent(sizePage, isP, state);

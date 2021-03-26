@@ -132,6 +132,9 @@ public interface Api {
     /*=======审批列表-ID-查询事件======*/
     @GET(BASE_JAVA + "/event/findById/")
     LiveData<Resource<Response<MyPeportIDEvent>>> getMyPeportIDEvent(@Query("id") String id);
+    /*=======视频呼叫======*/
+    @GET(BASE_JAVA + "/phone/push/")
+    LiveData<Resource<Response<String>>> getVideoPush(@Query("content") String content,@Query("userId") String userId);
 
     /*=======提交审批======*/
     @POST(BASE_JAVA + "/event/update/")

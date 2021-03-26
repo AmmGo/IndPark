@@ -233,8 +233,29 @@ public class MailListFragment extends BaseFragment {
         Intent intent = new Intent(getActivity(), Main2Activity.class);
         intent.putExtra("id",id );
         startActivity(intent);
-    }
+//        getVideoPush(id);
 
+    }
+    public void getVideoPush(String id) {
+        ArticlesRepo.getVideoPush(id,id).observe(this, new ApiObserver<String>() {
+            @Override
+            public void onSuccess(Response<String> response) {
+
+                Log.e("推送成功", "onSuccess: ");
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+
+            }
+        });
+    }
     private SelectDialog showDialog(SelectDialog.SelectDialogListener listener, List<String> names) {
         SelectDialog dialog = new SelectDialog(getActivity(), R.style
                 .transparentFrameWindowStyle,

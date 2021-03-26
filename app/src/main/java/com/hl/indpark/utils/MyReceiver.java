@@ -14,8 +14,6 @@ import androidx.core.app.NotificationCompat;
 
 import com.hl.indpark.R;
 import com.hl.indpark.uis.activities.MainActivity;
-import com.hl.indpark.uis.activities.videoactivities.CallActivity;
-import com.hl.indpark.uis.activities.videoactivities.Constants;
 
 import cn.jpush.android.api.CustomMessage;
 import cn.jpush.android.api.JPushMessage;
@@ -53,6 +51,7 @@ public class MyReceiver extends JPushMessageReceiver {
         super.onAliasOperatorResult(context, jPushMessage);
         Log.e("注册以及解除注册别名时回调", jPushMessage.toString());
     }
+
     /**
      * 所有和标签相关操作结果
      *
@@ -63,6 +62,7 @@ public class MyReceiver extends JPushMessageReceiver {
     public void onTagOperatorResult(Context context, JPushMessage jPushMessage) {
         Log.e("注册以及解除注册Tag时回调", jPushMessage.toString());
     }
+
     /**
      * TODO 接收到推送下来的通知
      * 可以利用附加字段（notificationMessage.notificationExtras）来区别Notication,指定不同的动作,附加字段是个json字符串
@@ -96,19 +96,18 @@ public class MyReceiver extends JPushMessageReceiver {
     public void onMessage(Context context, CustomMessage customMessage) {
         super.onMessage(context, customMessage);
         // 收到消息 显示通知
-            Intent intent = new Intent(context, CallActivity.class);
-            intent.putExtra(Constants.KEY_CALLING_CHANNEL, customMessage.message);
-            intent.putExtra(Constants.JUSH_ID, "111");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
-            context.startActivity(intent);
 //            Intent intent = new Intent(context, CallActivity.class);
 //            intent.putExtra(Constants.KEY_CALLING_CHANNEL, customMessage.message);
-//            intent.putExtra(Constants.KEY_CALLING_PEER, 11);
-//            intent.putExtra(Constants.KEY_CALLING_ROLE, ROLE_CALLEE);
+//            intent.putExtra(Constants.JUSH_ID, "111");
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
 //            context.startActivity(intent);
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
         Log.e("接收到推送下来的自定义消息", "onMessage: ");
 //        processCustomMessage(context, customMessage.extra);
     }
+
     //通知
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void processCustomMessage(Context context, String message) {

@@ -27,6 +27,7 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.videoactivities.BaseCallActivity;
 import com.hl.indpark.uis.fragments.MainFragment;
+import com.hl.indpark.utils.AliveJobService;
 import com.hl.indpark.utils.JPushUtils;
 import com.hl.indpark.utils.ScreenReceiver;
 import com.hl.indpark.utils.Util;
@@ -97,6 +98,7 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
             e.printStackTrace();
         }
         getDataUpdate();
+        AliveJobService.startJobScheduler(this);
     }
     private void registerReceiver() {
         screenReceiver = new ScreenReceiver();

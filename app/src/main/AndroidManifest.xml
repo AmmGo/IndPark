@@ -41,9 +41,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
-        <activity android:name=".uis.activities.ProtectActivity"
+        <activity
+            android:name=".uis.activities.ProtectActivity"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
@@ -150,6 +151,11 @@
                 <action android:name="android.telecom.ConnectionService" />
             </intent-filter>
         </service>
+        <service
+            android:name=".utils.AliveJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <receiver
             android:name=".uis.activities.videoactivities.connectionservice.OpenDuoCallReceiver"
