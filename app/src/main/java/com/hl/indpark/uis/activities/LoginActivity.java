@@ -2,6 +2,7 @@ package com.hl.indpark.uis.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +11,7 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.hl.indpark.R;
 import com.hl.indpark.entities.LoginResultEntity;
@@ -17,6 +19,7 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.UserRepo;
 import com.hl.indpark.permission.DefaultResourceProvider;
+import com.hl.indpark.uis.activities.videoactivities.utils.WindowUtil;
 import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.ClearWriteEditText;
@@ -35,21 +38,59 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private ClearWriteEditText edName;
     private ClearWriteEditText edPassword;
     private DialogUtil dialogUtil;
+    private CheckBox saveChb;
 
     @Override
     protected int getContentView() {
         return R.layout.activity_login;
     }
-
+    protected int statusBarHeight;
     @Override
     protected void init(Bundle savedInstanceState) {
+        initStatusBarHeight();
+        WindowUtil.hideWindowStatusBar(getWindow());
         findViewById(R.id.btn_login).setOnClickListener(this);
         edName = findViewById(R.id.edit_name);
         edPassword = findViewById(R.id.edit_pwd);
         findViewById(R.id.btn_login).setOnClickListener(this);
         findViewById(R.id.img_see_pwd).setOnClickListener(this);
         dialogUtil = new DialogUtil(this);
+        saveChb = findViewById(R.id.saveChb);
+        SharedPreferences sp2=getSharedPreferences("Logindb",MODE_PRIVATE);
+        if(sp2.getBoolean("save",false)==true  ){    //判断是否写入了数值save==true
+            getDB();
+            saveChb.setChecked(true);
+        }else{
+            saveChb.setChecked(false);
+        }
         initPermissionConfig();
+    }
+    private void initStatusBarHeight() {
+        statusBarHeight = WindowUtil.getSystemStatusBarHeight(this);
+    }
+    //清除
+    private void clearDB(){
+        SharedPreferences sp=getSharedPreferences("Logindb",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sp.edit();
+        editor.clear();
+        editor.commit();
+    }
+    //保存数据
+    private void saveDB(){
+        SharedPreferences sp=getSharedPreferences("Logindb",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sp.edit();
+        editor.putString("loginEdt",edName.getText().toString());
+        editor.putString("passwordEdt",edPassword.getText().toString());
+        editor.putBoolean("save",true);
+        editor.commit();            //写入数据
+    }
+    //读取数据
+    private void getDB(){
+        SharedPreferences sp=getSharedPreferences("Logindb",MODE_PRIVATE);
+        String name= sp.getString("loginEdt","");
+        String password=sp.getString("passwordEdt","");
+        edName.setText(name);
+        edPassword.setText(password);
     }
     private PermissionUtil permissionUtil;
 
@@ -97,6 +138,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
+                if(saveChb.isChecked()){                    //当多选按钮按下时执行报损数据
+                    saveDB();
+                }
+                else {
+                    clearDB();
+                }
                 Util.hideInputManager(LoginActivity.this, v);
                 login();
 //                startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -109,8 +156,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     edPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     pwd--;
                 }
-
-                break;
         }
     }
 

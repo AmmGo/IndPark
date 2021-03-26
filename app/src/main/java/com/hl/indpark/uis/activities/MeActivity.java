@@ -2,6 +2,7 @@ package com.hl.indpark.uis.activities;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -58,6 +59,7 @@ public class MeActivity extends BaseActivity {
             public void onClick(View v) {
                 onBackPressed();
                 finish();
+                clearDB();
                 SharePreferenceUtil.clearAllValue(MeActivity.this);
                 App.closeAllActivityByMap();
                 Intent intent = new Intent(MeActivity.this, LoginActivity.class);
@@ -84,5 +86,11 @@ public class MeActivity extends BaseActivity {
             }
         });
     }
-
+    //清除
+    private void clearDB(){
+        SharedPreferences sp=getSharedPreferences("Logindb",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sp.edit();
+        editor.clear();
+        editor.commit();
+    }
 }
