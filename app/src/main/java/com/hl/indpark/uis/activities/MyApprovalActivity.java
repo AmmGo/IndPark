@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,9 +26,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.widgets.TitleBar;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,11 +170,25 @@ public class MyApprovalActivity extends BaseActivity {
                 Intent intent = new Intent(MyApprovalActivity.this, ReportApprovalActivity.class);
                 intent.putExtra("id",list.get(position).id);
                 intent.putExtra("reorap",2);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 2) {
+            int resultId = data.getIntExtra("T", 0);
+            Log.e("返回成功", "onActivityResult: " + resultId);
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).id == resultId) {
+                    list.get(i).status = "1";
+                }
+            }
+            adapter.notifyDataSetChanged();
+        }
 
+    }
     public void getData(int pageNum, int pageSize, String state) {
         ArticlesRepo.getMyApprovalEvent(pageNum, pageSize, state).observe(this, new ApiObserver<MyApprovalEvent>() {
             @Override
@@ -215,25 +227,11 @@ public class MyApprovalActivity extends BaseActivity {
     }
     @Override
     public void onDestroy() {
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
         super.onDestroy();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-    }
-    @Subscribe
-    public void getMyApproval(MyApprovalEvent event) {
-        pageNum = 1;
-        pageSize = 10;
-        state = null;
-        list.clear();
-        tabLayout.getTabAt(0).select();
     }
 }

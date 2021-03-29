@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
-import com.hl.indpark.entities.events.MyApprovalEvent;
 import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
@@ -23,8 +22,6 @@ import com.hl.indpark.utils.Util;
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.widgets.TitleBar;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,7 +127,12 @@ public class ReportApprovalActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
+    public void onBackPressedRes() {
+        Intent intent = new Intent();
+        intent.putExtra("T", idEvent);
+        setResult(2, intent);
+        finish();
+    }
     public void getData(int id) {
         ArticlesRepo.getMyPeportIDEvent(String.valueOf(id)).observe(this, new ApiObserver<MyPeportIDEvent>() {
             @Override
@@ -221,10 +223,7 @@ public class ReportApprovalActivity extends BaseActivity {
             @Override
             public void onSuccess(Response<String> response) {
                 ToastUtil.showToast(ReportApprovalActivity.this, "提交成功");
-                MyApprovalEvent event = new MyApprovalEvent();
-                EventBus.getDefault().post(event);
-                dialog.cancel();
-                finish();
+                onBackPressedRes();
                 Log.e("提交审批", "onSuccess: ");
             }
 
