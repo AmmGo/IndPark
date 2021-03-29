@@ -107,4 +107,6 @@ dependencies {
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
     //高德
     implementation 'com.amap.api:location:latest.integration'
+
+    implementation 'com.github.zhoulinxue:BGStart:1.1.5'
 }

@@ -25,6 +25,8 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.tencent.tinker.loader.app.TinkerApplication;
 import com.tencent.tinker.loader.shareutil.ShareConstants;
 
+import org.zhx.common.bgstart.library.BgManager;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -70,6 +72,7 @@ private static App instance;
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         AppCompatDelegate.setDefaultNightMode(SharePreferenceUtil.isDarkStyle() ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        BgManager.getInstance().init(this);
 
 //        db = Room.databaseBuilder(this, ArticleDatabase.class, "wanandroid").build();
     }

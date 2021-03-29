@@ -165,6 +165,9 @@
 #agora
 -keep class io.agora.**{*;}
 
+#权限
+-keep class org.zhx.common.bgstart.**{*;}
+
 # 极光推送混淆
 -dontoptimize
 -dontpreverify

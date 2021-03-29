@@ -237,10 +237,12 @@ public class MailListFragment extends BaseFragment {
 
     }
     public void getVideoPush(String id) {
-        ArticlesRepo.getVideoPush(id,id).observe(this, new ApiObserver<String>() {
+        ArticlesRepo.getVideoPush(Util.getUserId()+","+id,id).observe(this, new ApiObserver<String>() {
             @Override
             public void onSuccess(Response<String> response) {
-
+                Intent intent = new Intent(getActivity(), Main2Activity.class);
+                intent.putExtra("id",id );
+                startActivity(intent);
                 Log.e("推送成功", "onSuccess: ");
             }
 

@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 
 import com.hl.indpark.uis.activities.videoactivities.connectionservice.OpenDuoConnectionService;
 
+import org.zhx.common.bgstart.library.impl.BgStart;
+
 import java.util.List;
 
 import io.agora.rtm.ErrorInfo;
@@ -77,7 +79,10 @@ public abstract class BaseCallActivity extends BaseRtcActivity implements RtmCha
         intent.putExtra(Constants.KEY_CALLING_CHANNEL, channel);
         intent.putExtra(Constants.KEY_CALLING_PEER, peer);
         intent.putExtra(Constants.KEY_CALLING_ROLE, role);
-        startActivity(intent);
+//        startActivity(intent);
+//        Intent intent = new Intent(getApplicationContext(), TargetActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        BgStart.getInstance().startActivity(this, intent, CallActivity.class.getName());
     }
 //主动
     protected void inviteCall(final String peerUid, final String channel) {
@@ -171,7 +176,7 @@ public abstract class BaseCallActivity extends BaseRtcActivity implements RtmCha
     @Override
     public void onRemoteInvitationReceived(RemoteInvitation remoteInvitation) {
         Log.i("BaseActivity", "onRemoteInvitationReceived from caller:" + remoteInvitation.getCallerId());
-        global().setRemoteInvitation(remoteInvitation);
+        global().setRemoteInvitation(remoteInvitation);//开始
         gotoCallingActivity(remoteInvitation.getChannelId(), remoteInvitation.getCallerId(), Constants.ROLE_CALLEE);
     }
 

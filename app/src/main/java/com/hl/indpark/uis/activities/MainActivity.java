@@ -35,12 +35,16 @@ import com.hl.indpark.utils.Util;
 import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.utils.WeakHandler;
 
+import org.zhx.common.bgstart.library.api.PermissionLisenter;
+import org.zhx.common.bgstart.library.impl.BgStart;
+
 import io.agora.rtm.ErrorInfo;
 import io.agora.rtm.ResultCallback;
 
 import static com.hl.indpark.entities.events.EventType.TYPE_BIND_ALIAS;
 
 public class MainActivity extends BaseCallActivity implements WeakHandler.IHandle, OnButtonClickListener {
+    private static final String TAG = "我的首页";
     private MainFragment mainFragment;
     private static final int MSG_QUIT = 0;
     private static final int TIME_QUIT = 2000;
@@ -99,6 +103,22 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
         }
         getDataUpdate();
         AliveJobService.startJobScheduler(this);
+        BgStart.getInstance().requestStartPermisstion(this, new PermissionLisenter() {
+            @Override
+            public void onGranted() {
+                Log.e(TAG, "onGranted");
+            }
+
+            @Override
+            public void cancel() {
+                Log.e(TAG, "cancel");
+            }
+
+            @Override
+            public void onDenied() {
+                Log.e(TAG, "onDenied");
+            }
+        },"huawei", "oppo", "vivo","meizu");
     }
     private void registerReceiver() {
         screenReceiver = new ScreenReceiver();
