@@ -25,6 +25,7 @@ public class ImageAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     @Override
     protected void convert(BaseViewHolder helper, String item) {
         ImageView img = (ImageView) helper.getView(R.id.iv_img_or_video);
+        helper.addOnClickListener(R.id.iv_img_or_video);
         //设置图片圆角角度
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.a_error)

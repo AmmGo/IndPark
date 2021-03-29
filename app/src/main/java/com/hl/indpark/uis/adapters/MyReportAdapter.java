@@ -3,7 +3,6 @@ package com.hl.indpark.uis.adapters;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hl.indpark.R;
-import com.hl.indpark.entities.events.MyApprovalEvent;
 import com.hl.indpark.entities.events.MyPeportEvent;
 
 import java.util.List;
@@ -21,10 +20,15 @@ public class MyReportAdapter extends BaseQuickAdapter<MyPeportEvent.RecordsBean,
     @Override
     protected void convert(BaseViewHolder holder, MyPeportEvent.RecordsBean item) {
         if (item.status != null) {
-            if (item.status.equals("1")) {
-                holder.setImageResource(R.id.img_status, R.mipmap.img_self_rep_ok);
-            } else if (item.status.equals("2")) {
-                holder.setImageResource(R.id.img_status, R.mipmap.img_self_rep_un);
+            try {
+                if (item.status.equals("1")) {
+                    holder.setImageResource(R.id.img_status, R.mipmap.img_self_rep_ok);
+                } else if (item.status.equals("2")) {
+                    holder.setImageResource(R.id.img_status, R.mipmap.img_self_rep_un);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                holder.setImageResource(R.id.img_status, R.color.background_white);
             }
             holder.setText(R.id.tv_type, item.eventType);
             holder.setText(R.id.tv_time, item.createTime);

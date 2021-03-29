@@ -123,8 +123,12 @@ public class ReportApprovalActivity extends BaseActivity {
             }
         });
         //根据id查询事件
-        getData(idEvent);
-        setMediaFragment();
+        try {
+            getData(idEvent);
+            setMediaFragment();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void getData(int id) {
@@ -132,7 +136,11 @@ public class ReportApprovalActivity extends BaseActivity {
             @Override
             public void onSuccess(Response<MyPeportIDEvent> response) {
                 Log.e("审批列表-ID-查询事件", "onSuccess: ");
-                setViewData(response.getData());
+                try {
+                    setViewData(response.getData());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
