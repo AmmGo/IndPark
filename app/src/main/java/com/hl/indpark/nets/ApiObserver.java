@@ -1,14 +1,16 @@
 package com.hl.indpark.nets;
 
-import net.arvin.baselib.nets.BaseObserver;
-import net.arvin.baselib.utils.ALog;
 import com.hl.indpark.entities.Response;
 
-/**
- * Created by arvinljw on 2018/10/31 17:13
- * Function：
- * Desc：
- */
+import net.arvin.baselib.nets.BaseObserver;
+import net.arvin.baselib.utils.ALog;
+
+
+ /**
+  * Created by yjl on 2021/3/30 15:35
+  * Function：
+  * Desc：
+  */
 public abstract class ApiObserver<R> extends BaseObserver<Response<R>> {
     private static final String TAG = "Request";
 

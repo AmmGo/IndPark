@@ -7,11 +7,12 @@ import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
 
-/**
- * @author：luck
- * @date：2020-03-23 19:08
- * @describe：获取图片缓存
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:40
+  * Function：获取图片缓存
+  * Desc：
+  */
 public class ImageCacheUtils {
     /**
      * 根据url获取图片缓存

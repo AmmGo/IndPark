@@ -19,10 +19,12 @@ import android.widget.ImageView;
 import com.hl.indpark.R;
 
 
-/**
- * @author 图片显示
- * @time 2018/12/19 17:39
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:40
+  * Function：图片显示
+  * Desc：
+  */
 @SuppressLint("AppCompatCustomView")
 public class RoundImageView extends ImageView {
     /**

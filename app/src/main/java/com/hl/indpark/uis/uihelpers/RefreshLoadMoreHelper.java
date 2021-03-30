@@ -17,11 +17,12 @@ import net.arvin.itemdecorationhelper.ItemDecorationFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by arvinljw on 2018/11/20 10:39
- * Function：
- * Desc：
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:39
+  * Function：
+  * Desc：
+  */
 public class RefreshLoadMoreHelper<T> implements SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
     private int firstPage = 0;
     private int currPage = firstPage;

@@ -4,11 +4,12 @@ import net.arvin.baselib.nets.BaseNet;
 
 import okhttp3.OkHttpClient;
 
-/**
- * Created by arvinljw on 2018/10/31 14:43
- * Function：
- * Desc：
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:36
+  * Function：
+  * Desc：
+  */
 public class Net extends BaseNet<Api> {
 
     private static Net INSTANCE = new Net();

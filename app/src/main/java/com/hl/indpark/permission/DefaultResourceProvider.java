@@ -2,11 +2,11 @@ package com.hl.indpark.permission;
 
 import net.arvin.permissionhelper.PermissionUtil;
 
-/**
- * Created by arvinljw on 2020/7/17 15:11
- * Function：
- * Desc：
- */
+ /**
+  * Created by yjl on 2021/3/30 15:36
+  * Function：
+  * Desc：
+  */
 public class DefaultResourceProvider implements PermissionUtil.IPermissionTextProvider {
     @Override
     public String getEnsureBtnText() {

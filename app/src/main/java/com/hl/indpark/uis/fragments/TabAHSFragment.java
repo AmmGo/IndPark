@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieEntry;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.HSAlarmEvent;
@@ -37,8 +35,6 @@ import butterknife.OnCheckedChanged;
 public class TabAHSFragment extends BaseFragment {
 
     private PieChartView mPieChart;
-    private ArrayList<PieEntry> data = new ArrayList<PieEntry>();
-    private PieData pieData;
     private String type = "2";
     private int typeData = 2;
     private LinearLayout linearLayout;

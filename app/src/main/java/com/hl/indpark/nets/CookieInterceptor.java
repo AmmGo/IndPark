@@ -10,11 +10,12 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * Created by arvinljw on 2018/11/30 14:26
- * Function：
- * Desc：
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:36
+  * Function：
+  * Desc：
+  */
 class CookieInterceptor implements Interceptor {
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {

@@ -6,11 +6,12 @@ import com.luck.picture.lib.engine.CacheResourcesEngine;
 
 import java.io.File;
 
-/**
- * @author：luck
- * @date：2020-03-24 09:48
- * @describe：GlideCacheEngine
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:40
+  * Function：
+  * Desc：
+  */
 public class GlideCacheEngine implements CacheResourcesEngine {
     /**
      * glide版本号,请根据用户集成为准 这里只是模拟

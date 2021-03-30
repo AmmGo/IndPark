@@ -6,9 +6,16 @@ import android.widget.ImageView;
 import com.youth.banner.loader.ImageLoader;
 
 /**
- * Created by arvinljw on 2018/11/22 15:13
- * Function：
- * Desc：
+ *
+ * @Package:        com.hl.indpark.utils
+ * @ClassName:      LENOVO
+ * @Description:     java类作用描述
+ * @Author:         yjl
+ * @CreateDate:     2021/3/30 15:39
+ * @UpdateUser:     更新者：
+ * @UpdateDate:     2021/3/30 15:39
+ * @UpdateRemark:   更新说明：
+ * @Version:        1.0
  */
 public class BannerImageLoader extends ImageLoader {
     @Override

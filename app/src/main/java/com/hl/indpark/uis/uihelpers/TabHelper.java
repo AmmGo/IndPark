@@ -6,11 +6,12 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.hl.indpark.uis.adapters.TabPageAdapter;
 
-/**
- * Created by arvinljw on 2018/11/20 17:54
- * Function：
- * Desc：
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:39
+  * Function：
+  * Desc：
+  */
 public class TabHelper {
     private static final int MAX_CACHE_SIZE = 4;
 

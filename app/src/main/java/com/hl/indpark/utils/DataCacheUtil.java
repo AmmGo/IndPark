@@ -6,11 +6,12 @@ import android.os.Environment;
 import java.io.File;
 import java.math.BigDecimal;
 
-/**
- * Created by arvinljw on 2018/12/5 15:27
- * Function：
- * Desc：
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:40
+  * Function：
+  * Desc：
+  */
 public class DataCacheUtil {
     /**
      * 清除内部缓存

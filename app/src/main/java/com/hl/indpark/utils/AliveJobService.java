@@ -9,6 +9,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
+
+ /**
+  * Created by yjl on 2021/3/30 15:38
+  * Function：服务
+  * Desc：
+  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class AliveJobService extends JobService {
     public static void startJobScheduler(Context context) {

@@ -1,9 +1,11 @@
 package com.hl.indpark.utils;
 
-/**
- *@author xiaobo.cui 2014年11月24日 下午5:36:29
- *
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:40
+  * Function：
+  * Desc：
+  */
 public class Contact {
 	public Contact() {
 

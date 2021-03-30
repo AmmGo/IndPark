@@ -40,11 +40,12 @@ import io.agora.rtm.ResultCallback;
 import io.agora.rtm.RtmCallManager;
 import io.agora.rtm.RtmClient;
 
-/**
- * Created by arvinljw on 2018/11/22 16:37
- * Function：
- * Desc：
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:41
+  * Function：
+  * Desc：
+  */
 public class App extends TinkerApplication {
     private static final String TAG = "fdsa";
     private static App app;

@@ -24,11 +24,12 @@ import com.luck.picture.lib.widget.longimage.ImageSource;
 import com.luck.picture.lib.widget.longimage.ImageViewState;
 import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;
 
-/**
- * @author：luck
- * @date：2019-11-13 17:02
- * @describe：Glide加载引擎
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:39
+  * Function：Glide加载引擎
+  * Desc：
+  */
 public class GlideEngine implements ImageEngine {
 
     /**

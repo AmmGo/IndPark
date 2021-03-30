@@ -11,11 +11,11 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.tinker.entry.DefaultApplicationLike;
 
-/**
- * Created by arvinljw on 2018/12/19 16:47
- * Function：
- * Desc：
- */
+ /**
+  * Created by yjl on 2021/3/30 15:41
+  * Function：
+  * Desc：
+  */
 public class AppLike extends DefaultApplicationLike {
     public static final String TAG = "Tinker.AppLike";
 

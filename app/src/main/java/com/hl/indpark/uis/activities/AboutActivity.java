@@ -81,7 +81,6 @@ public class AboutActivity extends BaseActivity implements OnButtonClickListener
         });
         try {
             versionNum = getVersionName();
-            Log.e("版本号", "当前版本"+ versionNum);
         } catch (Exception e) {
             e.printStackTrace();
         }

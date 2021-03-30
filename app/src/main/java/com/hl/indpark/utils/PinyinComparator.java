@@ -2,11 +2,12 @@ package com.hl.indpark.utils;
 
 import java.util.Comparator;
 
-/**
- * 
- * @author xiaanming
- *
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:40
+  * Function：
+  * Desc：
+  */
 public class PinyinComparator implements Comparator<SortModel> {
 
 	public int compare(SortModel o1, SortModel o2) {

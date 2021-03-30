@@ -1,16 +1,11 @@
 package com.hl.indpark.utils;
 
-/**
- *@author xiaobo.cui 2014年11月7日 上午11:24:25
- *
- */
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+ /**
+  * Created by yjl on 2021/3/30 15:40
+  * Function：
+  * Desc：
+  */
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract.CommonDataKinds.Email;
@@ -29,6 +24,13 @@ import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.CommonDataKinds.Website;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.Groups;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class GetContactsInfo {
 	private List<Object> list;

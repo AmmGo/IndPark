@@ -1,9 +1,11 @@
 package com.hl.indpark.utils;
 
-/**
- *@author xiaobo.cui 2014年11月26日 上午10:40:15
- *
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:41
+  * Function：
+  * Desc：
+  */
 public class SortToken {
 	/** 简拼 */
 	public String simpleSpell = "";

@@ -1,15 +1,17 @@
 package com.hl.indpark.utils;
 
+import android.content.Context;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import android.content.Context;
 
-/**
- * @author xiaobo.cui 2014年10月14日 下午5:08:22
- *
- */
+ /**
+  * Created by yjl on 2021/3/30 15:40
+  * Function：
+  * Desc：
+  */
 public class CLogUtils {
 
 	public static void write(Context context, String log) {

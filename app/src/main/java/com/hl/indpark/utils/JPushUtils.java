@@ -23,12 +23,12 @@ import static com.hl.indpark.entities.events.EventType.TYPE_SET_TAGS;
 import static com.hl.indpark.entities.events.EventType.TYPE_UNBIND_ALIAS;
 
 
-/**
- * 极光推送工具类
- *
- * @author xuexiang
- * @since 2020-01-12 16:01
- */
+
+ /**
+  * Created by yjl on 2021/3/30 15:40
+  * Function： 极光推送工具类
+  * Desc：
+  */
 public final class JPushUtils {
 
     private JPushUtils() {
