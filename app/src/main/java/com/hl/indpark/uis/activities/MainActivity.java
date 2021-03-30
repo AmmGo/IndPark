@@ -249,11 +249,11 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
                 //下载完成自动跳动安装页面
                 .setJumpInstallPage(true)
                 //设置对话框背景图片 (图片规范参照demo中的示例图)
-                //.setDialogImage(R.drawable.ic_dialog)
+                .setDialogImage(R.drawable.ic_dialog_default)
                 //设置按钮的颜色
-                .setDialogButtonColor(Color.parseColor("#ff895b"))
+                .setDialogButtonColor(Color.parseColor("#3688FF"))
                 //设置对话框强制更新时进度条和文字的颜色
-                .setDialogProgressBarColor(Color.parseColor("#ff895b"))
+                .setDialogProgressBarColor(Color.parseColor("#3688FF"))
                 //设置按钮的文字颜色
                 .setDialogButtonTextColor(Color.WHITE)
                 //设置是否显示通知栏进度
