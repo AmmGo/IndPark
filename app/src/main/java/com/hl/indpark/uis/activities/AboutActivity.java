@@ -18,6 +18,7 @@ import com.azhon.appupdate.config.UpdateConfiguration;
 import com.azhon.appupdate.listener.OnButtonClickListener;
 import com.azhon.appupdate.listener.OnDownloadListenerAdapter;
 import com.azhon.appupdate.manager.DownloadManager;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.UpdateVersion;
@@ -36,21 +37,32 @@ public class AboutActivity extends BaseActivity implements OnButtonClickListener
     private TextView jchat_version;
     private String versionNum;
     private UpdateVersion versionUpdate;
-
+    private ShimmerFrameLayout layoutShimmer;
     @Override
     protected int getContentView() {
         return R.layout.activity_about;
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        layoutShimmer.startShimmer();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        layoutShimmer.stopShimmer();
+    }
     @Override
     protected void init(Bundle savedInstanceState) {
         TitleBar titleBar = findViewById(R.id.title_bar);
         rlVersion = findViewById(R.id.rl_version);
         jchat_version = findViewById(R.id.jchat_version);
+        layoutShimmer = findViewById(R.id.layout_shimmer);
         PackageManager manager = getPackageManager();
         try {
             PackageInfo packageInfo = manager.getPackageInfo(getPackageName(), 0);
-            jchat_version.setText(packageInfo.versionName);
+            jchat_version.setText("V"+packageInfo.versionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

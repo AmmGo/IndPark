@@ -7,12 +7,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:drawableTop="@drawable/ic_no_data"
+        android:drawableTop="@drawable/empty_data"
         android:drawablePadding="@dimen/spacing"
         android:gravity="center_horizontal"
         android:text="暂无数据"
         android:textColor="@color/secondary_text"
-        android:textSize="@dimen/text_18"
         />
 
 </FrameLayout>

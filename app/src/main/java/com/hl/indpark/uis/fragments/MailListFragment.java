@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.hl.indpark.R;
@@ -35,6 +36,8 @@ import com.hl.indpark.utils.SideBar;
 import com.hl.indpark.utils.SortModel;
 import com.hl.indpark.utils.SortToken;
 import com.hl.indpark.utils.Util;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import net.arvin.baselib.base.BaseFragment;
 import net.arvin.baselib.utils.ToastUtil;
@@ -44,6 +47,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+
+import butterknife.BindView;
 
 /**
  * Created by yjl on 2021/3/8 11:05
@@ -56,7 +61,8 @@ public class MailListFragment extends BaseFragment {
     ListView mListView;
     EditText etSearch;
     ImageView ivClearText;
-
+    @BindView(R.id.refreshLayout)
+    RefreshLayout refreshLayout;
     private SideBar sideBar;
     private TextView dialog;
 
@@ -81,8 +87,19 @@ public class MailListFragment extends BaseFragment {
     protected void init(Bundle savedInstanceState) {
         initView();
         initListener();
-        getData();
         initPermissionConfig();
+        refreshLayout.autoRefresh();
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
+                refreshLayout.getLayout().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getData();
+                    }
+                }, 50);
+            }
+        });
     }
     private PermissionUtil permissionUtil;
     private void initPermissionConfig() {
@@ -98,6 +115,7 @@ public class MailListFragment extends BaseFragment {
                 if (data != null && data.size() > 0) {
                     loadContacts(data);
                 }
+                refreshLayout.finishRefresh();
                 Log.e("人员列表", "onSuccess: ");
             }
 
@@ -106,12 +124,14 @@ public class MailListFragment extends BaseFragment {
                 super.onFailure(code, msg);
                 Util.login(String.valueOf(code),getActivity());
                 Log.e("人员列表", "onFailure: ");
+                refreshLayout.finishRefresh(false);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 super.onError(throwable);
                 Log.e("人员列表", "onFailure: ");
+                refreshLayout.finishRefresh(false);
             }
         });
     }

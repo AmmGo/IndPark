@@ -305,7 +305,7 @@ public List<TypeEp> typeEps(String key){
                         total = 0;
                     } else {
                         if (list.size() <= 0) {
-                            View emptyView = getLayoutInflater().inflate(R.layout.layout_data_empty, (ViewGroup) mRcyPieData.getParent(), false);
+                            View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) mRcyPieData.getParent(), false);
                             list.clear();
                             adapter.setNewData(list);
                             adapter.setEmptyView(emptyView);

@@ -74,7 +74,8 @@ public class MyMsgActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        getData(pageNum, pageSize);
+//        getData(pageNum, pageSize);
+        refreshLayout.autoRefresh();//自动刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
@@ -85,7 +86,6 @@ public class MyMsgActivity extends BaseActivity {
                         pageSize = 20;
                         list.clear();
                         getData(pageNum, pageSize);
-                        refreshLayout.finishRefresh();
                     }
                 }, 50);
             }
@@ -162,25 +162,27 @@ public class MyMsgActivity extends BaseActivity {
                     total = 0;
                 } else {
                     if (list.size() <= 0) {
-                        View emptyView = getLayoutInflater().inflate(R.layout.layout_data_empty, (ViewGroup) recyclerView.getParent(), false);
+                        View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) recyclerView.getParent(), false);
                         list.clear();
                         adapter.setNewData(list);
                         adapter.setEmptyView(emptyView);
                     }
                     total = 1;
                 }
+                refreshLayout.finishRefresh();
             }
 
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
                 Util.login(String.valueOf(code), MyMsgActivity.this);
+                refreshLayout.finishRefresh(false);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 super.onError(throwable);
-
+                refreshLayout.finishRefresh(false);
             }
         });
     }

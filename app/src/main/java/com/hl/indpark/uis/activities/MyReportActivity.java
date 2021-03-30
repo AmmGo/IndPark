@@ -108,7 +108,8 @@ public class MyReportActivity extends BaseActivity {
 
             }
         });
-        getData(pageNum, pageSize, state);
+//        getData(pageNum, pageSize, state);
+        refreshLayout.autoRefresh();
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
@@ -119,7 +120,6 @@ public class MyReportActivity extends BaseActivity {
                         pageSize = 10;
                         list.clear();
                         getData(pageNum, pageSize, state);
-                        refreshLayout.finishRefresh();
                     }
                 }, 50);
             }
@@ -180,25 +180,27 @@ public class MyReportActivity extends BaseActivity {
                     total = 0;
                 } else {
                     if (list.size() <= 0) {
-                        View emptyView = getLayoutInflater().inflate(R.layout.layout_data_empty, (ViewGroup) recyclerView.getParent(), false);
+                        View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) recyclerView.getParent(), false);
                         list.clear();
                         adapter.setNewData(list);
                         adapter.setEmptyView(emptyView);
                     }
                     total = 1;
                 }
+                refreshLayout.finishRefresh();
             }
 
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
                 Util.login(String.valueOf(code),MyReportActivity.this);
+                refreshLayout.finishRefresh(false);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 super.onError(throwable);
-
+                refreshLayout.finishRefresh(false);
             }
         });
     }
