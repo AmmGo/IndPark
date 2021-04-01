@@ -146,7 +146,7 @@ public class SelfFragment extends BaseFragment {
         });
     }
     public void initViewData(UserInfoEvent user) {
-        tvName.setText(user.nickName);
+        tvName.setText(user.name);
         tvPhone.setText(user.phone);
         if (user.sex == 1) {
             imageView.setBackgroundResource(R.mipmap.user_img_men);
