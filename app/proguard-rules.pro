@@ -19,6 +19,8 @@
 #混淆前后的映射
 -printmapping mapping.txt
 #</基本指令>
+-keep public class com.hl.indpark.App{*;}
+-keep public class com.hl.indpark.AppLike{*;}
 
 #<基础>
 -keep public class * extends android.app.Activity
@@ -167,6 +169,15 @@
 
 #权限
 -keep class org.zhx.common.bgstart.**{*;}
+
+# androidx的混淆
+-keep class com.google.android.material.** {*;}
+-keep class androidx.** {*;}
+-keep public class * extends androidx.**
+-keep interface androidx.** {*;}
+-dontwarn com.google.android.material.**
+-dontnote com.google.android.material.**
+-dontwarn androidx.**
 
 # 极光推送混淆
 -dontoptimize
