@@ -25,6 +25,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
+    <!--用于申请获取蓝牙信息进行室内定位-->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
@@ -40,11 +42,15 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
-        <activity android:name=".uis.activities.CommodityActivity"
+        <activity android:name=".uis.activities.SignInActivity"></activity>
+        <activity
+            android:name=".uis.activities.CommodityActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".uis.activities.MyScoresActivity"
+        <activity
+            android:name=".uis.activities.MyScoresActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".uis.activities.HelpDetailsActivity"
+        <activity
+            android:name=".uis.activities.HelpDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.ProtectActivity"

@@ -37,4 +37,5 @@
     <color name="blue_light">#0ECFFF</color>
     <color name="blue_alpha">#9CD9FF</color>
     <color name="blue_alpha_2">#94c4ff</color>
+    <color name="transparent1">#00000000</color>
 </resources>

@@ -105,6 +105,8 @@ dependencies {
     implementation 'com.azhon:appupdateX:3.0.3'
     //高德
     implementation 'com.amap.api:location:latest.integration'
+    //3D地图so及jar
+    implementation 'com.amap.api:3dmap:latest.integration'
 
     implementation 'com.github.zhoulinxue:BGStart:1.1.5'
 }

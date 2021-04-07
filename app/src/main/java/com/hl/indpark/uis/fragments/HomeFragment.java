@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,10 +12,6 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.google.android.material.tabs.TabLayout;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
@@ -24,6 +19,7 @@ import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.EventsReportActivity;
+import com.hl.indpark.uis.activities.SignInActivity;
 import com.hl.indpark.uis.adapters.ViewPagerAdapter;
 import com.hl.indpark.utils.Util;
 
@@ -73,7 +69,8 @@ public class HomeFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.ll_sign_in:
-                showDialog("立即打卡");
+//                showDialog("立即打卡");
+                startActivity(new Intent(getActivity(), SignInActivity.class));
                 break;
             case R.id.ll_bjtj:
                 tabLayout.getTabAt(0).select();
@@ -98,7 +95,7 @@ public class HomeFragment extends BaseFragment {
         logZDl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSignIn(String.valueOf(getLongitude),String.valueOf(getLatitude));
+//                getSignIn(String.valueOf(getLongitude),String.valueOf(getLatitude));
 //                getSignIn("105.200795","37.650807");
                 ad.dismiss();
             }
@@ -162,7 +159,6 @@ public class HomeFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, root);
         initView();
         loadData();
-        location();
     }
 
     private void initView() {
@@ -207,67 +203,5 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mLocationClient.stopLocation();
-        //停止定位  销毁定位客户端。
-        mLocationClient.onDestroy();
     }
-    private double getLongitude;
-    private double getLatitude;
-    private AMapLocationClient mLocationClient = null;      //声明mLocationOption对象，定位参数
-    public AMapLocationClientOption mLocationOption = null; //声明mListener对象，定位监听器
-    private void location() {
-        //初始化定位
-        mLocationClient = new AMapLocationClient(getActivity().getApplicationContext());
-
-        //设置定位回调监听
-        mLocationClient.setLocationListener(mLocationListener);
-
-        //初始化定位参数
-        mLocationOption = new AMapLocationClientOption();
-
-        //设置定位模式为Hight_Accuracy高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
-
-        //设置是否只定位一次,默认为false
-        mLocationOption.setOnceLocation(false);
-
-        //设置是否强制刷新WIFI，默认为强制刷新
-        mLocationOption.setWifiActiveScan(true);
-
-        //设置是否允许模拟位置,默认为false，不允许模拟位置
-        mLocationOption.setMockEnable(false);
-
-        //设置定位间隔,单位毫秒,默认为2000ms
-        mLocationOption.setInterval(2000);
-
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-        //启动定位
-        mLocationClient.startLocation();
-    }
-    //声明定位回调监听器
-    public AMapLocationListener mLocationListener = new AMapLocationListener() {
-        @Override
-        public void onLocationChanged(AMapLocation aMapLocation) {
-            if (aMapLocation != null) {
-                if (aMapLocation.getErrorCode() == 0) {
-                    aMapLocation.getLatitude();//获取纬度
-                    aMapLocation.getLongitude();//获取经度
-                    Log.e("获取纬度", "onLocationChanged: "+aMapLocation.getLatitude() );
-                    Log.e("获取经度", "onLocationChanged: "+aMapLocation.getLongitude() );
-                    getLongitude = aMapLocation.getLongitude();
-                    getLatitude = aMapLocation.getLatitude();
-                }else {
-                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    Log.e("AmapError","location Error, ErrCode:"
-                            + aMapLocation.getErrorCode() + ", errInfo:"
-                            + aMapLocation.getErrorInfo());
-                }
-            }
-        }
-    };
-
 }
