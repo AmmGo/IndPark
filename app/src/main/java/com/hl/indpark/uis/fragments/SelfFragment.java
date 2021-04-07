@@ -18,6 +18,7 @@ import com.hl.indpark.uis.activities.MeActivity;
 import com.hl.indpark.uis.activities.MyApprovalActivity;
 import com.hl.indpark.uis.activities.MyMsgActivity;
 import com.hl.indpark.uis.activities.MyReportActivity;
+import com.hl.indpark.uis.activities.MyScoresActivity;
 import com.hl.indpark.uis.activities.SetUpActivity;
 import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.utils.Util;
@@ -50,7 +51,7 @@ public class SelfFragment extends BaseFragment {
     private boolean hideNew;
     private String msgNum;
 
-    @OnClick({R.id.ll_wd_shenp, R.id.ll_wdsp, R.id.ll_wdxx, R.id.img_set_up, R.id.ll_info})
+    @OnClick({R.id.ll_wd_shenp, R.id.ll_wdsp, R.id.ll_wdxx, R.id.img_set_up, R.id.ll_info, R.id.ll_wd_wdjf})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_wd_shenp:
@@ -68,6 +69,9 @@ public class SelfFragment extends BaseFragment {
                 break;
             case R.id.ll_info:
                 startActivity(new Intent(getActivity(), SetUpActivity.class));
+                break;
+            case R.id.ll_wd_wdjf:
+                startActivity(new Intent(getActivity(), MyScoresActivity.class));
                 break;
             default:
         }
@@ -108,7 +112,7 @@ public class SelfFragment extends BaseFragment {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code),getActivity());
+                Util.login(String.valueOf(code), getActivity());
             }
 
             @Override
@@ -118,7 +122,8 @@ public class SelfFragment extends BaseFragment {
             }
         });
     }
-    public void getNewHide(){
+
+    public void getNewHide() {
         ArticlesRepo.getMsgRead().observe(this, new ApiObserver<String>() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -145,6 +150,7 @@ public class SelfFragment extends BaseFragment {
             }
         });
     }
+
     public void initViewData(UserInfoEvent user) {
         tvName.setText(user.name);
         tvPhone.setText(user.phone);

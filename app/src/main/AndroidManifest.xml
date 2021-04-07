@@ -25,7 +25,6 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
-
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
@@ -41,6 +40,12 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
+        <activity android:name=".uis.activities.CommodityActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".uis.activities.MyScoresActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".uis.activities.HelpDetailsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.ProtectActivity"
             android:launchMode="singleInstance"
@@ -155,7 +160,7 @@
             android:name=".utils.AliveJobService"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <receiver
             android:name=".uis.activities.videoactivities.connectionservice.OpenDuoCallReceiver"
@@ -174,8 +179,8 @@
                 <category android:name="com.hl.indpark" />
             </intent-filter>
         </receiver>
-        <activity android:name="org.zhx.common.bgstart.library.BridgeActivity" />
 
+        <activity android:name="org.zhx.common.bgstart.library.BridgeActivity" />
     </application>
 
 </manifest>

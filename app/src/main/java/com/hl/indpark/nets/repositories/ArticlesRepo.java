@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import com.github.leonardoxh.livedatacalladapter.Resource;
 import com.hl.indpark.entities.Response;
+import com.hl.indpark.entities.events.CommodityEvent;
 import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.entities.events.EntNameEvent;
 import com.hl.indpark.entities.events.EntNewEp;
@@ -13,11 +14,14 @@ import com.hl.indpark.entities.events.EntSHSEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.entities.events.MyApprovalEvent;
+import com.hl.indpark.entities.events.MyExchangeRecordEvent;
 import com.hl.indpark.entities.events.MyMsgEvent;
 import com.hl.indpark.entities.events.MyPeportEvent;
 import com.hl.indpark.entities.events.MyPeportIDEvent;
+import com.hl.indpark.entities.events.MyScoresEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
+import com.hl.indpark.entities.events.ScoresDetailsEvent;
 import com.hl.indpark.entities.events.SelfReportEvent;
 import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
@@ -96,8 +100,9 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<MyPeportIDEvent>>> getMyPeportIDEvent(String id) {
         return Net.api().getMyPeportIDEvent(id);
     }
-    public static LiveData<Resource<Response<String>>> getVideoPush(String content,String userId) {
-        return Net.api().getVideoPush(content,userId);
+
+    public static LiveData<Resource<Response<String>>> getVideoPush(String content, String userId) {
+        return Net.api().getVideoPush(content, userId);
     }
 
     public static LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(int sizePage, int isP, String state) {
@@ -127,14 +132,40 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<String>>> getUploadImgS(List<MultipartBody.Part> maps) {
         return Net.api().getUploadImgS(maps);
     }
+
     public static LiveData<Resource<Response<String>>> getMsgUpdate(Map map) {
         return Net.api().getMspUpdate((HashMap<String, String>) map);
     }
+
     public static LiveData<Resource<Response<String>>> getMsgRead() {
         return Net.api().getMspRead();
     }
+
     public static LiveData<Resource<Response<UpdateVersion>>> getUpdateVersion(String id) {
         return Net.api().getUpdateVersion(id);
     }
 
+    public static LiveData<Resource<Response<MyScoresEvent>>> getMyScores(int sizePage, int isP, String state) {
+        return Net.api().getMyScoresEvent(sizePage, isP, state);
+    }
+
+    public static LiveData<Resource<Response<MyExchangeRecordEvent>>> getMyExchangeRecord(int sizePage, int isP, String state) {
+        return Net.api().getMyExchangeRecord(sizePage, isP, state);
+    }
+
+    public static LiveData<Resource<Response<CommodityEvent>>> getCommodity(int sizePage, int isP) {
+        return Net.api().getCommodity(sizePage, isP);
+    }
+
+    public static LiveData<Resource<Response<ScoresDetailsEvent>>> getScoresDetails() {
+        return Net.api().getScoresDetails();
+    }
+
+    public static LiveData<Resource<Response<String>>> getSignIn(String lon, String lat) {
+        return Net.api().getSignIn(lon, lat);
+    }
+
+    public static LiveData<Resource<Response<String>>> getScoresExchangeCommodity(int id) {
+        return Net.api().getScoresExchangeCommodity(id);
+    }
 }

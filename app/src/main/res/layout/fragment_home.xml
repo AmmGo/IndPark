@@ -22,17 +22,109 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="15dp"
+                android:background="@color/primary">
 
                 <LinearLayout
                     android:id="@+id/ll_one_alrarm"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
                     android:layout_weight="1"
-                    android:background="@drawable/one_alarm_home"
-                    android:padding="15dp">
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/img_home_bj" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="一键报警"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/ll_events"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/img_home_yjsb" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="事件上报"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_sys"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/img_home_sys" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="扫一扫"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_sign_in"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/img_home_dk" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="上班打卡"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@color/background_white"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/ll_bjtj"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="15dp">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -44,42 +136,39 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
-                        android:text="一键报警"
+                        android:text="报警统计"
                         android:textColor="#3A3A3A"
                         android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ll_events"
+                    android:id="@+id/ll_bjfx"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
                     android:layout_weight="1"
-                    android:background="@drawable/events_home"
-                    android:padding="15dp">
-
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="15dp">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@mipmap/img_home_events" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
-                        android:text="事件上报"
+                        android:text="报警分析"
                         android:textColor="#3A3A3A"
                         android:textSize="15sp" />
                 </LinearLayout>
 
             </LinearLayout>
-
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/layout_tab"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/tab_bar"
+                android:layout_height="10dp"
                 android:background="@color/background_white"
                 app:tabBackground="@drawable/tab_selector"
                 app:tabGravity="fill"
@@ -94,12 +183,12 @@
                     android:id="@+id/tab_item1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="报警统计" />
+                    android:text="" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="报警分析" />
+                    android:text="" />
             </com.google.android.material.tabs.TabLayout>
 
             <androidx.viewpager.widget.ViewPager

@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/primary"
     android:orientation="vertical">
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlEnablePureScrollMode="true"
+        app:srlDragRate="0.75"
         app:srlEnableLoadMore="false"
-        app:srlDragRate="0.75">
+        app:srlEnablePureScrollMode="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#FAFAFA"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primary"
-                android:paddingBottom="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="20dp">
 
                 <LinearLayout
                     android:id="@+id/ll_info"
@@ -44,8 +46,8 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
-                        android:gravity="center"
                         android:background="@color/primary"
+                        android:gravity="center"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -74,8 +76,8 @@
                             android:layout_gravity="left"
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
-                            android:textColor="@color/background_white"
                             android:gravity="center|left"
+                            android:textColor="@color/background_white"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -99,9 +101,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:background="@color/background_white"
-                android:orientation="vertical"
-                android:layout_marginTop="15dp">
+                android:orientation="vertical">
 
 
                 <LinearLayout
@@ -136,10 +138,12 @@
                         android:layout_marginRight="20dp"
                         android:background="@mipmap/img_back_right" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#EEEEEE" />
+
                 <LinearLayout
                     android:id="@+id/ll_wdsp"
                     android:layout_width="match_parent"
@@ -172,6 +176,44 @@
                         android:layout_marginRight="20dp"
                         android:background="@mipmap/img_back_right" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EEEEEE" />
+                <LinearLayout
+                    android:id="@+id/ll_wd_wdjf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:background="@mipmap/img_self_scores" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="我的积分"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="20dp"
+                        android:background="@mipmap/img_back_right" />
+                </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -202,13 +244,15 @@
                         android:textSize="15sp" />
 
                     <ImageView
-                        android:visibility="gone"
                         android:id="@+id/img_new_msg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:layout_marginRight="20dp"
-                        android:background="@mipmap/img_new_self" />
+                        android:visibility="gone"
+                        android:background="@mipmap/img_new_self"
+                     />
+
                     <ImageView
 
                         android:layout_width="wrap_content"
@@ -217,10 +261,13 @@
                         android:layout_marginRight="20dp"
                         android:background="@mipmap/img_back_right" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#EEEEEE" />
+
+
             </LinearLayout>
 
         </LinearLayout>

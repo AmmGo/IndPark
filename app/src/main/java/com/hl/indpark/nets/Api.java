@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import com.github.leonardoxh.livedatacalladapter.Resource;
 import com.hl.indpark.entities.LoginResultEntity;
 import com.hl.indpark.entities.Response;
+import com.hl.indpark.entities.events.CommodityEvent;
 import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.entities.events.EntNameEvent;
 import com.hl.indpark.entities.events.EntNewEp;
@@ -15,11 +16,14 @@ import com.hl.indpark.entities.events.EntSHSEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.entities.events.MyApprovalEvent;
+import com.hl.indpark.entities.events.MyExchangeRecordEvent;
 import com.hl.indpark.entities.events.MyMsgEvent;
 import com.hl.indpark.entities.events.MyPeportEvent;
 import com.hl.indpark.entities.events.MyPeportIDEvent;
+import com.hl.indpark.entities.events.MyScoresEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
+import com.hl.indpark.entities.events.ScoresDetailsEvent;
 import com.hl.indpark.entities.events.SelfReportEvent;
 import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
@@ -43,27 +47,28 @@ import retrofit2.http.Query;
 public interface Api {
     /**
      * java测试*/
-//    String BASE_URL = "http://192.168.119.237:11035/";
-//        String BASE_JAVA = "";
-//        String BASE_URL_IMG = "http://appimg.hlx.com/";
+    String BASE_URL = "http://192.168.119.237:11035/";
+        String BASE_JAVA = "";
+        String BASE_URL_IMG = "http://appimg.hlx.com/";
     /**
      * 内网服务
      */
 //    String BASE_URL = "http://192.168.119.248:11035/";
 //    String BASE_JAVA = "";
-    //    String BASE_URL_IMG = "http://appimg.hlx.com/";
+//    String BASE_URL_IMG = "http://appimg.hlx.com/";
     /**
      * 外网测试
      */
 //    String BASE_URL = "http://222.75.227.14:11036/";
 //    String BASE_URL_IMG = "http://222.75.227.14:30000/";
 //        String BASE_JAVA = "";
+
     /**
      * 外网发布
      */
-    String BASE_URL = "https://www.nxzwgyyqgwh.com.cn/";
-    String BASE_URL_IMG = "https://www.nxzwgyyqgwh.com.cn/img/";
-    String BASE_JAVA = "java";
+//    String BASE_URL = "https://www.nxzwgyyqgwh.com.cn/";
+//    String BASE_URL_IMG = "https://www.nxzwgyyqgwh.com.cn/img/";
+//    String BASE_JAVA = "java";
 
     /*=======登陆注册======*/
     @POST(BASE_JAVA + "/loginPhone")
@@ -132,9 +137,10 @@ public interface Api {
     /*=======审批列表-ID-查询事件======*/
     @GET(BASE_JAVA + "/event/findById/")
     LiveData<Resource<Response<MyPeportIDEvent>>> getMyPeportIDEvent(@Query("id") String id);
+
     /*=======视频呼叫======*/
     @GET(BASE_JAVA + "/phone/push/")
-    LiveData<Resource<Response<String>>> getVideoPush(@Query("content") String content,@Query("userId") String userId);
+    LiveData<Resource<Response<String>>> getVideoPush(@Query("content") String content, @Query("userId") String userId);
 
     /*=======提交审批======*/
     @POST(BASE_JAVA + "/event/update/")
@@ -183,4 +189,28 @@ public interface Api {
      */
     @GET(BASE_JAVA + "/appmanagement/newest")
     LiveData<Resource<Response<UpdateVersion>>> getUpdateVersion(@Query("version") String version);
+
+    /*=======用户签到======*/
+    @GET(BASE_JAVA + "/phone/sign/")
+    LiveData<Resource<Response<String>>> getSignIn(@Query("longitude") String longitude, @Query("latitude") String latitude);
+
+    /*=======可用积分======*/
+    @GET(BASE_JAVA + "/integral/count/")
+    LiveData<Resource<Response<ScoresDetailsEvent>>> getScoresDetails();
+
+    /*=======商品列表======*/
+    @GET(BASE_JAVA + "/product/pageList/")
+    LiveData<Resource<Response<CommodityEvent>>> getCommodity(@Query("current") int page, @Query("size") int pageSize);
+
+    /*=======积分记录======*/
+    @GET(BASE_JAVA + "/integral/pageList/")
+    LiveData<Resource<Response<MyScoresEvent>>> getMyScoresEvent(@Query("current") int page, @Query("size") int pageSize, @Query("type") String state);
+
+    /*=======积分兑换记录======*/
+    @GET(BASE_JAVA + "/creditexchange/pageList/")
+    LiveData<Resource<Response<MyExchangeRecordEvent>>> getMyExchangeRecord(@Query("current") int page, @Query("size") int pageSize, @Query("state") String state);
+
+    /*=======积分兑换商品======*/
+    @GET(BASE_JAVA + "/creditexchange/exchange")
+    LiveData<Resource<Response<String>>> getScoresExchangeCommodity(@Query("productId") int productId);
 }
