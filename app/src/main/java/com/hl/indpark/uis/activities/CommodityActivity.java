@@ -206,6 +206,10 @@ public class CommodityActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) recyclerView.getParent(), false);
+                list.clear();
+                adapter.setNewData(list);
+                adapter.setEmptyView(emptyView);
                 Util.login(String.valueOf(code), CommodityActivity.this);
                 refreshLayout.finishRefresh(false);
             }

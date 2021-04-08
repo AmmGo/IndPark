@@ -18,6 +18,7 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.uis.activities.CustomCaptureActivity;
 import com.hl.indpark.uis.activities.EventsReportActivity;
 import com.hl.indpark.uis.activities.SignInActivity;
 import com.hl.indpark.uis.adapters.ViewPagerAdapter;
@@ -44,7 +45,7 @@ public class HomeFragment extends BaseFragment {
     private ViewPager mViewPager;
     private Intent intent;
 
-    @OnClick({R.id.ll_one_alrarm, R.id.ll_events, R.id.ll_sign_in, R.id.ll_bjtj, R.id.ll_bjfx})
+    @OnClick({R.id.ll_one_alrarm, R.id.ll_events, R.id.ll_sign_in, R.id.ll_bjtj, R.id.ll_bjfx, R.id.ll_sys})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_one_alrarm:
@@ -78,6 +79,9 @@ public class HomeFragment extends BaseFragment {
             case R.id.ll_bjfx:
                 tabLayout.getTabAt(1).select();
                 break;
+            case R.id.ll_sys:
+                startActivity(new Intent(getActivity(), CustomCaptureActivity.class));
+                break;
         }
     }
 
@@ -108,23 +112,26 @@ public class HomeFragment extends BaseFragment {
         });
         ad.show();
     }
-    public void getSignIn(String lon,String lat) {
-        ArticlesRepo.getSignIn(lon,lat).observe(this, new ApiObserver<String>() {
+
+    public void getSignIn(String lon, String lat) {
+        ArticlesRepo.getSignIn(lon, lat).observe(this, new ApiObserver<String>() {
             @Override
             public void onSuccess(Response<String> response) {
                 ToastUtil.showToast(getContext(), "打卡成功");
             }
+
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                if (code==10017||code==10018){
+                if (code == 10017 || code == 10018) {
                     ToastUtil.showToast(getContext(), msg);
                     return;
-                }else{
+                } else {
                     ToastUtil.showToast(getContext(), "签到失败");
                 }
                 Util.login(String.valueOf(code), getActivity());
             }
+
             @Override
             public void onError(Throwable throwable) {
                 super.onError(throwable);
@@ -132,6 +139,7 @@ public class HomeFragment extends BaseFragment {
             }
         });
     }
+
     @Override
     protected int getContentView() {
         return R.layout.fragment_home;

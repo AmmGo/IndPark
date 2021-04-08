@@ -10,4 +10,6 @@ public class EntNameEvent {
     public String name;
     public String companyCode;
     public String psCode;
+    public double longitude;
+    public double latitude;
 }

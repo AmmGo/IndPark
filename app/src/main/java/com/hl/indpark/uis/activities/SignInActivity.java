@@ -9,6 +9,8 @@ import android.os.Message;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
@@ -17,19 +19,19 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.amap.api.maps.AMap;
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.LocationSource;
-import com.amap.api.maps.MapView;
-import com.amap.api.maps.UiSettings;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
-import com.amap.api.maps.model.Circle;
-import com.amap.api.maps.model.CircleOptions;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.LocationSource;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.UiSettings;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.Circle;
+import com.amap.api.maps2d.model.CircleOptions;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
+import com.hl.indpark.entities.events.EntNameEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.utils.Util;
@@ -40,7 +42,7 @@ import net.arvin.baselib.widgets.TitleBar;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -66,9 +68,26 @@ public class SignInActivity extends BaseActivity implements LocationSource, AMap
         // 启动新的线程
         new TimeThread().start();
         // 显示地图，必须要写
-        mapView.onCreate(savedInstanceState);
-        initView();
-        initData();
+        try {
+            mapView.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            ViewGroup child = (ViewGroup)mapView.getChildAt(0);//地图框架
+                            child.getChildAt(2).setVisibility(View.GONE);//logo
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 此方法必须重写
+        try {
+            mapView.onCreate(savedInstanceState);
+            initView();
+            initData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
 
@@ -95,6 +114,7 @@ public class SignInActivity extends BaseActivity implements LocationSource, AMap
         aMap = mapView.getMap();
         //设置显示定位按钮 并且可以点击
         UiSettings settings = aMap.getUiSettings();
+        ;
         //设置定位监听
         aMap.setLocationSource(this);
         // 是否显示定位按钮
@@ -129,8 +149,9 @@ public class SignInActivity extends BaseActivity implements LocationSource, AMap
     void click(View v) {
         switch (v.getId()) {
             case R.id.btn_check_in:
-                if (locLatLng != null && comLatLng != null) {
-                    float distance = AMapUtils.calculateLineDistance(locLatLng, comLatLng);
+//                if (locLatLng != null && comLatLng != null) {
+                if (locLatLng != null) {
+//                    float distance = AMapUtils.calculateLineDistance(locLatLng, comLatLng);
 //                    Log.e("连点之间的距离：" , ""+distance);
 //                    if (distance <= radius) {
 //                        // TODO 这里模拟把打卡的信息提交到服务器，服务器并且把打卡成功信息返回给客户端
@@ -139,6 +160,7 @@ public class SignInActivity extends BaseActivity implements LocationSource, AMap
 //                        ToastUtil.showToastLong(this,"当前位置不打卡范围内，打卡失败");
 //                    }
                     getSignIn(String.valueOf(locLatLng.longitude),String.valueOf(locLatLng.latitude));
+//                    getSignIn(String.valueOf(105.20690789),String.valueOf(37.65234908));
                 } else {
                     ToastUtil.showToastLong(this,"位置初始化异常，打卡失败");
                 }
@@ -168,6 +190,27 @@ public class SignInActivity extends BaseActivity implements LocationSource, AMap
             public void onError(Throwable throwable) {
                 super.onError(throwable);
                 ToastUtil.showToast(SignInActivity.this, "打卡失败");
+            }
+        });
+    }
+
+    public void getEntName() {
+        ArticlesRepo.getEnterpriseEvent().observe(this, new ApiObserver<List<EntNameEvent>>() {
+            @Override
+            public void onSuccess(Response<List<EntNameEvent>> response) {
+
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+                Util.login(String.valueOf(code), SignInActivity.this);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+
             }
         });
     }
@@ -230,7 +273,7 @@ public class SignInActivity extends BaseActivity implements LocationSource, AMap
                     //点击定位按钮 能够将地图的中心移动到定位点
                     mListener.onLocationChanged(amapLocation);
                     //添加图钉
-                    aMap.addMarker(getMarkerOptions(amapLocation));
+//                    aMap.addMarker(getMarkerOptions(amapLocation));
                     //获取定位信息
                     StringBuffer buffer = new StringBuffer();
                     buffer.append(amapLocation.getAddress());
@@ -257,8 +300,8 @@ public class SignInActivity extends BaseActivity implements LocationSource, AMap
         //图标
         options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
         // 记录公司的坐标，这里的公司坐标是随机生成
-        comLatLng = new LatLng(amapLocation.getLatitude() + ((new Random().nextDouble()) / 500),
-                amapLocation.getLongitude() + ((new Random().nextDouble()) / -500));
+//        comLatLng = new LatLng(37.65234907778199,105.20690788810441);
+        comLatLng = new LatLng(37.65234908,105.20690789);
         options.position(comLatLng);
         // 绘制圆圈
         drawCircle(comLatLng);

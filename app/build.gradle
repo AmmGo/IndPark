@@ -106,7 +106,8 @@ dependencies {
     //高德
     implementation 'com.amap.api:location:latest.integration'
     //3D地图so及jar
-    implementation 'com.amap.api:3dmap:latest.integration'
-
+    implementation 'com.amap.api:map2d:latest.integration'
     implementation 'com.github.zhoulinxue:BGStart:1.1.5'
+    //XQRCode二维码扫描
+    implementation 'com.github.xuexiangjys:XQRCode:1.1.0'
 }

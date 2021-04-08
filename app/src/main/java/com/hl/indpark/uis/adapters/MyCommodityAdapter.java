@@ -25,6 +25,7 @@ public class MyCommodityAdapter extends BaseQuickAdapter<CommodityEvent.RecordsB
     protected void convert(BaseViewHolder holder, CommodityEvent.RecordsBean item) {
         try {
             holder.setText(R.id.tv_scores, item.credit+"");
+            holder.setText(R.id.tv_in_stock, "库存:"+item.inventory+"");
             holder.addOnClickListener(R.id.img_exchange);
             RequestOptions options = new RequestOptions()
                     .placeholder(R.drawable.a_error)
