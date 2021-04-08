@@ -106,6 +106,10 @@
 -dontwarn okio.**
 #</retrofit2.x>
 
+# zxing
+-dontwarn com.google.zxing.**
+-keep class com.google.zxing.**{*;}
+
 #</okhttp3.x>
 
 #<eventbus 3.0>
