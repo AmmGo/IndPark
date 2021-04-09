@@ -1,16 +1,16 @@
 apply plugin: 'com.android.application'
-apply from: 'tinker-support.gradle'
+//apply from: 'tinker-support.gradle'
 apply plugin: 'com.jakewharton.butterknife'
 android {
     signingConfigs {
         release {
-            storeFile file("./indupark.jks")
+            storeFile file('./indupark.jks')
             storePassword "android"
             keyAlias "key0"
             keyPassword "android"
         }
         debug {
-            storeFile file("./indupark.jks")
+            storeFile file('./indupark.jks')
             storePassword "android"
             keyAlias "key0"
             keyPassword "android"
@@ -39,6 +39,7 @@ android {
                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
     }
+
 
     lintOptions {
         checkReleaseBuilds false
