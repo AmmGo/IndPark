@@ -15,19 +15,24 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/tab_s_ep"
             android:orientation="vertical">
-
-            <com.hl.indpark.widgit.PieChartView
+            <WebView
                 android:id="@+id/chart_sep"
+                android:duplicateParentState="true"
+                android:clickable="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center" />
-
+                android:layout_gravity="center"/>
+<!--            <com.hl.indpark.widgit.PieChartView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:visibility="gone"-->
+<!--                android:layout_gravity="center" />-->
         </LinearLayout>
 
         <View

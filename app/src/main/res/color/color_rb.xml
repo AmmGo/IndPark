@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:color="#BABABA"
         android:state_checked="false" />
-    <item android:color="@color/primary"
+    <item android:color="@color/background_white"
         android:state_checked="true" />
 </selector>

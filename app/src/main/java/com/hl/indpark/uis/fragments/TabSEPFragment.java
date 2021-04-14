@@ -1,10 +1,15 @@
 package com.hl.indpark.uis.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
 import com.hl.indpark.R;
@@ -14,9 +19,10 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.PieChartEPDataActivity;
 import com.hl.indpark.utils.Util;
-import com.hl.indpark.widgit.PieChartView;
 
 import net.arvin.baselib.base.BaseFragment;
+
+import org.json.JSONObject;
 
 
 /**
@@ -25,13 +31,54 @@ import net.arvin.baselib.base.BaseFragment;
  * Desc：报警统计---环保
  */
 public class TabSEPFragment extends BaseFragment {
-    private PieChartView mPieChart;
+    private WebView mPieChart;
+    private JSONObject jsonObject;
     private LinearLayout linearLayout;
     private EPAlarmEvent alarmEvent;
 
     @Override
     protected int getContentView() {
         return R.layout.fragment_tab_sep;
+    }
+
+    @SuppressLint("JavascriptInterface")
+    private void setWebview() {
+        WebSettings webSettings = mPieChart.getSettings();
+        //与js交互必须设置
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        mPieChart.setHorizontalScrollBarEnabled(false);//水平不显示
+        mPieChart.setVerticalScrollBarEnabled(false); //垂直不显示
+        mPieChart.loadUrl("file:///android_asset/chart/src/hbpie.html");
+        mPieChart.addJavascriptInterface(this, "justJump");
+        mPieChart.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                mPieChart.loadUrl("javascript:loadChart('" + getJson() + "')");
+                super.onPageFinished(view, url);
+            }
+        });
+    }
+
+    @JavascriptInterface
+    public void jump() {
+        Intent intent = new Intent(getActivity(), PieChartEPDataActivity.class);
+        intent.putExtra("type", Util.hbDay);
+        startActivity(intent);
+    }
+
+    private String getJson() {
+        String result = "";
+        try {
+            jsonObject = new JSONObject();
+            jsonObject.put("fs", alarmEvent.waterNumber);
+            jsonObject.put("fq", alarmEvent.gasNumber);
+            jsonObject.put("sum", alarmEvent.totalNumber);
+            result = jsonObject.toString();
+        } catch (Exception e) {
+
+        }
+        return result;
     }
 
     private void initData() {
@@ -42,28 +89,12 @@ public class TabSEPFragment extends BaseFragment {
                     if (response != null && response.getData() != null) {
                         alarmEvent = response.getData();
                         if (response.getData().totalNumber > 0) {
-                            double[] datas = new double[]{alarmEvent.gasNumber, alarmEvent.waterNumber};
-                            String[] texts = new String[]{alarmEvent.gasNumber + "," + alarmEvent.gasStr, alarmEvent.waterNumber + "," + alarmEvent.waterStr};
-                            String[] strs = new String[]{alarmEvent.gasStr, alarmEvent.waterStr};
-                            mPieChart.setStrList(strs);
-                            mPieChart.setDatas(datas);
-                            mPieChart.setTexts(texts);
-                            mPieChart.setMaxNum(datas.length);
-                            mPieChart.setCenterText(alarmEvent.totalNumber + ",环保报警");
-                            mPieChart.invalidate();
+                            setWebview();
                             linearLayout.setVisibility(View.VISIBLE);
                         } else if (response.getData().totalNumber == 0) {
-                            double[] datas = new double[]{70, 30};
-                            String[] texts = new String[]{alarmEvent.gasNumber + "," + alarmEvent.gasStr, alarmEvent.waterNumber + "," + alarmEvent.waterStr};
-                            String[] strs = new String[]{alarmEvent.gasStr, alarmEvent.waterStr};
-                            mPieChart.setStrList(strs);
-                            mPieChart.setDatas(datas);
-                            mPieChart.setTexts(texts);
-                            mPieChart.setMaxNum(datas.length);
-                            mPieChart.setCenterText(alarmEvent.totalNumber + ",环保报警");
-                            mPieChart.invalidate();
+                            setWebview();
                             linearLayout.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             linearLayout.setVisibility(View.GONE);
                         }
 
@@ -95,17 +126,15 @@ public class TabSEPFragment extends BaseFragment {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        mPieChart = root.findViewById(R.id.chart_sep);
         linearLayout = root.findViewById(R.id.ll_gone);
-        initData();
-        mPieChart.setOnClickListener(new View.OnClickListener() {
+        mPieChart = (WebView) root.findViewById(R.id.chart_sep);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), PieChartEPDataActivity.class);
-                    intent.putExtra("type", Util.hbDay);
-                    startActivity(intent);
+
             }
         });
+        initData();
     }
 
 }

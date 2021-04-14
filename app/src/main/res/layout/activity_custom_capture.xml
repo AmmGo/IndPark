@@ -20,7 +20,7 @@
             android:layout_gravity="center_vertical"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            app:srcCompat="@drawable/ic_navigation_back_white" />
+            app:srcCompat="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/tv_title"

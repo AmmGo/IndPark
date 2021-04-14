@@ -3,31 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <LinearLayout
         android:id="@+id/ll_gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/tab_s_ep"
-            android:gravity="center"
             android:orientation="vertical">
-
-            <com.hl.indpark.widgit.PieChartView
+            <WebView
                 android:id="@+id/chart_sep"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center" />
-
+                android:layout_gravity="center"/>
         </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -1,10 +1,14 @@
 package com.hl.indpark.uis.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
@@ -15,14 +19,10 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.PieChartSHDataActivity;
 import com.hl.indpark.utils.Util;
-import com.hl.indpark.widgit.PieChartView;
 
 import net.arvin.baselib.base.BaseFragment;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import org.json.JSONObject;
 
 import butterknife.OnCheckedChanged;
 
@@ -33,13 +33,61 @@ import butterknife.OnCheckedChanged;
  * Desc：报警分析---危险源
  */
 public class TabAHSFragment extends BaseFragment {
-
-    private PieChartView mPieChart;
+    private WebView mPieChart;
+    private JSONObject jsonObject;
     private String type = "2";
     private int typeData = 2;
     private LinearLayout linearLayout;
     private HSAlarmEvent alarmEvent;
+    @SuppressLint("JavascriptInterface")
+    private void setWebview() {
+        WebSettings webSettings = mPieChart.getSettings();
+        //与js交互必须设置
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        mPieChart.setHorizontalScrollBarEnabled(false);//水平不显示
+        mPieChart.setVerticalScrollBarEnabled(false); //垂直不显示
+        mPieChart.loadUrl("file:///android_asset/chart/src/pie.html");
+        mPieChart.addJavascriptInterface(this, "justJump");
+        mPieChart.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                mPieChart.loadUrl("javascript:loadChart('" + getJson() + "')");
+                super.onPageFinished(view, url);
+            }
+        });
+    }
+    @JavascriptInterface
+    public void jump() {
+        Intent intent = new Intent(getActivity(), PieChartSHDataActivity.class);
+        intent.putExtra("timeType",typeData);
+        startActivity(intent);
+    }
 
+    private String getJson() {
+        String result = "";
+        try {
+            jsonObject = new JSONObject();
+            jsonObject.put("ggb", getPieJson(1));
+            jsonObject.put("gb", getPieJson(2));
+            jsonObject.put("ddb", getPieJson(4));
+            jsonObject.put("db", getPieJson(3));
+            jsonObject.put("sum", alarmEvent.key);
+            result = jsonObject.toString();
+        } catch (Exception e) {
+
+        }
+        return result;
+    }
+    public int getPieJson(int type){
+        int num =0;
+        for (int i = 0 ;i<alarmEvent.value.size();i++){
+            if (alarmEvent.value.get(i).type==type){
+                num = alarmEvent.value.get(i).num;
+            }
+        }
+        return  num;
+    }
     @OnCheckedChanged({R.id.rg_month, R.id.rg_quarter, R.id.rg_year})
     public void OnCheckedChangeListener(CompoundButton view, boolean ischanged) {
         switch (view.getId()) {
@@ -79,14 +127,6 @@ public class TabAHSFragment extends BaseFragment {
         mPieChart = root.findViewById(R.id.chart_sep);
         linearLayout = root.findViewById(R.id.ll_gone);
         initData(type);
-        mPieChart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), PieChartSHDataActivity.class);
-                    intent.putExtra("timeType",typeData);
-                    startActivity(intent);
-            }
-        });
     }
 
     private void initData(String ty) {
@@ -97,54 +137,14 @@ public class TabAHSFragment extends BaseFragment {
                     if (response != null && response.getData() != null&&response.getData().key!=null) {
                         alarmEvent = response.getData();
                         if (!response.getData().key.equals("0")){
-                            List<HSAlarmEvent.ValueBean> valueBeanList = new ArrayList<>();
-                            valueBeanList.addAll(alarmEvent.value);
-                            Comparator<HSAlarmEvent.ValueBean> comparator = new Comparator<HSAlarmEvent.ValueBean>() {
-                                public int compare(HSAlarmEvent.ValueBean s1, HSAlarmEvent.ValueBean s2) {
-                                    // 先排年龄
-                                    if (s1.num != s2.num) {
-                                        return s1.num - s2.num;
-                                    } else if (s1.type != s2.type) {
-                                        // 年龄相同则按姓名排序
-                                        return s1.type - (s2.type);
-                                    } else {
-                                        return 0;
-                                    }
-                                }
-                                ;
-                            };
-                            Collections.sort(valueBeanList, comparator);
-                            double[] datas = new double[valueBeanList.size()];
-                            String[] texts = new String[valueBeanList.size()];
-                            String[] strs = new String[valueBeanList.size()];
-                            for (int i = 0; i < valueBeanList.size(); i++) {
-                                datas[i] = valueBeanList.get(i).num;
-                                texts[i] = valueBeanList.get(i).num+","+HSAlarmEvent.getType(valueBeanList.get(i).type);
-                                strs[i] = HSAlarmEvent.getType(valueBeanList.get(i).type);
-                            }
-                            mPieChart.setStrList(strs);
-                            mPieChart.setDatas(datas);
-                            mPieChart.setTexts(texts);
-                            mPieChart.setMaxNum(datas.length);
-                            mPieChart.setCenterText(alarmEvent.key+",危险源报警");
-                            mPieChart.invalidate();
-                            Log.e("dafda", "onSuccess: ");
+                            setWebview();
                             linearLayout.setVisibility(View.VISIBLE);
                         } else if (response.getData().key.equals("0")){
-                            double[] datas = new double[]{35,30,15,20};
-                            String[] texts = new String[]{"0,高高报","0,高报","0,低报","0,低低报"};
-                            String[] strs = new String[]{"高高报","高报","低报","低低报"};
-                            mPieChart.setStrList(strs);
-                            mPieChart.setDatas(datas);
-                            mPieChart.setTexts(texts);
-                            mPieChart.setMaxNum(datas.length);
-                            mPieChart.setCenterText(alarmEvent.key+",危险源报警");
-                            mPieChart.invalidate();
+                            setWebview();
                             linearLayout.setVisibility(View.VISIBLE);
                         }else{
                             linearLayout.setVisibility(View.GONE);
                         }
-    //                    sepPieChart(alarmEvent);
                     }else{
                         linearLayout.setVisibility(View.GONE);
                     }
