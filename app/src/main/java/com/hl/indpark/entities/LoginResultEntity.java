@@ -36,7 +36,7 @@ public class LoginResultEntity implements Parcelable {
     private String deptName;
     public int enterpriseId;
     public String enterpriseName;
-    private int category;
+    public int category;
     public int roleId;
     private String roleName;
     private Object menuList;

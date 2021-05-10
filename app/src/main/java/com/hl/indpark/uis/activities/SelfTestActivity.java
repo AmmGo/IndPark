@@ -59,7 +59,12 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class EventsReportActivity extends BaseActivity {
+ /**
+  * Created by yjl on 2021/5/10 13:24
+  * Function：
+  * Desc：单位自检
+  */
+public class SelfTestActivity extends BaseActivity {
     @BindView(R.id.tv_count)
     TextView tvCount;
     @BindView(R.id.tv_type)
@@ -89,7 +94,7 @@ public class EventsReportActivity extends BaseActivity {
             islMaxCount = true;
         }
         if (detailLength == 300 && islMaxCount) {
-            ToastUtil.showToast(EventsReportActivity.this, "最多输入300个字");
+            ToastUtil.showToast(SelfTestActivity.this, "最多输入300个字");
             islMaxCount = false;
         }
     }
@@ -106,23 +111,23 @@ public class EventsReportActivity extends BaseActivity {
                 addImageDialog(PHOTO, PHOTOLIB);
                 break;
             case R.id.tv_report:
-                Util.hideInputManager(EventsReportActivity.this, v);
+                Util.hideInputManager(SelfTestActivity.this, v);
 //                getUpdateUserImg(uploadFile.get(0));
 //                getUploadEvent();
-                uploadTvType = tvType.getText().toString().replaceAll(" ", "").replace("请选择事件类型","");
+                uploadTvType = tvType.getText().toString().replaceAll(" ", "").replace("请选择自检类型","");
                 uploadEventTitile = ed_event_titile.getText().toString().replaceAll(" ", "");
                 uploadEventDecs = ed_event_decs.getText().toString().replaceAll(" ", "");
                 if (TextUtils.isEmpty(uploadTvType)) {
-                    ToastUtil.showToast(this, "请选择事件类型");
+                    ToastUtil.showToast(this, "请选择自检类型");
                     return;
                 }
 
                 if (TextUtils.isEmpty(uploadEventTitile)) {
-                    ToastUtil.showToast(this, "请输入事件标题");
+                    ToastUtil.showToast(this, "请输入详细位置");
                     return;
                 }
                 if (TextUtils.isEmpty(uploadEventDecs)) {
-                    ToastUtil.showToast(this, "请输入事件描述");
+                    ToastUtil.showToast(this, "请输入自检描述");
                     return;
                 }
                 if (mediaList != null && mediaList.size() > 0) {
@@ -144,7 +149,7 @@ public class EventsReportActivity extends BaseActivity {
                 break;
             case R.id.ll_type:
                 try {
-                    pop = new EntDialog(EventsReportActivity.this, popEvent, 102);
+                    pop = new EntDialog(SelfTestActivity.this, popEvent, 102);
                     pop.setCanceledOnTouchOutside(true);
                     pop.show();
                 } catch (Exception e) {
@@ -164,7 +169,7 @@ public class EventsReportActivity extends BaseActivity {
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_one_events;
+        return R.layout.activity_self_test;
     }
 
     //声明AMapLocationClientOption对象
@@ -183,6 +188,9 @@ public class EventsReportActivity extends BaseActivity {
                     Log.e("获取经度", "onLocationChanged: "+aMapLocation.getLongitude() );
                     getLongitude = aMapLocation.getLongitude();
                     getLatitude = aMapLocation.getLatitude();
+                    String locAddress = aMapLocation.getAddress();
+                    String locAddress1 = aMapLocation.getDistrict();
+                    ed_event_titile.setText(locAddress);
                 }else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError","location Error, ErrCode:"
@@ -221,7 +229,7 @@ public class EventsReportActivity extends BaseActivity {
         initPermissionConfig();
         uploadFile = new ArrayList<>();
         TitleBar titleBar = findViewById(R.id.title_bar);
-        titleBar.getCenterTextView().setText("事件上报");
+        titleBar.getCenterTextView().setText("单位自检");
         titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -267,10 +275,10 @@ public class EventsReportActivity extends BaseActivity {
                             public void callback(boolean granted, boolean isAlwaysDenied) {
                                 if (granted) {
                                     if (mediaList != null && mediaList.size() == 6) {
-                                        ToastUtil.showToast(EventsReportActivity.this, "你最多只能选择6张照片");
+                                        ToastUtil.showToast(SelfTestActivity.this, "你最多只能选择6张照片");
                                         return;
                                     }
-                                    PictureSelector.create(EventsReportActivity.this)
+                                    PictureSelector.create(SelfTestActivity.this)
                                             .openCamera(PictureMimeType.ofImage())
                                             .loadImageEngine(GlideEngine.createGlideEngine()) // 请参考Demo GlideEngine.java
                                             .forResult(PictureConfig.REQUEST_CAMERA);
@@ -283,7 +291,7 @@ public class EventsReportActivity extends BaseActivity {
                             @Override
                             public void callback(boolean granted, boolean isAlwaysDenied) {
                                 if (granted) {
-                                    PictureSelector.create(EventsReportActivity.this)
+                                    PictureSelector.create(SelfTestActivity.this)
                                             .openGallery(PictureMimeType.ofImage())
                                             .isCamera(false)
                                             .minimumCompressSize(100)// 是否压缩
@@ -308,10 +316,10 @@ public class EventsReportActivity extends BaseActivity {
     }
 
     private SelectDialog showDialog(SelectDialog.SelectDialogListener listener, List<String> names) {
-        SelectDialog dialog = new SelectDialog(EventsReportActivity.this, R.style
+        SelectDialog dialog = new SelectDialog(SelfTestActivity.this, R.style
                 .transparentFrameWindowStyle,
                 listener, names);
-        if (!EventsReportActivity.this.isFinishing()) {
+        if (!SelfTestActivity.this.isFinishing()) {
             dialog.show();
         }
         return dialog;
@@ -342,34 +350,38 @@ public class EventsReportActivity extends BaseActivity {
     }
 
     public void initData() {
-        ArticlesRepo.getReportType().observe(this, new ApiObserver<List<ReportTypeEvent>>() {
-            @Override
-            public void onSuccess(Response<List<ReportTypeEvent>> response) {
-                popEvent.reportTypeEventList = response.getData();
-                Log.e("事件类型", "onSuccess: ");
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-                Util.login(String.valueOf(code), EventsReportActivity.this);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
-
-
+        List<ReportTypeEvent> typeCheck  = new ArrayList<>();
+        typeCheck.add(new ReportTypeEvent(1,"安全自检"));
+        typeCheck.add(new ReportTypeEvent(2,"消防自检"));
+        typeCheck.add(new ReportTypeEvent(3,"设备自检"));
+        typeCheck.add(new ReportTypeEvent(4,"其他自检"));
+        popEvent.reportTypeEventList = typeCheck;
+//        ArticlesRepo.getReportType().observe(this, new ApiObserver<List<ReportTypeEvent>>() {
+//            @Override
+//            public void onSuccess(Response<List<ReportTypeEvent>> response) {
+//                popEvent.reportTypeEventList = response.getData();
+//                Log.e("事件类型", "onSuccess: ");
+//            }
+//
+//            @Override
+//            public void onFailure(int code, String msg) {
+//                super.onFailure(code, msg);
+//                Util.login(String.valueOf(code), SelfTestActivity.this);
+//            }
+//
+//            @Override
+//            public void onError(Throwable throwable) {
+//                super.onError(throwable);
+//
+//            }
+//        });
     }
 
     public void getUploadEvent() {
         if (mediaList != null && mediaList.size() > 0) {
 
         } else {
-            LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(EventsReportActivity.this)
+            LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(SelfTestActivity.this)
                     .setMessage("提交中...")
                     .setCancelable(false)
                     .setCancelOutside(false);
@@ -382,20 +394,17 @@ public class EventsReportActivity extends BaseActivity {
         /**
          * 通用参数配置
          * */
-        paramMap.put("title", uploadEventTitile);
-        paramMap.put("type", String.valueOf(eventReport.id));
-        paramMap.put("content", uploadEventDecs);
+        paramMap.put("address", uploadEventTitile);
+        paramMap.put("checkType", String.valueOf(eventReport.id));
+        paramMap.put("details", uploadEventDecs);
         if (imgS != null && !imgS.equals("")) {
-            paramMap.put("image", imgS);
+            paramMap.put("images", imgS);
         }
-        paramMap.put("longitude", String.valueOf(getLongitude));
-        paramMap.put("latitude", String.valueOf(getLatitude));
-
-        ArticlesRepo.getReportEvent(paramMap).observe(this, new ApiObserver<String>() {
+        ArticlesRepo.getCheckReportEvent(paramMap).observe(this, new ApiObserver<String>() {
             @Override
             public void onSuccess(Response<String> response) {
-                Log.e("上报事件", "onSuccess: ");
-                ToastUtil.showToast(EventsReportActivity.this, "提交成功");
+                Log.e("自检上报事件", "onSuccess: ");
+                ToastUtil.showToast(SelfTestActivity.this, "提交成功");
                 dialog.cancel();
                 finish();
             }
@@ -403,9 +412,9 @@ public class EventsReportActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                ToastUtil.showToast(EventsReportActivity.this, msg);
+                ToastUtil.showToast(SelfTestActivity.this, msg);
                 dialog.cancel();
-                Util.login(String.valueOf(code), EventsReportActivity.this);
+                Util.login(String.valueOf(code), SelfTestActivity.this);
             }
 
             @Override
@@ -433,7 +442,7 @@ public class EventsReportActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code), EventsReportActivity.this);
+                Util.login(String.valueOf(code), SelfTestActivity.this);
             }
 
             @Override
@@ -462,7 +471,7 @@ public class EventsReportActivity extends BaseActivity {
     }
 
     public void getUpdateUserImgS(List<File> files) {
-        LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(EventsReportActivity.this)
+        LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(SelfTestActivity.this)
                 .setMessage("提交中...")
                 .setCancelable(false)
                 .setCancelOutside(false);
@@ -482,7 +491,7 @@ public class EventsReportActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code), EventsReportActivity.this);
+                Util.login(String.valueOf(code), SelfTestActivity.this);
             }
 
             @Override

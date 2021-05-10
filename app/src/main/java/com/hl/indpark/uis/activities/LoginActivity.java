@@ -197,6 +197,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 SharePreferenceUtil.saveKeyValue("enterpriseName", String.valueOf(data.enterpriseName));
                 SharePreferenceUtil.saveKeyValue("userId", String.valueOf(data.id));
                 SharePreferenceUtil.saveKeyValue("enterpriseId", String.valueOf(data.enterpriseId));
+                SharePreferenceUtil.saveKeyValue("category", String.valueOf(data.category));
                 Log.e("登录用户Id", "onSuccess: "+data.id );
                 Log.e("TOKEN", data.token);
                 dialogUtil.hideProgressDialog();

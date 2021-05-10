@@ -17,4 +17,11 @@ public class ReportTypeEvent {
     public int updateId;
     public String updateTime;
 
+    public ReportTypeEvent(int id,  String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public ReportTypeEvent() {
+    }
 }

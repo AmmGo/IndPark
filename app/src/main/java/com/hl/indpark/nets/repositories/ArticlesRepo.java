@@ -168,4 +168,12 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<String>>> getScoresExchangeCommodity(int id) {
         return Net.api().getScoresExchangeCommodity(id);
     }
+
+    public static LiveData<Resource<Response<String>>> getCheckReportEvent(Map map) {
+        return Net.api().getCheckReportEvent((HashMap<String, String>) map);
+    }
+
+    public static LiveData<Resource<Response<MyMsgEvent>>> getLogManager(int sizePage, int isP, String qid, String date) {
+        return Net.api().getLogManager(sizePage, isP, qid, date);
+    }
 }

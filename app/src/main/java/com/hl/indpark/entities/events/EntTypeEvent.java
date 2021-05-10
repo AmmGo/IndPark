@@ -7,6 +7,14 @@ package com.hl.indpark.entities.events;
  */
 public class EntTypeEvent {
     public String id;
-    public String  hazardType;
+    public String hazardType;
     public String name;
+
+    public EntTypeEvent(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public EntTypeEvent() {
+    }
 }

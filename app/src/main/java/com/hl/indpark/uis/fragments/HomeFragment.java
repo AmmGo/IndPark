@@ -20,6 +20,8 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.CustomCaptureActivity;
 import com.hl.indpark.uis.activities.EventsReportActivity;
+import com.hl.indpark.uis.activities.LogManagerActivity;
+import com.hl.indpark.uis.activities.SelfTestActivity;
 import com.hl.indpark.uis.activities.SignInActivity;
 import com.hl.indpark.uis.adapters.ViewPagerAdapter;
 import com.hl.indpark.utils.Util;
@@ -45,7 +47,7 @@ public class HomeFragment extends BaseFragment {
     private ViewPager mViewPager;
     private Intent intent;
 
-    @OnClick({R.id.ll_one_alrarm, R.id.ll_events, R.id.ll_sign_in, R.id.ll_bjtj, R.id.ll_bjfx, R.id.ll_sys})
+    @OnClick({R.id.ll_one_alrarm, R.id.ll_events, R.id.ll_sign_in, R.id.ll_bjtj, R.id.ll_bjfx, R.id.ll_sys, R.id.ll_self_test, R.id.ll_nav_manager, R.id.ll_log_manager})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_one_alrarm:
@@ -81,6 +83,15 @@ public class HomeFragment extends BaseFragment {
                 break;
             case R.id.ll_sys:
                 startActivity(new Intent(getActivity(), CustomCaptureActivity.class));
+                break;
+            case R.id.ll_self_test:
+                startActivity(new Intent(getActivity(), SelfTestActivity.class));
+                break;
+            case R.id.ll_nav_manager:
+                startActivity(new Intent(getActivity(), CustomCaptureActivity.class));
+                break;
+            case R.id.ll_log_manager:
+                startActivity(new Intent(getActivity(), LogManagerActivity.class));
                 break;
         }
     }

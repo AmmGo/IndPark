@@ -213,4 +213,13 @@ public interface Api {
     /*=======积分兑换商品======*/
     @GET(BASE_JAVA + "/creditexchange/exchange")
     LiveData<Resource<Response<String>>> getScoresExchangeCommodity(@Query("productId") int productId);
+
+    /*=======自检上报======*/
+    @POST(BASE_JAVA + "/AppChecking/insert")
+    LiveData<Resource<Response<String>>> getCheckReportEvent(@Body HashMap<String, String> map);
+
+    /*=======日志管理=====*/
+    @GET(BASE_JAVA + "/push/journal")
+    LiveData<Resource<Response<MyMsgEvent>>> getLogManager(@Query("current") int page, @Query("size") int pageSize,@Query("enterpriseId") String enterpriseId,@Query("date") String date);
+
 }
