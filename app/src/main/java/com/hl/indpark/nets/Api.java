@@ -15,6 +15,7 @@ import com.hl.indpark.entities.events.EntSEPTypeEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
+import com.hl.indpark.entities.events.MapPointEvent;
 import com.hl.indpark.entities.events.MyApprovalEvent;
 import com.hl.indpark.entities.events.MyExchangeRecordEvent;
 import com.hl.indpark.entities.events.MyMsgEvent;
@@ -222,4 +223,15 @@ public interface Api {
     @GET(BASE_JAVA + "/push/journal")
     LiveData<Resource<Response<MyMsgEvent>>> getLogManager(@Query("current") int page, @Query("size") int pageSize,@Query("enterpriseId") String enterpriseId,@Query("date") String date);
 
+    /*=======企业点位======*/
+    @GET(BASE_JAVA + "/phone/navigationEnterprise")
+    LiveData<Resource<Response<List<MapPointEvent>>>> getEpPoint();
+
+    /*=======巡检设备======*/
+    @GET(BASE_JAVA + "/phone/navigationDevice")
+    LiveData<Resource<Response<List<MapPointEvent>>>> getCheckPoint();
+
+    /*=======事件点位======*/
+    @GET(BASE_JAVA + "/phone/navigationEvent")
+    LiveData<Resource<Response<List<MapPointEvent>>>> getEventPoint();
 }

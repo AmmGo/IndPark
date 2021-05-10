@@ -21,6 +21,7 @@ import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.CustomCaptureActivity;
 import com.hl.indpark.uis.activities.EventsReportActivity;
 import com.hl.indpark.uis.activities.LogManagerActivity;
+import com.hl.indpark.uis.activities.NavigationManagerActivity;
 import com.hl.indpark.uis.activities.SelfTestActivity;
 import com.hl.indpark.uis.activities.SignInActivity;
 import com.hl.indpark.uis.adapters.ViewPagerAdapter;
@@ -88,7 +89,7 @@ public class HomeFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), SelfTestActivity.class));
                 break;
             case R.id.ll_nav_manager:
-                startActivity(new Intent(getActivity(), CustomCaptureActivity.class));
+                startActivity(new Intent(getActivity(), NavigationManagerActivity.class));
                 break;
             case R.id.ll_log_manager:
                 startActivity(new Intent(getActivity(), LogManagerActivity.class));

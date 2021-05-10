@@ -13,6 +13,7 @@ import com.hl.indpark.entities.events.EntSEPTypeEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
+import com.hl.indpark.entities.events.MapPointEvent;
 import com.hl.indpark.entities.events.MyApprovalEvent;
 import com.hl.indpark.entities.events.MyExchangeRecordEvent;
 import com.hl.indpark.entities.events.MyMsgEvent;
@@ -176,4 +177,16 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<MyMsgEvent>>> getLogManager(int sizePage, int isP, String qid, String date) {
         return Net.api().getLogManager(sizePage, isP, qid, date);
     }
+
+    public static LiveData<Resource<Response<List<MapPointEvent>>>> getEpPoint() {
+        return Net.api().getEpPoint();
+    }
+
+    public static LiveData<Resource<Response<List<MapPointEvent>>>> getCheckPoint() {
+        return Net.api().getCheckPoint();
+    }
+    public static LiveData<Resource<Response<List<MapPointEvent>>>> getEventPoint() {
+        return Net.api().getEventPoint();
+    }
+
 }
