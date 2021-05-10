@@ -4,10 +4,10 @@
         android:id="@+id/tab_home"
         android:icon="@drawable/selector_tab_home"
         android:title="@string/tab_home" />
-<!--    <item-->
-<!--        android:id="@+id/tab_monitor"-->
-<!--        android:icon="@drawable/selector_tab_monitor"-->
-<!--        android:title="@string/tab_monitor" />-->
+    <item
+        android:id="@+id/tab_monitor"
+        android:icon="@drawable/selector_tab_monitor"
+        android:title="@string/tab_monitor" />
     <item
         android:id="@+id/tab_maillist"
         android:icon="@drawable/selector_tab_maillist"

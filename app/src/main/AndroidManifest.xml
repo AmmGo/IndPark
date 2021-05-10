@@ -41,8 +41,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
-        <activity android:name=".uis.activities.CustomCaptureActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".uis.activities.SelfTestActivity"></activity>
+        <activity
+            android:name=".uis.activities.CustomCaptureActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.SignInActivity"
             android:screenOrientation="portrait" />

@@ -52,7 +52,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private RelativeLayout rl_msg;
     private BottomNavigationView bottomNavigationView;
     //    R.id.tab_monitor
-    private List<Integer> tabIds = Arrays.asList(R.id.tab_home, R.id.tab_maillist, R.id.tab_self);
+    private List<Integer> tabIds = Arrays.asList(R.id.tab_home,R.id.tab_monitor, R.id.tab_maillist, R.id.tab_self);
     private SparseArray<BaseFragment> fragments = new SparseArray<>();
     private SparseArray<Class<? extends BaseFragment>> fragmentClasses = new SparseArray<>();
     private SparseIntArray fragmentTitles = new SparseIntArray();
@@ -61,16 +61,19 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private UpdateVersion versionUpdate;
     {
         fragmentClasses.put(R.id.tab_home, HomeFragment.class);
-//        fragmentClasses.put(R.id.tab_monitor, MonitorFragment.class);
+        fragmentClasses.put(R.id.tab_monitor, MonitorFragment.class);
         fragmentClasses.put(R.id.tab_maillist, MailListFragment.class);
         fragmentClasses.put(R.id.tab_self, SelfFragment.class);
 
         fragmentTitles.put(R.id.tab_home, R.string.tab_home);
-//        fragmentTitles.put(R.id.tab_monitor, R.string.tab_monitor);
+        fragmentTitles.put(R.id.tab_monitor, R.string.tab_monitor);
         fragmentTitles.put(R.id.tab_maillist, R.string.tab_maillist);
         fragmentTitles.put(R.id.tab_self, R.string.tab_self1);
     }
 
+    private boolean isShifting(int labelVisibilityMode, int childCount) {
+        return labelVisibilityMode == -1 ? childCount > 3 : labelVisibilityMode == 0;
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -112,6 +115,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             titleBar.setText(enterpriseName);
         }
         bottomNavigationView = root.findViewById(R.id.tab_navigation);
+        bottomNavigationView.setLabelVisibilityMode(1);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(tabIds.get(0));
         try {
