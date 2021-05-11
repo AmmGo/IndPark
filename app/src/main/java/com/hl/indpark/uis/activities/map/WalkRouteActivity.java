@@ -5,11 +5,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.InfoWindowAdapter;
@@ -32,12 +33,18 @@ import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.hl.indpark.R;
 import com.hl.indpark.utils.AMapUtil;
-import com.hl.indpark.utils.overlay.WalkRouteOverlay;;import net.arvin.baselib.utils.ToastUtil;
+import com.hl.indpark.utils.JumpMap;
+import com.hl.indpark.utils.overlay.WalkRouteOverlay;
+import com.hl.indpark.widgit.RewritePopwindow;
+
+import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.widgets.TitleBar;
+
+;
 
 
 public class WalkRouteActivity extends Activity implements OnMapClickListener,
-		OnMarkerClickListener, OnInfoWindowClickListener, InfoWindowAdapter, OnRouteSearchListener, AMap.OnMapLoadedListener {
+		OnMarkerClickListener, OnInfoWindowClickListener, InfoWindowAdapter, OnRouteSearchListener, AMap.OnMapLoadedListener, OnClickListener {
 	private AMap aMap;
 	private MapView mapView;
 	private Context mContext;
@@ -56,7 +63,8 @@ public class WalkRouteActivity extends Activity implements OnMapClickListener,
 	private WalkRouteOverlay walkRouteOverlay;
 	private LatLonPoint mStartPoint;
 	private LatLonPoint mEndPoint;
-
+	private LatLng siteLatLng;
+	private LinearLayout ll_mord;
 	@Override
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
@@ -67,6 +75,7 @@ public class WalkRouteActivity extends Activity implements OnMapClickListener,
 		endlng = getIntent().getDoubleExtra("endLng",106.182154);
 		mStartPoint = new LatLonPoint(loclat,loclng);
 		mEndPoint = new LatLonPoint(endlat,endlng);
+		siteLatLng = new LatLng(endlat,endlng);
 		TitleBar titleBar = findViewById(R.id.title_bar);
 		titleBar.getCenterTextView().setText("导航路线");
 		titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
@@ -77,6 +86,8 @@ public class WalkRouteActivity extends Activity implements OnMapClickListener,
 		});
 		mContext = this.getApplicationContext();
 		mapView = (MapView) findViewById(R.id.route_map);
+		ll_mord = findViewById(R.id.ep_point);
+		ll_mord.setOnClickListener(this);
 		mapView.onCreate(bundle);// 此方法必须重写
 		init();
 	}
@@ -331,5 +342,37 @@ public class WalkRouteActivity extends Activity implements OnMapClickListener,
 	public void onMapLoaded() {
 		searchRouteResult(ROUTE_TYPE_RIDE, RouteSearch.RIDING_DEFAULT);
 	}
+	private RewritePopwindow mPopwindow;
+	@Override
+	public void onClick(View view) {
+		switch (view.getId()){
+			case R.id.ep_point:
+				mPopwindow = new RewritePopwindow(WalkRouteActivity.this, itemsOnClick);
+				mPopwindow.showAtLocation(view,
+						Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+			break;
+			default:
+		}
+	}
+	//为弹出窗口实现监听类
+	private View.OnClickListener itemsOnClick = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			mPopwindow.dismiss();
+			mPopwindow.backgroundAlpha(WalkRouteActivity.this, 1f);
+			switch (v.getId()) {
+				case R.id.ll_bd:
+					JumpMap.openBaiduMap(WalkRouteActivity.this, siteLatLng);
+					break;
+				case R.id.ll_gd:
+					JumpMap.openGaodeMap(WalkRouteActivity.this, siteLatLng);
+					break;
+				default:
+					break;
+			}
+		}
+
+	};
+
 }
 

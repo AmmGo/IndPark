@@ -120,7 +120,7 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
     }
 
     //定位需要的声明
-    private AMapLocationClient mLocationClient = null;//定位发起端
+    private AMapLocationClient mLocationClient = null;//定位发起端f
     private AMapLocationClientOption mLocationOption = null;//定位参数
     private OnLocationChangedListener mListener = null;//定位监听器
 
