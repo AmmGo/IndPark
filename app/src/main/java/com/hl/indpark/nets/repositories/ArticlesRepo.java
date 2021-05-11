@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import com.github.leonardoxh.livedatacalladapter.Resource;
 import com.hl.indpark.entities.Response;
+import com.hl.indpark.entities.events.CameraVideoEvent;
 import com.hl.indpark.entities.events.CommodityEvent;
 import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.entities.events.EntNameEvent;
@@ -185,8 +186,17 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<List<MapPointEvent>>>> getCheckPoint() {
         return Net.api().getCheckPoint();
     }
+
     public static LiveData<Resource<Response<List<MapPointEvent>>>> getEventPoint() {
         return Net.api().getEventPoint();
+    }
+
+    public static LiveData<Resource<Response<List<CameraVideoEvent>>>> getLookout(int sizePage, int isP) {
+        return Net.api().getLookout(sizePage, isP);
+    }
+
+    public static LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(int sizePage, int isP,String str) {
+        return Net.api().getHazardCamera(sizePage, isP,str);
     }
 
 }

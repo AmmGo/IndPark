@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import com.github.leonardoxh.livedatacalladapter.Resource;
 import com.hl.indpark.entities.LoginResultEntity;
 import com.hl.indpark.entities.Response;
+import com.hl.indpark.entities.events.CameraVideoEvent;
 import com.hl.indpark.entities.events.CommodityEvent;
 import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.entities.events.EntNameEvent;
@@ -234,4 +235,12 @@ public interface Api {
     /*=======事件点位======*/
     @GET(BASE_JAVA + "/phone/navigationEvent")
     LiveData<Resource<Response<List<MapPointEvent>>>> getEventPoint();
+
+    /*=======   监控系统-高空瞭望视频======*/
+    @GET(BASE_JAVA + "/phone/lookout")
+    LiveData<Resource<Response<List<CameraVideoEvent>>>> getLookout(@Query("current") int page, @Query("size") int pageSize);
+
+    /*======= 监控系统-危险源视频======*/
+    @GET(BASE_JAVA + "/phone/hazardCamera")
+    LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(@Query("current") int page, @Query("size")int pageSize ,@Query("enterpriseId") String enterpriseId);
 }
