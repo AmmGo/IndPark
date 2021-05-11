@@ -24,6 +24,7 @@ import com.hl.indpark.entities.events.MyScoresEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
 import com.hl.indpark.entities.events.ScoresDetailsEvent;
+import com.hl.indpark.entities.events.SelfCheck;
 import com.hl.indpark.entities.events.SelfReportEvent;
 import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
@@ -198,5 +199,11 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(int sizePage, int isP,String str) {
         return Net.api().getHazardCamera(sizePage, isP,str);
     }
+    public static LiveData<Resource<Response<SelfCheck>>> getSelfCheck(int sizePage, int isP) {
+        return Net.api().getSelfCheck(sizePage, isP);
+    }
 
+    public static LiveData<Resource<Response<SelfCheck.RecordsBean>>> getCheckIDEvent(String id) {
+        return Net.api().getCheckIDEvent(id);
+    }
 }

@@ -19,6 +19,7 @@ import com.hl.indpark.uis.activities.MyApprovalActivity;
 import com.hl.indpark.uis.activities.MyMsgActivity;
 import com.hl.indpark.uis.activities.MyReportActivity;
 import com.hl.indpark.uis.activities.MyScoresActivity;
+import com.hl.indpark.uis.activities.SelfCheckActivity;
 import com.hl.indpark.uis.activities.SetUpActivity;
 import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.utils.Util;
@@ -51,7 +52,7 @@ public class SelfFragment extends BaseFragment {
     private boolean hideNew;
     private String msgNum;
 
-    @OnClick({R.id.ll_wd_shenp, R.id.ll_wdsp, R.id.ll_wdxx, R.id.img_set_up, R.id.ll_info, R.id.ll_wd_wdjf})
+    @OnClick({R.id.ll_wd_shenp, R.id.ll_wdsp, R.id.ll_wdxx, R.id.img_set_up, R.id.ll_info, R.id.ll_wd_wdjf,R.id.ll_wd_dwzj})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_wd_shenp:
@@ -72,6 +73,9 @@ public class SelfFragment extends BaseFragment {
                 break;
             case R.id.ll_wd_wdjf:
                 startActivity(new Intent(getActivity(), MyScoresActivity.class));
+                break;
+                case R.id.ll_wd_dwzj:
+                startActivity(new Intent(getActivity(), SelfCheckActivity.class));
                 break;
             default:
         }

@@ -116,8 +116,8 @@
                     android:paddingBottom="15dp">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="18dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="20dp"
                         android:background="@mipmap/img_approval_self" />
@@ -191,8 +191,8 @@
                     android:paddingBottom="15dp">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="18dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="20dp"
                         android:background="@mipmap/img_self_scores" />
@@ -219,6 +219,43 @@
                     android:layout_height="1dp"
                     android:background="#EEEEEE" />
                 <LinearLayout
+                    android:id="@+id/ll_wd_dwzj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:background="@mipmap/img_check_self" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="单位自检"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="20dp"
+                        android:background="@mipmap/img_back_right" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EEEEEE" />
+                <LinearLayout
                     android:id="@+id/ll_wdxx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -228,8 +265,8 @@
                     android:paddingBottom="15dp">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="18dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="20dp"
                         android:background="@mipmap/img_msg_self" />

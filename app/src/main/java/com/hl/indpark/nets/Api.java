@@ -26,6 +26,7 @@ import com.hl.indpark.entities.events.MyScoresEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
 import com.hl.indpark.entities.events.ScoresDetailsEvent;
+import com.hl.indpark.entities.events.SelfCheck;
 import com.hl.indpark.entities.events.SelfReportEvent;
 import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
@@ -61,16 +62,16 @@ public interface Api {
     /**
      * 外网测试
      */
-    String BASE_URL = "http://222.75.227.14:11036/";
-    String BASE_URL_IMG = "http://222.75.227.14:30000/";
-        String BASE_JAVA = "";
+//    String BASE_URL = "http://222.75.227.14:11036/";
+//    String BASE_URL_IMG = "http://222.75.227.14:30000/";
+//        String BASE_JAVA = "";
 
     /**
      * 外网发布
      */
-//    String BASE_URL = "https://www.nxzwgyyqgwh.com.cn/";
-//    String BASE_URL_IMG = "https://www.nxzwgyyqgwh.com.cn/img/";
-//    String BASE_JAVA = "java";
+    String BASE_URL = "https://www.nxzwgyyqgwh.com.cn/";
+    String BASE_URL_IMG = "https://www.nxzwgyyqgwh.com.cn/img/";
+    String BASE_JAVA = "java";
 
     /*=======登陆注册======*/
     @POST(BASE_JAVA + "/loginPhone")
@@ -243,4 +244,12 @@ public interface Api {
     /*======= 监控系统-危险源视频======*/
     @GET(BASE_JAVA + "/phone/hazardCamera")
     LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(@Query("current") int page, @Query("size")int pageSize ,@Query("enterpriseId") String enterpriseId);
+
+    /*=======自检列表======*/
+    @GET(BASE_JAVA + "/appChecking/pageList")
+    LiveData<Resource<Response<SelfCheck>>> getSelfCheck(@Query("current") int page, @Query("size") int pageSize);
+
+    /*=======自检列表-ID-查询事件======*/
+    @GET(BASE_JAVA + "/appChecking/findById")
+    LiveData<Resource<Response<SelfCheck.RecordsBean>>> getCheckIDEvent(@Query("id") String id);
 }
