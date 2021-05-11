@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -35,6 +34,7 @@ import com.hl.indpark.uis.activities.map.WalkRouteActivity;
 import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseActivity;
+import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.widgets.TitleBar;
 
 import java.text.SimpleDateFormat;
@@ -71,6 +71,7 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
                     getEpPoint();
                     ll_ep_point.setBackgroundResource(R.drawable.switch_map_on);
                 } else {
+                    clearMarker(listEpPoint);
                     ll_ep_point.setBackgroundResource(R.drawable.switch_map_off);
                 }
                 break;
@@ -79,6 +80,7 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
                     getCheckPoint();
                     ll_check_point.setBackgroundResource(R.drawable.switch_map_on);
                 } else {
+                    clearMarker(listCheckPoint);
                     ll_check_point.setBackgroundResource(R.drawable.switch_map_off);
                 }
                 break;
@@ -87,6 +89,7 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
                     getEventPoint();
                     ll_event_point.setBackgroundResource(R.drawable.switch_map_on);
                 } else {
+                    clearMarker(listEventPoint);
                     ll_event_point.setBackgroundResource(R.drawable.switch_map_off);
                 }
                 break;
@@ -301,6 +304,15 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
     }
 
     CameraUpdate cameraUpdate;
+    boolean isFirstEpPoint = true;
+    List<Marker> listEpPoint = new ArrayList<>();
+
+    public void clearMarker(List<Marker> list) {
+        for (Marker marker : list) {
+            marker.remove();
+        }
+        list.clear();
+    }
 
     public void getEpPoint() {
         ArticlesRepo.getEpPoint().observe(this, new ApiObserver<List<MapPointEvent>>() {
@@ -317,12 +329,17 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
                                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                         .decodeResource(getResources(), R.drawable.ep_marker_point)))
                                 .draggable(true));
+                        listEpPoint.add(marker);
+                        try {
+                            if (marker.getPosition() != null && list.get(i).latitude > 0 && isFirstEpPoint) {
+                                cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(list.get(i).latitude, list.get(i).longitude), 15, 0, 30));
+                                aMap.moveCamera(cameraUpdate);//地图移向指定区域
+                                isFirstEpPoint = false;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                    //改变可视区域为指定位置
-                    //CameraPosition4个参数分别为位置，缩放级别，目标可视区域倾斜度，可视区域指向方向（正北逆时针算起，0-360）
-                    cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(list.get(0).latitude, list.get(0).longitude), 15, 0, 30));
-                    aMap.moveCamera(cameraUpdate);//地图移向指定区域
-
                 }
             }
 
@@ -330,16 +347,19 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
                 Util.login(String.valueOf(code), NavigationManagerActivity.this);
+                ToastUtil.showToast(NavigationManagerActivity.this,msg);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 super.onError(throwable);
-
+                ToastUtil.showToast(NavigationManagerActivity.this,"获取信息失败");
             }
         });
     }
 
+    boolean isFirstCheckPoint = true;
+    List<Marker> listCheckPoint = new ArrayList<>();
     public void getCheckPoint() {
         ArticlesRepo.getCheckPoint().observe(this, new ApiObserver<List<MapPointEvent>>() {
             @Override
@@ -354,15 +374,16 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
                                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                         .decodeResource(getResources(), R.drawable.check_marker_point)))
                                 .draggable(true));
-                    }
-                    //改变可视区域为指定位置
-                    //CameraPosition4个参数分别为位置，缩放级别，目标可视区域倾斜度，可视区域指向方向（正北逆时针算起，0-360）
-                    try {
-                        if (list.size() > 1)
-                            cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(list.get(1).latitude, list.get(1).longitude), 13, 0, 30));
-                        aMap.moveCamera(cameraUpdate);//地图移向指定区域
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        listCheckPoint.add(marker);
+                        try {
+                            if (marker.getPosition() != null && list.get(i).latitude > 0 && isFirstCheckPoint) {
+                                cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(list.get(i).latitude, list.get(i).longitude), 13, 0, 30));
+                                aMap.moveCamera(cameraUpdate);//地图移向指定区域
+                                isFirstCheckPoint = false;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -372,16 +393,19 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
                 Util.login(String.valueOf(code), NavigationManagerActivity.this);
+                ToastUtil.showToast(NavigationManagerActivity.this,msg);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 super.onError(throwable);
-
+                ToastUtil.showToast(NavigationManagerActivity.this,"获取信息失败");
             }
         });
     }
 
+    boolean isFirstEventPoint = true;
+    List<Marker> listEventPoint = new ArrayList<>();
     public void getEventPoint() {
         ArticlesRepo.getEventPoint().observe(this, new ApiObserver<List<MapPointEvent>>() {
             @Override
@@ -396,11 +420,18 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
                                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                         .decodeResource(getResources(), R.drawable.event_marker_point)))
                                 .draggable(true));
+                        listEventPoint.add(marker);
+                        try {
+                            if (marker.getPosition() != null && list.get(i).latitude > 0 && isFirstEventPoint) {
+                                cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(list.get(i).latitude, list.get(i).longitude), 15, 0, 30));
+                                aMap.moveCamera(cameraUpdate);//地图移向指定区域
+                                isFirstEventPoint = false;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                    //改变可视区域为指定位置
-                    //CameraPosition4个参数分别为位置，缩放级别，目标可视区域倾斜度，可视区域指向方向（正北逆时针算起，0-360）
-                    cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(list.get(0).latitude, list.get(0).longitude), 12, 0, 30));
-                    aMap.moveCamera(cameraUpdate);//地图移向指定区域
+
                 }
 
             }
@@ -408,13 +439,14 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
+                ToastUtil.showToast(NavigationManagerActivity.this,msg);
                 Util.login(String.valueOf(code), NavigationManagerActivity.this);
             }
 
             @Override
             public void onError(Throwable throwable) {
                 super.onError(throwable);
-
+                ToastUtil.showToast(NavigationManagerActivity.this,"获取信息失败");
             }
         });
     }
