@@ -246,13 +246,28 @@ public class MonitorFragment extends BaseFragment {
                     adapter.setNewData(list);
                     total = 0;
                 } else {
-                    if (list.size() <= 0) {
-                        View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) recyclerView.getParent(), false);
-                        list.clear();
-                        adapter.setNewData(list);
-                        adapter.setEmptyView(emptyView);
+                    try {
+                        if (category != null && !category.equals("") && category.equals("2")) {
+                            if (list!=null&&list.size()>0){
+                                adapter.setNewData(list);
+                            }else{
+                                View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) recyclerView.getParent(), false);
+                                list.clear();
+                                adapter.setNewData(list);
+                                adapter.setEmptyView(emptyView);
+                            }
+
+                        }else  if (list.size() <= 0) {
+                            View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) recyclerView.getParent(), false);
+                            list.clear();
+                            adapter.setNewData(list);
+                            adapter.setEmptyView(emptyView);
+                        }
+                        total = 1;
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    total = 1;
+
                 }
                 refreshLayout.finishRefresh();
             }
