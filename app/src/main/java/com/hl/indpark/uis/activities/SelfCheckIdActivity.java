@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.tu.loadingdialog.LoadingDailog;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.SelfCheck;
@@ -32,6 +33,9 @@ public class SelfCheckIdActivity extends BaseActivity {
     TextView tvDes;
     @BindView(R.id.ll_img)
     LinearLayout llImg;
+    @BindView(R.id.ll_show)
+    LinearLayout ll_show;
+
     @Override
     protected int getContentView() {
         return R.layout.activity_self_check_id;
@@ -52,7 +56,17 @@ public class SelfCheckIdActivity extends BaseActivity {
         getData(idEvent);
         setMediaFragment();
     }
+
+    private LoadingDailog dialog;
+
     public void getData(int id) {
+        LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(SelfCheckIdActivity.this)
+                .setMessage("加载中...")
+                .setCancelable(false)
+                .setCancelOutside(false);
+        dialog = loadBuilder.create();
+        dialog.getWindow().setDimAmount(0f);
+        dialog.show();
         ArticlesRepo.getCheckIDEvent(String.valueOf(id)).observe(this, new ApiObserver<SelfCheck.RecordsBean>() {
             @Override
             public void onSuccess(Response<SelfCheck.RecordsBean> response) {
@@ -62,28 +76,32 @@ public class SelfCheckIdActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                dialog.cancel();
             }
 
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
                 Util.login(String.valueOf(code), SelfCheckIdActivity.this);
+                dialog.cancel();
             }
 
             @Override
             public void onError(Throwable throwable) {
                 super.onError(throwable);
-
+                dialog.cancel();
             }
         });
     }
+
     /**
      * 设置fragment
      */
     private ImageCheckFragment mediaFragment;
     private List<String> mediaList = new ArrayList<>();
 
-    public void setViewData(SelfCheck.RecordsBean selfCheck){
+    public void setViewData(SelfCheck.RecordsBean selfCheck) {
+        ll_show.setVisibility(View.VISIBLE);
         tvType.setText("自检类型:" + getType(selfCheck.checkType));
         address.setText("自检地址:" + selfCheck.address);
         tvDes.setText("自检详情:" + selfCheck.details);
@@ -95,12 +113,14 @@ public class SelfCheckIdActivity extends BaseActivity {
             llImg.setVisibility(View.GONE);
         }
     }
+
     private void setMediaFragment() {
         mediaFragment = new ImageCheckFragment();
         mediaList = new ArrayList<>();
         mediaFragment.setActivity(SelfCheckIdActivity.this, mediaList);
         getSupportFragmentManager().beginTransaction().add(R.id.fl_media, mediaFragment).commitAllowingStateLoss();
     }
+
     public String getType(int type) {
         String type1 = "";
         switch (type) {
