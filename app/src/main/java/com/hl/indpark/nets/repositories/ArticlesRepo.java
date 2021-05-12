@@ -196,8 +196,8 @@ public class ArticlesRepo {
         return Net.api().getLookout(sizePage, isP);
     }
 
-    public static LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(int sizePage, int isP,String str) {
-        return Net.api().getHazardCamera(sizePage, isP,str);
+    public static LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(int sizePage, int isP,String str,String name) {
+        return Net.api().getHazardCamera(sizePage, isP,str,name);
     }
     public static LiveData<Resource<Response<SelfCheck>>> getSelfCheck(int sizePage, int isP) {
         return Net.api().getSelfCheck(sizePage, isP);

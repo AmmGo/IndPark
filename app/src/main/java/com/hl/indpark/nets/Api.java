@@ -243,7 +243,7 @@ public interface Api {
 
     /*======= 监控系统-危险源视频======*/
     @GET(BASE_JAVA + "/phone/hazardCamera")
-    LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(@Query("current") int page, @Query("size")int pageSize ,@Query("enterpriseId") String enterpriseId);
+    LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(@Query("current") int page, @Query("size")int pageSize ,@Query("enterpriseId") String enterpriseId,@Query("name") String name);
 
     /*=======自检列表======*/
     @GET(BASE_JAVA + "/appChecking/pageList")

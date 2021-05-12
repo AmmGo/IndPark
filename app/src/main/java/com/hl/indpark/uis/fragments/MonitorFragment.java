@@ -2,10 +2,17 @@ package com.hl.indpark.uis.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +29,7 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.WebViewMonitorActivity;
 import com.hl.indpark.uis.adapters.MonitorAdapter;
+import com.hl.indpark.utils.MessageHelper;
 import com.hl.indpark.utils.SharePreferenceUtil;
 import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.EntDialog;
@@ -48,10 +56,16 @@ import butterknife.OnClick;
 public class MonitorFragment extends BaseFragment {
     private EntDialog pop;
     private PopEvent popEvent;
-    @BindView(R.id.ll_spin)
+    @BindView(R.id.ll_show_gwh)
     LinearLayout ll_spin;
+    @BindView(R.id.title_bar)
+    LinearLayout title_show;
     @BindView(R.id.chooseText)
     TextView chooseText;
+    @BindView(R.id.title)
+    TextView tv_title;
+    @BindView(R.id.rl_search)
+    RelativeLayout rl_search;
 
     @BindView(R.id.recy_web_view_video)
     RecyclerView recyclerView;
@@ -66,8 +80,9 @@ public class MonitorFragment extends BaseFragment {
     private List<CameraVideoEvent> lookout;
     public String yqid = null;
     private String category;
+    private int tagSelect = 1;
 
-    @OnClick({R.id.ll_spin})
+    @OnClick({R.id.ll_spin, R.id.rl_search, R.id.ll_gklw})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_spin:
@@ -79,24 +94,108 @@ public class MonitorFragment extends BaseFragment {
                     e.printStackTrace();
                 }
                 break;
+            case R.id.rl_search:
+                btnIconClick();
+                break;
+            case R.id.ll_gklw:
+                tagSelect = 2;
+                pageNum = 1;
+                pageSize = 20;
+                list.clear();
+                getLookout(pageNum, pageSize);
+                break;
             default:
                 break;
         }
 
     }
 
+    private PopupWindow searchPopupWindow;
+    private View layoutView;
+    private EditText txtSearch;
+    private ImageView imgClear;
+    private String searchName = null;
+
+    public void btnIconClick() {
+        if (searchPopupWindow == null) {
+            layoutView = getLayoutInflater().inflate(
+                    R.layout.search_view, null, false);
+            searchPopupWindow = MessageHelper.getPopupWindow(layoutView);
+            searchPopupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+            txtSearch = (EditText) layoutView.findViewById(R.id.txtSearch);
+            txtSearch.setText("");
+            txtSearch.addTextChangedListener(watcherHeel);
+            imgClear = (ImageView) layoutView.findViewById(R.id.imgClear);
+            imgClear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    searchName = null;
+                    txtSearch.setText("");
+
+                }
+            });
+            TextView lbSearch = (TextView) layoutView.findViewById(R.id.lbSearch);
+            lbSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    searchName = txtSearch.getText().toString();
+                    pageNum = 1;
+                    pageSize = 20;
+                    list.clear();
+                    getHazardCamera(pageNum, pageSize);
+                    searchPopupWindow.dismiss();
+                }
+            });
+
+            searchPopupWindow.showAsDropDown(getActivity().findViewById(R.id.title_bar), 0, 0);
+        } else {
+            if (searchPopupWindow.isShowing()) {
+                searchPopupWindow.dismiss();
+            } else {
+                // 展示菜单
+                searchPopupWindow.showAsDropDown(getActivity().findViewById(R.id.title_bar), 0,
+                        0);
+            }
+        }
+    }
+
+    private TextWatcher watcherHeel = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before,
+                                  int count) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            // TODO Auto-generated method stub
+            searchName = s.toString();
+            if (TextUtils.isEmpty(searchName)) {
+                imgClear.setVisibility(View.GONE);
+            } else {
+                imgClear.setVisibility(View.VISIBLE);
+
+            }
+        }
+    };
+
     @Subscribe
     public void getEntName(EntNameEvent event) {
+        tagSelect = 1;
         chooseText.setText(event.name);
         yqid = String.valueOf(event.id);
         pageNum = 1;
         pageSize = 20;
         list.clear();
-        try {
-            list.addAll(lookout);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         getHazardCamera(pageNum, pageSize);
         pop.cancel();
     }
@@ -110,8 +209,8 @@ public class MonitorFragment extends BaseFragment {
     protected void init(Bundle savedInstanceState) {
         popEvent = new PopEvent();
         category = SharePreferenceUtil.getKeyValue("category");
+        tv_title.setText("监控系统");
         if (category != null && !category.equals("") && category.equals("2")) {
-            getLookout(1, 20);
             ll_spin.setVisibility(View.VISIBLE);
             getEntName();//获取企业id
         } else {
@@ -125,17 +224,16 @@ public class MonitorFragment extends BaseFragment {
                 refreshLayout.getLayout().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        searchName = null;
                         pageNum = 1;
                         pageSize = 20;
                         list.clear();
-                        try {
-                            if (category != null && !category.equals("") && category.equals("2")) {
-                                list.addAll(lookout);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        if (tagSelect == 1) {
+                            getHazardCamera(pageNum, pageSize);
+                        } else {
+                            getLookout(pageNum, pageSize);
                         }
-                        getHazardCamera(pageNum, pageSize);
+
                     }
                 }, 50);
             }
@@ -147,7 +245,11 @@ public class MonitorFragment extends BaseFragment {
                     @Override
                     public void run() {
                         pageNum += 1;
-                        getHazardCamera(pageNum, pageSize);
+                        if (tagSelect == 1) {
+                            getHazardCamera(pageNum, pageSize);
+                        } else {
+                            getLookout(pageNum, pageSize);
+                        }
                         if (total == 1) {
                             refreshLayout.finishLoadMoreWithNoMoreData();
                         } else {
@@ -170,9 +272,9 @@ public class MonitorFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 try {
-                    Intent intent = new Intent(getActivity(),WebViewMonitorActivity.class);
-                    String webUrl = "http://ops.zwhldk.com:7080/ditu/player/player.html?streamName="+list.get(position).key;
-                    intent.putExtra("URL",webUrl);
+                    Intent intent = new Intent(getActivity(), WebViewMonitorActivity.class);
+                    String webUrl = "http://ops.zwhldk.com:7080/ditu/player/player.html?streamName=" + list.get(position).key;
+                    intent.putExtra("URL", webUrl);
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -211,14 +313,22 @@ public class MonitorFragment extends BaseFragment {
             @Override
             public void onSuccess(Response<List<CameraVideoEvent>> response) {
                 Log.e("成功", "onSuccess: ");
-                try {
-                    lookout = new ArrayList<>();
-                    if (response.getData() != null && response.getData().size() > 0) {
-                        lookout = response.getData();
+                myList = new ArrayList<>();
+                myList = response.getData();
+                if (myList != null && response.getData().size() > 0) {
+                    list.addAll(myList);
+                    adapter.setNewData(list);
+                    total = 0;
+                } else {
+                    if (list.size() <= 0) {
+                        View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) recyclerView.getParent(), false);
+                        list.clear();
+                        adapter.setNewData(list);
+                        adapter.setEmptyView(emptyView);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    total = 1;
                 }
+                refreshLayout.finishRefresh();
             }
 
             @Override
@@ -235,7 +345,7 @@ public class MonitorFragment extends BaseFragment {
     }
 
     public void getHazardCamera(int pageNum, int pageSize) {
-        ArticlesRepo.getHazardCamera(pageNum, pageSize, yqid).observe(this, new ApiObserver<List<CameraVideoEvent>>() {
+        ArticlesRepo.getHazardCamera(pageNum, pageSize, yqid, searchName).observe(this, new ApiObserver<List<CameraVideoEvent>>() {
             @Override
             public void onSuccess(Response<List<CameraVideoEvent>> response) {
                 Log.e("成功", "onSuccess: ");
@@ -246,28 +356,13 @@ public class MonitorFragment extends BaseFragment {
                     adapter.setNewData(list);
                     total = 0;
                 } else {
-                    try {
-                        if (category != null && !category.equals("") && category.equals("2")) {
-                            if (list!=null&&list.size()>0){
-                                adapter.setNewData(list);
-                            }else{
-                                View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) recyclerView.getParent(), false);
-                                list.clear();
-                                adapter.setNewData(list);
-                                adapter.setEmptyView(emptyView);
-                            }
-
-                        }else  if (list.size() <= 0) {
-                            View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) recyclerView.getParent(), false);
-                            list.clear();
-                            adapter.setNewData(list);
-                            adapter.setEmptyView(emptyView);
-                        }
-                        total = 1;
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (list.size() <= 0) {
+                        View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) recyclerView.getParent(), false);
+                        list.clear();
+                        adapter.setNewData(list);
+                        adapter.setEmptyView(emptyView);
                     }
-
+                    total = 1;
                 }
                 refreshLayout.finishRefresh();
             }

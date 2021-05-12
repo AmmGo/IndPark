@@ -1,5 +1,6 @@
 package com.hl.indpark.uis.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -59,6 +61,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private String enterpriseName;
     private String version;
     private UpdateVersion versionUpdate;
+    private LinearLayout showBar;
+
     {
         fragmentClasses.put(R.id.tab_home, HomeFragment.class);
         fragmentClasses.put(R.id.tab_monitor, MonitorFragment.class);
@@ -99,8 +103,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         return R.layout.fragment_main;
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void init(Bundle savedInstanceState) {
+        showBar = root.findViewById(R.id.title_bar);
         titleBar = root.findViewById(R.id.title);
         rl_msg = root.findViewById(R.id.rl_msg);
         tv_hot_god_msg = root.findViewById(R.id.tv_hot_god_msg);
@@ -139,6 +145,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         getData();
         getDataVersion();
         int itemId = item.getItemId();
+        showBar.setVisibility(View.VISIBLE);
         if (tabIds.contains(itemId)) {
             if (fragmentTitles.get(itemId) == R.string.tab_home) {
                 Log.e("输出title", "onNavigationItemSelected: 一样");
@@ -151,8 +158,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
                 titleBar.setVisibility(View.INVISIBLE);
                 rl_msg.setVisibility(View.INVISIBLE);
             } else {
-                titleBar.setVisibility(View.VISIBLE);
-                rl_msg.setVisibility(View.VISIBLE);
+                if (fragmentTitles.get(itemId) == R.string.tab_monitor) {
+                    showBar.setVisibility(View.GONE);
+                }else {
+                    titleBar.setVisibility(View.VISIBLE);
+                    rl_msg.setVisibility(View.VISIBLE);
+                }
             }
             BaseFragment fragment = fragments.get(itemId);
             if (fragment == null) {
