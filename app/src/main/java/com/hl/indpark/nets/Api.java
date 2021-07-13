@@ -50,7 +50,7 @@ import retrofit2.http.Query;
 public interface Api {
     /**
      * java测试*/
-//    String BASE_URL = "http://192.168.119.237:11035/";
+//    String BASE_URL = "http://192.168.119.224:11035/";
 //        String BASE_JAVA = "";
 //        String BASE_URL_IMG = "http://appimg.hlx.com/";
     /**

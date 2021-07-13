@@ -43,10 +43,12 @@
 
                 <TextView
                     android:id="@+id/chooseText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
                     android:ellipsize="end"
-                    android:gravity="center"
+                    android:gravity="center|left"
                     android:maxEms="8"
                     android:textColor="#3A3A3A"
                     android:singleLine="true"
@@ -59,6 +61,7 @@
                     android:layout_height="14dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginRight="10dp"
                     android:src="@mipmap/icon_drop_down" />
 
             </LinearLayout>
@@ -70,6 +73,7 @@
                 android:layout_weight="1"
                 android:background="@color/background_white"
                 android:gravity="center"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp">

@@ -275,10 +275,11 @@ public class PieChartSHDataActivity extends BaseActivity {
             @Override
             public void onSuccess(Response<List<EntTypeEvent>> response) {
                 popEvent.entTypeEvents = response.getData();
-                if (response.getData() != null && response.getData().size() > 0&&tagOne==1) {
+                if (response.getData() != null && response.getData().size() > 0) {
                     chooseText2.setText(response.getData().get(0).name);
                     gyid = response.getData().get(0).id;
-                    getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                    getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
+//                    getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
                 }
 
             }
@@ -348,7 +349,8 @@ public class PieChartSHDataActivity extends BaseActivity {
         adapter.notifyDataSetChanged();
         chooseText.setText(event.name);
         qyid = String.valueOf(event.id);
-        getEntType(event.id);
+        getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
+//        getEntType(event.id);
         pop.cancel();
     }
 

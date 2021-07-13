@@ -29,7 +29,7 @@ public class EntSHSAdapter extends BaseQuickAdapter<EntSHSEvent.RecordsBean, Bas
                 holder.setImageResource(R.id.img_status, R.mipmap.img_ddb);
             }
             holder.setText(R.id.tv_site, item.pointName);
-            holder.setText(R.id.tv_type, item.technologyName);
+            holder.setText(R.id.tv_type, item.enterpriseName);
             holder.setText(R.id.tv_num, item.value+item.dataType);
             holder.setText(R.id.tv_phone, item.time);
         }
