@@ -31,7 +31,12 @@ public class MonitorAdapter extends BaseQuickAdapter<CameraVideoEvent, BaseViewH
     @Override
     protected void convert(BaseViewHolder helper, CameraVideoEvent item) {
         try {
-            helper.setText(R.id.tv_name, item.value);
+            if (item.name!=null){
+                helper.setText(R.id.tv_name, item.name);
+            }else{
+                helper.setText(R.id.tv_name, item.value);
+
+            }
             helper.setText(R.id.tv_time, StringData());
         } catch (Exception e) {
             e.printStackTrace();

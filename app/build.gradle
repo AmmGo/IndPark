@@ -22,7 +22,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.8"
+        versionName "1.0.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         compileOptions {
@@ -113,4 +113,7 @@ dependencies {
     implementation 'com.github.zhoulinxue:BGStart:1.1.5'
     //XQRCode二维码扫描
     implementation 'com.github.xuexiangjys:XQRCode:1.1.0'
+    //流媒体播放
+    implementation 'com.github.NodeMedia:NodeMediaClient-Android:2.8.4'
+
 }

@@ -54,9 +54,15 @@ public interface Api {
 //        String BASE_JAVA = "";
 //        String BASE_URL_IMG = "http://appimg.hlx.com/";
     /**
-     * 内网服务
+     * 内网服务1
      */
 //    String BASE_URL = "http://192.168.119.248:11035/";
+//    String BASE_JAVA = "";
+//    String BASE_URL_IMG = "http://appimg.hlx.com/";
+    /**
+     * 内网服务2
+     */
+//    String BASE_URL = "http://192.168.119.249:11035/";
 //    String BASE_JAVA = "";
 //    String BASE_URL_IMG = "http://appimg.hlx.com/";
     /**

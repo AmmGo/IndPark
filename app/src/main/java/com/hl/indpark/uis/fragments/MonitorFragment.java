@@ -27,6 +27,7 @@ import com.hl.indpark.entities.events.EntNameEvent;
 import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.uis.activities.MonitorRtspActivity;
 import com.hl.indpark.uis.activities.WebViewMonitorActivity;
 import com.hl.indpark.uis.adapters.MonitorAdapter;
 import com.hl.indpark.utils.MessageHelper;
@@ -272,10 +273,18 @@ public class MonitorFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 try {
-                    Intent intent = new Intent(getActivity(), WebViewMonitorActivity.class);
-                    String webUrl = "http://ops.zwhldk.com:7080/ditu/player/player.html?streamName=" + list.get(position).key;
-                    intent.putExtra("URL", webUrl);
-                    startActivity(intent);
+                    if (list.get(position).ip!=null&&list.get(position).ip.contains("rtsp")){
+                        Intent intent = new Intent(getActivity(), MonitorRtspActivity.class);
+                        String webUrl = list.get(position).ip;
+                        intent.putExtra("URL", webUrl);
+                        startActivity(intent);
+                    }else{
+                        Intent intent = new Intent(getActivity(), WebViewMonitorActivity.class);
+                        String webUrl = "http://ops.zwhldk.com:7080/ditu/player/player.html?streamName=" + list.get(position).key;
+                        intent.putExtra("URL", webUrl);
+                        startActivity(intent);
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

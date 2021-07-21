@@ -41,7 +41,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
-        <activity android:name=".uis.activities.SelfCheckIdActivity"></activity>
+        <activity android:name=".uis.activities.MonitorRtspActivity"></activity>
+        <activity android:name=".uis.activities.SelfCheckIdActivity" />
         <activity android:name=".uis.activities.SelfCheckActivity" />
         <activity
             android:name=".uis.activities.WebViewMonitorActivity"
