@@ -171,6 +171,9 @@
 #agora
 -keep class io.agora.**{*;}
 
+#视频流
+-keep class cn.nodemedia.**{*;}
+
 #权限
 -keep class org.zhx.common.bgstart.**{*;}
 

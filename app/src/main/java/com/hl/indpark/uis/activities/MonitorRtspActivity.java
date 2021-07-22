@@ -1,6 +1,8 @@
 package com.hl.indpark.uis.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.hl.indpark.R;
@@ -11,6 +13,7 @@ import net.arvin.baselib.widgets.TitleBar;
 import java.net.URLEncoder;
 
 import cn.nodemedia.NodePlayer;
+import cn.nodemedia.NodePlayerDelegate;
 import cn.nodemedia.NodePlayerView;
 
 public class MonitorRtspActivity extends BaseActivity {
@@ -45,10 +48,35 @@ public class MonitorRtspActivity extends BaseActivity {
         }
         return "";
     }
+    private ProgressDialog progressDialog;
+
+    /**
+     * 加载框
+     */
+    public void buildProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        }
+        progressDialog.setMessage("加载中...");
+        progressDialog.setCancelable(true);
+        progressDialog.show();
+    }
+    /**
+     * @Description: TODO 取消加载框
+     * @author Sunday
+     * @date 2015年12月25日
+     */
+    public void cancelProgressDialog() {
+        if (progressDialog != null)
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+    }
     @Override
     protected void init(Bundle savedInstanceState) {
+        buildProgressDialog();
         url = getIntent().getStringExtra("URL");
-        url ="http://www.nxzwgyyqgwh.com.cn/live?url="+ toURLEncoded(url);
         TitleBar titleBar = findViewById(R.id.title_bar);
         titleBar.getCenterTextView().setText("视频详情");
         titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
@@ -74,6 +102,14 @@ public class MonitorRtspActivity extends BaseActivity {
         nodePlayer.setBufferTime(0);
         nodePlayer.setMaxBufferTime(0);
         nodePlayer.start();
+        nodePlayer.setNodePlayerDelegate(new NodePlayerDelegate() {
+            @Override
+            public void onEventCallback(NodePlayer player, int event, String msg) {
+                Log.e("成功", event + msg);
+                if (event!=1000&&msg.contains("x")) {
+                    cancelProgressDialog();
+                }
+            }
+        });
     }
-
 }

@@ -49,6 +49,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.hl.indpark.uis.activities.MonitorRtspActivity.toURLEncoded;
+
 /**
  * Created by arvinljw on 2018/11/16 14:41
  * Function：
@@ -275,7 +277,7 @@ public class MonitorFragment extends BaseFragment {
                 try {
                     if (list.get(position).ip!=null&&list.get(position).ip.contains("rtsp")){
                         Intent intent = new Intent(getActivity(), MonitorRtspActivity.class);
-                        String webUrl = list.get(position).ip;
+                        String webUrl = "http://www.nxzwgyyqgwh.com.cn/live?url="+ toURLEncoded(list.get(position).ip);;
                         intent.putExtra("URL", webUrl);
                         startActivity(intent);
                     }else{
