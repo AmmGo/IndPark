@@ -248,7 +248,8 @@ public class PieChartSHDataActivity extends BaseActivity {
                     if (response.getData() != null && response.getData().size() == 1) {
                         chooseText.setText(response.getData().get(0).name);
                         qyid = String.valueOf(response.getData().get(0).id);
-                        getEntType(Integer.parseInt(qyid));
+//                        getEntType(Integer.parseInt(qyid));
+                        getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
                         tagOne = 1;
                     }
                 } catch (Exception e) {
@@ -278,7 +279,7 @@ public class PieChartSHDataActivity extends BaseActivity {
                 if (response.getData() != null && response.getData().size() > 0) {
                     chooseText2.setText(response.getData().get(0).name);
                     gyid = response.getData().get(0).id;
-                    getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
+
 //                    getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
                 }
 

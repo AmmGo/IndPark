@@ -90,9 +90,10 @@
                 <EditText
                     android:id="@+id/ed_event_decs"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@null"
                     android:hint="自检详情"
+                    android:gravity="start"
                     android:maxLength="300"
                     android:textColorHint="#BABABA"
                     android:textSize="16sp" />
@@ -100,7 +101,7 @@
                 <TextView
                     android:id="@+id/tv_count"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:padding="5dp"

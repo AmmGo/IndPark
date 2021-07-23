@@ -108,7 +108,28 @@ public class SelfTestActivity extends BaseActivity {
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.img_add:
-                addImageDialog(PHOTO, PHOTOLIB);
+//                addImageDialog(PHOTO, PHOTOLIB);
+                permissionUtil.request("需要文件读写权限", Manifest.permission.WRITE_EXTERNAL_STORAGE, new PermissionUtil.RequestPermissionListener() {
+                    @Override
+                    public void callback(boolean granted, boolean isAlwaysDenied) {
+                        if (granted) {
+                            PictureSelector.create(SelfTestActivity.this)
+                                    .openGallery(PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                                    .theme(R.style.picture_default_style)//主题样式(不设置为默认样式) 也可参考demo values/styles下 例如：R.style.picture.white.style
+                                    .maxSelectNum(6)// 最大图片选择数量 int
+                                    .minSelectNum(1)// 最小选择数量 int
+                                    .imageEngine(GlideEngine.createGlideEngine())
+                                    .selectionData(mediaList)
+                                    .imageSpanCount(3)// 每行显示个数 int
+                                    .isCamera(true)// 是否显示拍照按钮 true or false
+                                    .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
+                                    .isEnableCrop(false)// 是否裁剪 true or false
+                                    .isCompress(true)// 是否压缩 true or false
+                                    .minimumCompressSize(100)// 小于100kb的图片不压缩
+                                    .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+                        }
+                    }
+                });
                 break;
             case R.id.tv_report:
                 Util.hideInputManager(SelfTestActivity.this, v);
