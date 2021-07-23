@@ -28,6 +28,8 @@ import com.hl.indpark.entities.events.SelfCheck;
 import com.hl.indpark.entities.events.SelfReportEvent;
 import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
+import com.hl.indpark.entities.events.WxyEvent;
+import com.hl.indpark.entities.events.WxyTjEvent;
 import com.hl.indpark.nets.Net;
 
 import java.util.HashMap;
@@ -205,5 +207,12 @@ public class ArticlesRepo {
 
     public static LiveData<Resource<Response<SelfCheck.RecordsBean>>> getCheckIDEvent(String id) {
         return Net.api().getCheckIDEvent(id);
+    }
+
+    public static LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(String id) {
+        return Net.api().getWxyEvent(id);
+    }
+    public static LiveData<Resource<Response<List<WxyTjEvent>>>> getWxyTjEvent() {
+        return Net.api().getWxyTjEvent();
     }
 }

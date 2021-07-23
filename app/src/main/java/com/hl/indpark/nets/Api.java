@@ -30,6 +30,8 @@ import com.hl.indpark.entities.events.SelfCheck;
 import com.hl.indpark.entities.events.SelfReportEvent;
 import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
+import com.hl.indpark.entities.events.WxyEvent;
+import com.hl.indpark.entities.events.WxyTjEvent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -258,4 +260,12 @@ public interface Api {
     /*=======自检列表-ID-查询事件======*/
     @GET(BASE_JAVA + "/appChecking/findById")
     LiveData<Resource<Response<SelfCheck.RecordsBean>>> getCheckIDEvent(@Query("id") String id);
+
+    /*=======新增危险源实时统计======*/
+    @GET(BASE_JAVA + "/transmission/querySourceDangerRealDate")
+    LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(@Query("enterpriseId") String id);
+
+    /*=======危险源报警统计======*/
+    @GET(BASE_JAVA + "/transmission/hazardNum")
+    LiveData<Resource<Response<List<WxyTjEvent>>>> getWxyTjEvent();
 }

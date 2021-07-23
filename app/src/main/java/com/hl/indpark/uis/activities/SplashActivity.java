@@ -7,6 +7,7 @@ import android.os.Message;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.hl.indpark.R;
 import com.hl.indpark.uis.activities.videoactivities.utils.WindowUtil;
+import com.hl.indpark.utils.SharePreferenceUtil;
 
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.WeakHandler;
@@ -46,7 +47,13 @@ public class SplashActivity extends BaseActivity implements WeakHandler.IHandle 
 
     @Override
     public void handleMessage(Message msg) {
-        startActivity(new Intent(this, LoginActivity.class));
+        String token= SharePreferenceUtil.getKeyValue("token");
+
+        if (token!=null&&!token.equals("")){
+            startActivity(new Intent(this, MainActivity.class));
+        }else{
+            startActivity(new Intent(this, LoginActivity.class));
+        }
         finish();
     }
 }

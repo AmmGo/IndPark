@@ -65,7 +65,7 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // 保活，监控关屏幕
-        registerReceiver();
+//        registerReceiver();
         JPushUtils.requestPermission(this);
         JPushUtils.getRegistrationID();
         JPushUtils.bindAlias(Util.getUserId());
@@ -303,6 +303,6 @@ public class MainActivity extends BaseCallActivity implements WeakHandler.IHandl
     @Override
     public void onDestroy() {
        super.onDestroy();
-        unregisterReceiver(screenReceiver);
+//        unregisterReceiver(screenReceiver);
     }
 }

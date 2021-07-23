@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.HSAlarmEvent;
+import com.hl.indpark.entities.events.WxyTjEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.PieChartSHDataActivity;
@@ -24,6 +25,7 @@ import net.arvin.baselib.base.BaseFragment;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -37,7 +39,7 @@ public class TabSHSFragment extends BaseFragment {
     private JSONObject jsonObject;
 //    private PieChartView mPieChart;
     private LinearLayout linearLayout;
-    private HSAlarmEvent alarmEvent;
+    private HSAlarmEvent alarmEvent = new HSAlarmEvent();
     private List<HSAlarmEvent.ValueBean> valueBeanList;
 
     @Override
@@ -96,10 +98,69 @@ public class TabSHSFragment extends BaseFragment {
     protected void init(Bundle savedInstanceState) {
         mPieChart = root.findViewById(R.id.chart_sep);
         linearLayout = root.findViewById(R.id.ll_gone);
-        initData();
+        initData1();
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+            }
+        });
+    }
+    private void initData1() {
+        ArticlesRepo.getWxyTjEvent().observe(this, new ApiObserver<List<WxyTjEvent>>() {
+            @Override
+            public void onSuccess(Response<List<WxyTjEvent>> response) {
+                if (response.getData()!=null&&response.getData().size()>0){
+                    int count = 0 ;
+                    List<HSAlarmEvent.ValueBean> one = new ArrayList<>();
+                    alarmEvent.value = new HSAlarmEvent().value;
+                    for (int i = 0 ;i<response.getData().size();i++){
+                        if (response.getData().get(i).key!=0){
+                            count +=response.getData().get(i).value;
+                            HSAlarmEvent.ValueBean valueBean = new HSAlarmEvent.ValueBean();
+                            valueBean.type = response.getData().get(i).key;
+                            valueBean.num = response.getData().get(i).value;
+                            one.add(valueBean);
+                        }
+
+                    }
+                    alarmEvent.value = one;
+                    alarmEvent.key = String.valueOf(count);
+                }
+                try {
+                    if (response != null && response.getData() != null&&alarmEvent.key!=null) {
+                        if (!alarmEvent.key.equals("0")){
+                            setWebview();
+                            linearLayout.setVisibility(View.VISIBLE);
+                            Log.e("危险源统计", "onSuccess: ");
+                        }else if (alarmEvent.key.equals("0")){
+                            setWebview();
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }else{
+                            linearLayout.setVisibility(View.GONE);
+                        }
+                        setWebview();
+    //                    sepPieChart(alarmEvent);
+                    }else{
+                        linearLayout.setVisibility(View.GONE);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    linearLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+                linearLayout.setVisibility(View.GONE);
+                Util.login(String.valueOf(code),getActivity());
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+                linearLayout.setVisibility(View.GONE);
 
             }
         });
@@ -122,7 +183,7 @@ public class TabSHSFragment extends BaseFragment {
                             linearLayout.setVisibility(View.GONE);
                         }
                         setWebview();
-    //                    sepPieChart(alarmEvent);
+                        //                    sepPieChart(alarmEvent);
                     }else{
                         linearLayout.setVisibility(View.GONE);
                     }

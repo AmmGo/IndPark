@@ -20,6 +20,7 @@ import com.hl.indpark.entities.events.EntNameEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.PopEvent;
+import com.hl.indpark.entities.events.WxyEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.adapters.EntSHSAdapter;
@@ -54,6 +55,7 @@ public class PieChartSHDataActivity extends BaseActivity {
     TextView chooseText2;
     private EntDialog pop;
     private String qyid;
+    private String companyCode;
     private List<EntSHSEvent.RecordsBean> list = new ArrayList<>();
     private List<EntSHSEvent.RecordsBean> selectList = new ArrayList<>();
     private EntSHSAdapter adapter;
@@ -63,7 +65,7 @@ public class PieChartSHDataActivity extends BaseActivity {
     private int pageSize = 10;
     private int total = 0;
     private int timeType;
-    private String selectType;
+    private String selectType ="0";
     private String gyid;
 
     @OnClick({R.id.ll_spin, R.id.ll_spin2})
@@ -143,28 +145,34 @@ public class PieChartSHDataActivity extends BaseActivity {
                     switch (tab.getPosition()) {
                         case 0:
                             //全部
-                            selectType = null;
-                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+//                            selectType = null;
+                            selectType = "0";
+//                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            getWxy(companyCode,selectType);
                             break;
                         case 1:
                             //高高报
                             selectType = "1";
-                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+//                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            getWxy(companyCode,selectType);
                             break;
                         case 2:
                             //高报
                             selectType = "2";
-                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+//                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            getWxy(companyCode,selectType);
                             break;
                         case 3:
                             //低低报
                             selectType = "4";
-                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+//                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            getWxy(companyCode,selectType);
                             break;
                         case 4:
                             //低报
                             selectType = "3";
-                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+//                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            getWxy(companyCode,selectType);
                             break;
 
                     }
@@ -182,7 +190,7 @@ public class PieChartSHDataActivity extends BaseActivity {
                 }
             });
             getEntName();
-            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+//            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
             refreshLayout.setOnRefreshListener(new OnRefreshListener() {
                 @Override
                 public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
@@ -192,12 +200,14 @@ public class PieChartSHDataActivity extends BaseActivity {
                             pageNum = 1;
                             pageSize = 10;
                             list.clear();
-                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+//                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
+                            getWxy(companyCode,selectType);
                             refreshLayout.finishRefresh();
                         }
                     }, 50);
                 }
             });
+            refreshLayout.setEnableLoadMore(false);
             refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
                 @Override
                 public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
@@ -244,13 +254,23 @@ public class PieChartSHDataActivity extends BaseActivity {
             @Override
             public void onSuccess(Response<List<EntNameEvent>> response) {
                 popEvent.entNameEvents = response.getData();
+//                try {
+//                    if (response.getData() != null && response.getData().size() == 1) {
+//                        chooseText.setText(response.getData().get(0).name);
+//                        qyid = String.valueOf(response.getData().get(0).id);
+////                        getEntType(Integer.parseInt(qyid));
+//                        getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
+//                        tagOne = 1;
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+                /**修改之后内容*/
                 try {
-                    if (response.getData() != null && response.getData().size() == 1) {
+                    if (response.getData() != null) {
                         chooseText.setText(response.getData().get(0).name);
-                        qyid = String.valueOf(response.getData().get(0).id);
-//                        getEntType(Integer.parseInt(qyid));
-                        getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
-                        tagOne = 1;
+                        companyCode = String.valueOf(response.getData().get(0).companyCode);
+                        getWxy(companyCode, selectType);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -352,7 +372,9 @@ public class PieChartSHDataActivity extends BaseActivity {
         qyid = String.valueOf(event.id);
         pageNum = 1;
         pageSize =10;
-        getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
+//        getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
+        companyCode=event.companyCode;
+        getWxy(companyCode,selectType);
 //        getEntType(event.id);
         pop.cancel();
     }
@@ -379,6 +401,72 @@ public class PieChartSHDataActivity extends BaseActivity {
         super.onStart();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
+        }
+    }
+
+    public void getWxy(String id,String selectType) {
+        try {
+            ArticlesRepo.getWxyEvent(id).observe(this, new ApiObserver<List<WxyEvent>>() {
+                @Override
+                public void onSuccess(Response<List<WxyEvent>> response) {
+                    List<WxyEvent> wxyEvents = new ArrayList<>();
+                    wxyEvents = response.getData();
+                    list = new ArrayList<>();
+                    if (wxyEvents!=null&&wxyEvents.size() > 0) {
+                        if (selectType.equals("0")){
+                            for (int i = 0; i < wxyEvents.size(); i++) {
+                                    EntSHSEvent.RecordsBean data1 = new EntSHSEvent.RecordsBean();
+                                    data1.type = wxyEvents.get(i).type;
+                                    data1.pointName = wxyEvents.get(i).pointName;
+                                    data1.enterpriseName = wxyEvents.get(i).enterpriseName;
+                                    data1.value = wxyEvents.get(i).value;
+                                    data1.time = wxyEvents.get(i).time;
+                                    list.add(data1);
+                            }
+                        }else{
+                            for (int i = 0; i < wxyEvents.size(); i++) {
+                                if (selectType.equals(wxyEvents.get(i).type)){
+                                    EntSHSEvent.RecordsBean data1 = new EntSHSEvent.RecordsBean();
+                                    data1.type = wxyEvents.get(i).type;
+                                    data1.pointName = wxyEvents.get(i).pointName;
+                                    data1.enterpriseName = wxyEvents.get(i).enterpriseName;
+                                    data1.value = wxyEvents.get(i).value;
+                                    data1.time = wxyEvents.get(i).time;
+                                    list.add(data1);
+                                }
+                            }
+                        }
+
+                        if (list.size()>0){
+                            adapter.setNewData(list);
+                        }else{
+                            View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) mRcyPieData.getParent(), false);
+                            list.clear();
+                            adapter.setNewData(list);
+                            adapter.setEmptyView(emptyView);
+                        }
+                    } else {
+                        View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) mRcyPieData.getParent(), false);
+                        list.clear();
+                        adapter.setNewData(list);
+                        adapter.setEmptyView(emptyView);
+                    }
+                }
+
+                @Override
+                public void onFailure(int code, String msg) {
+                    super.onFailure(code, msg);
+                    Util.login(String.valueOf(code), PieChartSHDataActivity.this);
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    super.onError(throwable);
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
