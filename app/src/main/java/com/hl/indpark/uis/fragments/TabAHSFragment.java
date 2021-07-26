@@ -17,7 +17,7 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
-import com.hl.indpark.uis.activities.PieChartSHDataActivity;
+import com.hl.indpark.uis.activities.PieChartSH1DataActivity;
 import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseFragment;
@@ -59,7 +59,7 @@ public class TabAHSFragment extends BaseFragment {
     }
     @JavascriptInterface
     public void jump() {
-        Intent intent = new Intent(getActivity(), PieChartSHDataActivity.class);
+        Intent intent = new Intent(getActivity(), PieChartSH1DataActivity.class);
         intent.putExtra("timeType",typeData);
         startActivity(intent);
     }

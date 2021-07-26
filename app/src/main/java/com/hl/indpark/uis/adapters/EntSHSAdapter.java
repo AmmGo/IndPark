@@ -30,7 +30,12 @@ public class EntSHSAdapter extends BaseQuickAdapter<EntSHSEvent.RecordsBean, Bas
             }
             holder.setText(R.id.tv_site, item.pointName);
             holder.setText(R.id.tv_type, item.enterpriseName);
-            holder.setText(R.id.tv_num, item.value);
+            if (item.dataType!=null&&!item.dataType.equals("")){
+                holder.setText(R.id.tv_num, item.value+item.dataType);
+            }else{
+                holder.setText(R.id.tv_num, item.value);
+            }
+
             holder.setText(R.id.tv_phone, item.time);
         }
     }
