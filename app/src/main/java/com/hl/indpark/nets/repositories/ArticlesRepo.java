@@ -249,4 +249,7 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<String>>> getMachineCheckReportEvent(Map map) {
         return Net.api().getMachineCheckReportEvent((HashMap<String, String>) map);
     }
+    public static LiveData<Resource<Response<String>>> getCallPolice(String address,String name,String phone) {
+        return Net.api().getCallPolice(address,name,phone);
+    }
 }

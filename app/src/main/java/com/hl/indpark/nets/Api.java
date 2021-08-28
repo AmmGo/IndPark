@@ -300,4 +300,8 @@ public interface Api {
     /*=======巡检上报List查询事件======*/
     @GET(BASE_JAVA + "/equipmentexaminedetails/select")
     LiveData<Resource<Response<List<MachineCheck>>>> getMachineCheckReportListEvent();
+
+    /*=======一键报警======*/
+    @GET(BASE_JAVA + "/phone/giveAnAlarm")
+    LiveData<Resource<Response<String>>> getCallPolice(@Query("address") String address,@Query("name") String name,@Query("phone") String phone);
 }
