@@ -9,8 +9,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -53,17 +55,18 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
- /**
-  * Created by yjl on 2021/5/10 13:24
-  * Function：
-  * Desc：单位自检
-  */
+/**
+ * Created by yjl on 2021/5/10 13:24
+ * Function：
+ * Desc：单位自检
+ */
 public class SelfTestActivity extends BaseActivity {
     @BindView(R.id.tv_count)
     TextView tvCount;
@@ -85,6 +88,56 @@ public class SelfTestActivity extends BaseActivity {
     private LoadingDailog dialog;
     private double getLongitude;
     private double getLatitude;
+    @BindView(R.id.rb_aqzj)
+    RadioButton rb_aqzj;
+    @BindView(R.id.rb_xfzj)
+    RadioButton rb_xfzj;
+    @BindView(R.id.rb_sbzj)
+    RadioButton rb_sbzj;
+    @BindView(R.id.rb_qtzj)
+    RadioButton rb_qtzj;
+
+    @OnCheckedChanged({R.id.rb_aqzj, R.id.rb_xfzj, R.id.rb_sbzj, R.id.rb_qtzj})
+    public void OnCheckedChangeListener(CompoundButton view, boolean ischanged) {
+        switch (view.getId()) {
+            case R.id.rb_aqzj:
+                if (ischanged) {
+                    eventReport.id = 1;
+                    rb_aqzj.setChecked(true);
+                    rb_xfzj.setChecked(false);
+                    rb_sbzj.setChecked(false);
+                    rb_qtzj.setChecked(false);
+                }
+                break;
+            case R.id.rb_xfzj:
+                if (ischanged) {
+                    eventReport.id = 2;
+                    rb_aqzj.setChecked(false);
+                    rb_xfzj.setChecked(true);
+                    rb_sbzj.setChecked(false);
+                    rb_qtzj.setChecked(false);
+                }
+                break;
+            case R.id.rb_sbzj:
+                if (ischanged) {
+                    eventReport.id = 3;
+                    rb_aqzj.setChecked(false);
+                    rb_xfzj.setChecked(false);
+                    rb_sbzj.setChecked(true);
+                    rb_qtzj.setChecked(false);
+                }
+                break;
+            case R.id.rb_qtzj:
+                if (ischanged) {
+                    eventReport.id = 4;
+                    rb_aqzj.setChecked(false);
+                    rb_xfzj.setChecked(false);
+                    rb_sbzj.setChecked(false);
+                    rb_qtzj.setChecked(true);
+                }
+                break;
+        }
+    }
 
     @OnTextChanged(value = R.id.ed_event_decs, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void editTextDetailChange(Editable editable) {
@@ -138,7 +191,7 @@ public class SelfTestActivity extends BaseActivity {
                 uploadTvType = tvType.getText().toString().replaceAll(" ", "").replace("请选择自检类型","");
                 uploadEventTitile = ed_event_titile.getText().toString().replaceAll(" ", "");
                 uploadEventDecs = ed_event_decs.getText().toString().replaceAll(" ", "");
-                if (TextUtils.isEmpty(uploadTvType)) {
+                if (eventReport.id == 0) {
                     ToastUtil.showToast(this, "请选择自检类型");
                     return;
                 }
@@ -260,6 +313,7 @@ public class SelfTestActivity extends BaseActivity {
         initData();
         setMediaFragment();
         eventReport = new ReportEvent();
+        eventReport.id = 1;
     }
 
     private PermissionUtil permissionUtil;

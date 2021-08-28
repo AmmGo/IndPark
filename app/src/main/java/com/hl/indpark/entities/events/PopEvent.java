@@ -15,5 +15,7 @@ public class PopEvent {
     public List<NameEp> nameEp;
     public List<TypeEp> typeEp;
     public List<ReportTypeEvent> reportTypeEventList;
+    public List<PhoneEvent> phoneList;
+    public List<MapPointEvent> machineList;
 
 }

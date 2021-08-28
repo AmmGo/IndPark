@@ -41,9 +41,36 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:replace="android:label">
-        <activity android:name=".uis.activities.MonitorRtspActivity"></activity>
-        <activity android:name=".uis.activities.SelfCheckIdActivity" />
-        <activity android:name=".uis.activities.SelfCheckActivity" />
+        <activity
+            android:name=".uis.activities.LineChartWxyFxActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.LineChartHbActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.LineChartWxyTjActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.MachineCheckIdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.MachineCheckListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.PhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.MachineCheckActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.MonitorRtspActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.SelfCheckIdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.SelfCheckActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".uis.activities.WebViewMonitorActivity"
             android:screenOrientation="portrait" />

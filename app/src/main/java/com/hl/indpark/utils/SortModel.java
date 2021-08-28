@@ -7,8 +7,8 @@ public class SortModel extends Contact {
 
 	public SortToken sortToken = new SortToken();
 
-	public SortModel(String name, String number, String sortKey,int sex,int id,String userId) {
-		super(name, number, sortKey,sex,id,userId);
+	public SortModel(String name, String number, String sortKey,int sex,int id,String userId,String deptName) {
+		super(name, number, sortKey,sex,id,userId,deptName);
 	}
 
 	@Override

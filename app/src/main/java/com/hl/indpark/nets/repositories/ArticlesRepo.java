@@ -14,6 +14,10 @@ import com.hl.indpark.entities.events.EntSEPTypeEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
+import com.hl.indpark.entities.events.LineChartWxy;
+import com.hl.indpark.entities.events.LineChartsHb;
+import com.hl.indpark.entities.events.MachineCheck;
+import com.hl.indpark.entities.events.MachineCheckId;
 import com.hl.indpark.entities.events.MapPointEvent;
 import com.hl.indpark.entities.events.MyApprovalEvent;
 import com.hl.indpark.entities.events.MyExchangeRecordEvent;
@@ -199,8 +203,9 @@ public class ArticlesRepo {
     }
 
     public static LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(int sizePage, int isP,String str,String name) {
-        return Net.api().getHazardCamera(sizePage, isP,str,name);
+        return Net.api().getHazardCamera(sizePage, isP, str, name);
     }
+
     public static LiveData<Resource<Response<SelfCheck>>> getSelfCheck(int sizePage, int isP) {
         return Net.api().getSelfCheck(sizePage, isP);
     }
@@ -209,10 +214,39 @@ public class ArticlesRepo {
         return Net.api().getCheckIDEvent(id);
     }
 
-    public static LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(String id) {
-        return Net.api().getWxyEvent(id);
+    public static LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(String id, int queryType) {
+        return Net.api().getWxyEvent(id, queryType);
     }
+
     public static LiveData<Resource<Response<List<WxyTjEvent>>>> getWxyTjEvent() {
         return Net.api().getWxyTjEvent();
+    }
+
+    public static LiveData<Resource<Response<List<LineChartWxy>>>> getLineChartWxy(String labelId, int type) {
+        return Net.api().getLineChartWxy(labelId, type);
+    }
+
+    public static LiveData<Resource<Response<List<LineChartWxy>>>> getLineChartWxyTj(String labelId, int type) {
+        return Net.api().getLineChartWxyTj(labelId, type);
+    }
+
+    public static LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHb(String enterpriseId, String pointId, String timeType) {
+        return Net.api().getLineChartHb(enterpriseId, pointId, timeType);
+    }
+
+    public static LiveData<Resource<Response<List<PhoneEvent>>>> getXjryCheck() {
+        return Net.api().getXjryCheck();
+    }
+
+    public static LiveData<Resource<Response<List<MachineCheck>>>> getMachineCheckReportListEvent() {
+        return Net.api().getMachineCheckReportListEvent();
+    }
+
+    public static LiveData<Resource<Response<List<MachineCheckId>>>> getMachineCheckReportIdEvent(String id) {
+        return Net.api().getMachineCheckReportIdEvent(id);
+    }
+
+    public static LiveData<Resource<Response<String>>> getMachineCheckReportEvent(Map map) {
+        return Net.api().getMachineCheckReportEvent((HashMap<String, String>) map);
     }
 }

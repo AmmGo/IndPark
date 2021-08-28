@@ -16,6 +16,10 @@ import com.hl.indpark.entities.events.EntSEPTypeEvent;
 import com.hl.indpark.entities.events.EntSHSEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
+import com.hl.indpark.entities.events.LineChartWxy;
+import com.hl.indpark.entities.events.LineChartsHb;
+import com.hl.indpark.entities.events.MachineCheck;
+import com.hl.indpark.entities.events.MachineCheckId;
 import com.hl.indpark.entities.events.MapPointEvent;
 import com.hl.indpark.entities.events.MyApprovalEvent;
 import com.hl.indpark.entities.events.MyExchangeRecordEvent;
@@ -64,9 +68,9 @@ public interface Api {
     /**
      * 内网服务2
      */
-//    String BASE_URL = "http://192.168.119.249:11035/";
-//    String BASE_JAVA = "";
-//    String BASE_URL_IMG = "http://appimg.hlx.com/";
+    String BASE_URL = "http://192.168.119.249:11035/";
+    String BASE_JAVA = "";
+    String BASE_URL_IMG = "http://appimg.hlx.com/";
     /**
      * 外网测试
      */
@@ -77,9 +81,9 @@ public interface Api {
     /**
      * 外网发布
      */
-    String BASE_URL = "https://www.nxzwgyyqgwh.com.cn/";
-    String BASE_URL_IMG = "https://www.nxzwgyyqgwh.com.cn/img/";
-    String BASE_JAVA = "java";
+//    String BASE_URL = "https://www.nxzwgyyqgwh.com.cn/";
+//    String BASE_URL_IMG = "https://www.nxzwgyyqgwh.com.cn/img/";
+//    String BASE_JAVA = "java";
 
     /*=======登陆注册======*/
     @POST(BASE_JAVA + "/loginPhone")
@@ -263,9 +267,37 @@ public interface Api {
 
     /*=======新增危险源实时统计======*/
     @GET(BASE_JAVA + "/transmission/querySourceDangerRealDate")
-    LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(@Query("enterpriseId") String id);
+    LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(@Query("enterpriseId") String id, @Query("queryType") int queryType);
 
     /*=======危险源报警统计======*/
     @GET(BASE_JAVA + "/transmission/hazardNum")
     LiveData<Resource<Response<List<WxyTjEvent>>>> getWxyTjEvent();
+
+    /*=======危险源折线图分析======*/
+    @GET(BASE_JAVA + "/phone/alarmInfoStatistic")
+    LiveData<Resource<Response<List<LineChartWxy>>>> getLineChartWxy(@Query("labelId") String labelId, @Query("type") int type);
+
+    /*=======危险源折线图统计======*/
+    @GET(BASE_JAVA + "/phone/realStatistics")
+    LiveData<Resource<Response<List<LineChartWxy>>>> getLineChartWxyTj(@Query("labelId") String labelId, @Query("type") int type);
+
+    /*=======环保数据======*/
+    @GET(BASE_JAVA + "/environmentStatistics/analysisTrendChartEnvironment")
+    LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHb(@Query("enterpriseId") String enterpriseId, @Query("pointId") String pointId, @Query("timeType") String timeType);
+
+    /*=======巡检人员======*/
+    @GET(BASE_JAVA + "/equipmentexaminedetails/enterpriseedetails")
+    LiveData<Resource<Response<List<PhoneEvent>>>> getXjryCheck();
+
+    /*=======巡检上报事件======*/
+    @POST(BASE_JAVA + "/equipmentexaminedetails/insert")
+    LiveData<Resource<Response<String>>> getMachineCheckReportEvent(@Body HashMap<String, String> map);
+
+    /*=======巡检上报Id查询事件======*/
+    @POST(BASE_JAVA + "/equipmentexaminedetails/selectDetails")
+    LiveData<Resource<Response<List<MachineCheckId>>>> getMachineCheckReportIdEvent(@Query("id") String id);
+
+    /*=======巡检上报List查询事件======*/
+    @GET(BASE_JAVA + "/equipmentexaminedetails/select")
+    LiveData<Resource<Response<List<MachineCheck>>>> getMachineCheckReportListEvent();
 }

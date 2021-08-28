@@ -41,5 +41,6 @@ public class EntSHSEvent {
         public String time;
         public String type;
         public String value;
+        public String labelId;
     }
 }

@@ -21,6 +21,8 @@ import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.CustomCaptureActivity;
 import com.hl.indpark.uis.activities.EventsReportActivity;
 import com.hl.indpark.uis.activities.LogManagerActivity;
+import com.hl.indpark.uis.activities.MachineCheckActivity;
+import com.hl.indpark.uis.activities.MachineCheckListActivity;
 import com.hl.indpark.uis.activities.NavigationManagerActivity;
 import com.hl.indpark.uis.activities.SelfTestActivity;
 import com.hl.indpark.uis.activities.SignInActivity;
@@ -48,7 +50,7 @@ public class HomeFragment extends BaseFragment {
     private ViewPager mViewPager;
     private Intent intent;
 
-    @OnClick({R.id.ll_one_alrarm, R.id.ll_events, R.id.ll_sign_in, R.id.ll_bjtj, R.id.ll_bjfx, R.id.ll_sys, R.id.ll_self_test, R.id.ll_nav_manager, R.id.ll_log_manager})
+    @OnClick({R.id.ll_one_alrarm, R.id.ll_events, R.id.ll_sign_in, R.id.ll_bjtj, R.id.ll_bjfx, R.id.ll_sys, R.id.ll_self_test, R.id.ll_nav_manager, R.id.ll_log_manager, R.id.ll_home_jc, R.id.ll_sbxj})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_one_alrarm:
@@ -93,6 +95,16 @@ public class HomeFragment extends BaseFragment {
                 break;
             case R.id.ll_log_manager:
                 startActivity(new Intent(getActivity(), LogManagerActivity.class));
+                break;
+            case R.id.ll_sbxj:
+                startActivity(new Intent(getActivity(), MachineCheckActivity.class));
+//                startActivity(new Intent(getActivity(), MachineCheckIdActivity.class));
+                break;
+            case R.id.ll_home_jc:
+//                startActivity(new Intent(getActivity(), LineChartWxyFxActivity.class));
+//                startActivity(new Intent(getActivity(), LineChartHbActivity.class));
+                startActivity(new Intent(getActivity(), MachineCheckListActivity.class));
+
                 break;
         }
     }
@@ -183,8 +195,8 @@ public class HomeFragment extends BaseFragment {
 
     private void initView() {
         final String[] titles = {"", ""};
-        Fragment fragment1 = new TabStatisticsFragment();
-        Fragment fragment2 = new TabAnalysisFragment();
+        Fragment fragment1 = new TabAlarmCountFragment();
+        Fragment fragment2 = new TabAlarmCheckFragment();
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(fragment1);
         fragments.add(fragment2);

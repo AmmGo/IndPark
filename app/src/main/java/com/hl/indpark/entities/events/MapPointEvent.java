@@ -10,6 +10,8 @@ public class MapPointEvent {
     public int id;
     public String enterpriseId;
     public String name;
+    public String address;
+    public String model;
     public double longitude;
     public double latitude;
 }

@@ -20,7 +20,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.events.EntNameEvent;
 import com.hl.indpark.entities.events.EntTypeEvent;
+import com.hl.indpark.entities.events.MapPointEvent;
 import com.hl.indpark.entities.events.NameEp;
+import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
 import com.hl.indpark.entities.events.TypeEp;
@@ -28,7 +30,9 @@ import com.hl.indpark.uis.adapters.EntEPTypeAdapter;
 import com.hl.indpark.uis.adapters.EntNameAdapter;
 import com.hl.indpark.uis.adapters.EntNameSHAdapter;
 import com.hl.indpark.uis.adapters.EntTypeAdapter;
+import com.hl.indpark.uis.adapters.MachineAdapter;
 import com.hl.indpark.uis.adapters.ReportTypeAdapter;
+import com.hl.indpark.uis.adapters.XjryAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -38,6 +42,8 @@ import java.util.List;
  * 100企业列表
  * 101工艺类型列表
  * 102上报事件类型
+ * 104巡检人员
+ * 105设备列表
  */
 public class EntDialog extends Dialog implements OnClickListener {
     Activity context;
@@ -76,6 +82,12 @@ public class EntDialog extends Dialog implements OnClickListener {
                 break;
             case 103:
                 initEPTypeAdapter(popEvent.typeEp);
+                break;
+            case 104:
+                initXjryAdapter(popEvent.phoneList);
+                break;
+            case 105:
+                initMachineAdapter(popEvent.machineList);
                 break;
             default:
         }
@@ -156,6 +168,41 @@ public class EntDialog extends Dialog implements OnClickListener {
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 ReportTypeEvent event = new ReportTypeEvent();
                 event.name = list.get(position).name;
+                event.id = list.get(position).id;
+                EventBus.getDefault().post(event);
+            }
+        });
+    }
+
+    private void initXjryAdapter(List<PhoneEvent> list) {
+        XjryAdapter entAdapter = new XjryAdapter(list, context);
+        entAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        //给RecyclerView设置适配器
+        recyclerView.setAdapter(entAdapter);
+        entAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                PhoneEvent event = new PhoneEvent();
+                event.name = list.get(position).name;
+                event.id = list.get(position).id;
+                event.phone = list.get(position).phone;
+                EventBus.getDefault().post(event);
+            }
+        });
+    }
+
+    private void initMachineAdapter(List<MapPointEvent> list) {
+        MachineAdapter entAdapter = new MachineAdapter(list, context);
+        entAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        //给RecyclerView设置适配器
+        recyclerView.setAdapter(entAdapter);
+        entAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                MapPointEvent event = new MapPointEvent();
+                event.name = list.get(position).name;
+                event.address = list.get(position).address;
+                event.model = list.get(position).model;
                 event.id = list.get(position).id;
                 EventBus.getDefault().post(event);
             }

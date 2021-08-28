@@ -67,6 +67,7 @@ public class PieChartSHDataActivity extends BaseActivity {
     private int timeType;
     private String selectType ="0";
     private String gyid;
+    private int queryType = 0;
 
     @OnClick({R.id.ll_spin, R.id.ll_spin2})
     public void onClick(View v) {
@@ -147,32 +148,37 @@ public class PieChartSHDataActivity extends BaseActivity {
                             //全部
 //                            selectType = null;
                             selectType = "0";
+                            queryType = 1;
 //                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                            getWxy(companyCode,selectType);
+                            getWxy(companyCode,selectType,queryType);
                             break;
                         case 1:
                             //高高报
                             selectType = "1";
+                            queryType = 1;
 //                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                            getWxy(companyCode,selectType);
+                            getWxy(companyCode,selectType,queryType);
                             break;
                         case 2:
                             //高报
                             selectType = "2";
+                            queryType = 1;
 //                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                            getWxy(companyCode,selectType);
+                            getWxy(companyCode,selectType,queryType);
                             break;
                         case 3:
                             //低低报
                             selectType = "4";
+                            queryType = 1;
 //                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                            getWxy(companyCode,selectType);
+                            getWxy(companyCode,selectType,queryType);
                             break;
                         case 4:
                             //低报
                             selectType = "3";
+                            queryType = 1;
 //                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                            getWxy(companyCode,selectType);
+                            getWxy(companyCode,selectType,queryType);
                             break;
 
                     }
@@ -201,7 +207,7 @@ public class PieChartSHDataActivity extends BaseActivity {
                             pageSize = 10;
                             list.clear();
 //                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                            getWxy(companyCode,selectType);
+                            getWxy(companyCode,selectType,queryType);
                             refreshLayout.finishRefresh();
                         }
                     }, 50);
@@ -268,9 +274,16 @@ public class PieChartSHDataActivity extends BaseActivity {
                 /**修改之后内容*/
                 try {
                     if (response.getData() != null) {
-                        chooseText.setText(response.getData().get(0).name);
+
                         companyCode = String.valueOf(response.getData().get(0).companyCode);
-                        getWxy(companyCode, selectType);
+                        if (response.getData().size()==1){
+                            queryType=1;
+                            chooseText.setText(response.getData().get(0).name);
+                        }else{
+                            queryType=0;
+                            chooseText.setText("全部");
+                        }
+                        getWxy(companyCode, selectType,queryType);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -374,7 +387,7 @@ public class PieChartSHDataActivity extends BaseActivity {
         pageSize =10;
 //        getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
         companyCode=event.companyCode;
-        getWxy(companyCode,selectType);
+        getWxy(companyCode,selectType,queryType);
 //        getEntType(event.id);
         pop.cancel();
     }
@@ -404,9 +417,9 @@ public class PieChartSHDataActivity extends BaseActivity {
         }
     }
 
-    public void getWxy(String id,String selectType) {
+    public void getWxy(String id,String selectType,int queryType) {
         try {
-            ArticlesRepo.getWxyEvent(id).observe(this, new ApiObserver<List<WxyEvent>>() {
+            ArticlesRepo.getWxyEvent(id,queryType).observe(this, new ApiObserver<List<WxyEvent>>() {
                 @Override
                 public void onSuccess(Response<List<WxyEvent>> response) {
                     List<WxyEvent> wxyEvents = new ArrayList<>();

@@ -16,5 +16,7 @@ public class PhoneEvent {
     public String phone;
     public int sex;
     public String deviceId;
+    public String depName;
+    public String enterpriseName;
 
 }

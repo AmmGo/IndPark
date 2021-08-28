@@ -11,13 +11,14 @@ public class Contact {
 
 	}
 
-	public Contact(String name, String number, String sortKey,int sex,int id,String userId) {
+	public Contact(String name, String number, String sortKey,int sex,int id,String userId,String deptName) {
 		this.name = name;
 		this.number = number;
 		this.sortKey = sortKey;
 		this.sex = sex;
 		this.id = id;
 		this.userId = userId;
+		this.deptName = deptName;
 		if(number!=null){
 			this.simpleNumber=number.replaceAll("\\-|\\s", "");
 		}
@@ -30,6 +31,7 @@ public class Contact {
 	public int sex;
 	public int id;
 	public String userId;
+	public String deptName;
 
 
 	@Override

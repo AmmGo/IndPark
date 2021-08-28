@@ -1,13 +1,8 @@
-package com.hl.indpark.uis.fragments;
+package com.hl.indpark.uis.activities;
 
-
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
@@ -27,11 +21,9 @@ import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.permission.DefaultResourceProvider;
-import com.hl.indpark.uis.activities.videoactivities.Main2Activity;
 import com.hl.indpark.utils.CharacterParser;
 import com.hl.indpark.utils.ContactsSortAdapter;
 import com.hl.indpark.utils.PinyinComparator;
-import com.hl.indpark.utils.SelectDialog;
 import com.hl.indpark.utils.SideBar;
 import com.hl.indpark.utils.SortModel;
 import com.hl.indpark.utils.SortToken;
@@ -39,8 +31,8 @@ import com.hl.indpark.utils.Util;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import net.arvin.baselib.base.BaseFragment;
-import net.arvin.baselib.utils.ToastUtil;
+import net.arvin.baselib.base.BaseActivity;
+import net.arvin.baselib.widgets.TitleBar;
 import net.arvin.permissionhelper.PermissionUtil;
 
 import java.util.ArrayList;
@@ -50,14 +42,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 
-/**
- * Created by yjl on 2021/3/8 11:05
- * Function：
- * Desc：通讯录
- */
-public class MailListFragment extends BaseFragment {
-
-
+public class PhoneActivity extends BaseActivity {
     ListView mListView;
     EditText etSearch;
     ImageView ivClearText;
@@ -78,13 +63,26 @@ public class MailListFragment extends BaseFragment {
      */
     private PinyinComparator pinyinComparator;
 
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("T", "bean.id");
+        setResult(2, intent);
+        finish();
+    }
     @Override
     protected int getContentView() {
-        return R.layout.fragment_maillist;
+        return R.layout.activity_phone;
     }
-
     @Override
     protected void init(Bundle savedInstanceState) {
+        TitleBar titleBar = findViewById(R.id.title_bar);
+        titleBar.getCenterTextView().setText("人员检索");
+        titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         initView();
         initListener();
         initPermissionConfig();
@@ -100,6 +98,7 @@ public class MailListFragment extends BaseFragment {
                 }, 50);
             }
         });
+
     }
     private PermissionUtil permissionUtil;
     private void initPermissionConfig() {
@@ -122,7 +121,7 @@ public class MailListFragment extends BaseFragment {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code),getActivity());
+                Util.login(String.valueOf(code),PhoneActivity.this);
                 Log.e("人员列表", "onFailure: ");
                 refreshLayout.finishRefresh(false);
             }
@@ -198,110 +197,32 @@ public class MailListFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
                 ContactsSortAdapter.ViewHolder viewHolder = (ContactsSortAdapter.ViewHolder) view.getTag();
                 SortModel sortModel = adapter.toggleChecked(position);
-                List<String> names = new ArrayList<>();
-                names.add("拨号通话");
-                names.add("视频通话");
-                showDialog(new SelectDialog.SelectDialogListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        switch (position) {
-                            case 0:
-                                Intent intent = null;
-                                Uri uri = Uri.parse("tel:" + sortModel.number);
-                                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                                    ToastUtil.showToast(getContext(), "请到设置中打开电话权限");
-                                    intent = new Intent(Settings.ACTION_SETTINGS);
-                                    getActivity().startActivity(intent);
-                                    return;
-                                }
-                                intent = new Intent(Intent.ACTION_CALL);
-                                intent.setData(uri);
-                                getContext().startActivity(intent);
-                                break;
-                            case 1:
-                                permissionUtil.request("需要权限", PermissionUtil.asArray(      Manifest.permission.RECORD_AUDIO,
-                                        Manifest.permission.CAMERA,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                        Manifest.permission.CALL_PHONE,
-                                        Manifest.permission.READ_CALL_LOG,
-                                        Manifest.permission.WRITE_CALL_LOG), new PermissionUtil.RequestPermissionListener() {
-                                    @Override
-                                    public void callback(boolean granted, boolean isAlwaysDenied) {
-                                        if (granted) {
-                                            startCall(sortModel.userId);
-                                        }
-                                    }
-                                });
-
-                                break;
-                            default:
-                                break;
-                        }
-
-                    }
-                }, names);
+                Intent intent = new Intent();
+                intent.putExtra("xjryName", sortModel.name);
+                intent.putExtra("xjryUserid",String.valueOf(sortModel.id));
+                intent.putExtra("xjryPhone", sortModel.number);
+                setResult(800, intent);
+                finish();
             }
         });
 
     }
 
-    private void startCall(String id) {
-        if (Util.getUserId().equals(String.valueOf(id))){
-            ToastUtil.showToast(getActivity(),"请选择有效用户");
-            return;
-        }
-        Intent intent = new Intent(getActivity(), Main2Activity.class);
-        intent.putExtra("id",id );
-        startActivity(intent);
-//        getVideoPush(id);
-
-    }
-    public void getVideoPush(String id) {
-        ArticlesRepo.getVideoPush(Util.getUserId()+","+id,id).observe(this, new ApiObserver<String>() {
-            @Override
-            public void onSuccess(Response<String> response) {
-                Intent intent = new Intent(getActivity(), Main2Activity.class);
-                intent.putExtra("id",id );
-                startActivity(intent);
-                Log.e("推送成功", "onSuccess: ");
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                super.onFailure(code, msg);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                super.onError(throwable);
-
-            }
-        });
-    }
-    private SelectDialog showDialog(SelectDialog.SelectDialogListener listener, List<String> names) {
-        SelectDialog dialog = new SelectDialog(getActivity(), R.style
-                .transparentFrameWindowStyle,
-                listener, names);
-        if (!getActivity().isFinishing()) {
-            dialog.show();
-        }
-        return dialog;
-    }
 
     private void initView() {
-        sideBar = (SideBar) root.findViewById(R.id.sidrbar);
-        dialog = (TextView) root.findViewById(R.id.dialog);
+        sideBar = (SideBar) findViewById(R.id.sidrbar);
+        dialog = (TextView) findViewById(R.id.dialog);
         sideBar.setTextView(dialog);
-        ivClearText = (ImageView) root.findViewById(R.id.ivClearText);
-        etSearch = (EditText) root.findViewById(R.id.et_search);
-        mListView = (ListView) root.findViewById(R.id.lv_contacts);
+        ivClearText = (ImageView) findViewById(R.id.ivClearText);
+        etSearch = (EditText) findViewById(R.id.et_search);
+        mListView = (ListView) findViewById(R.id.lv_contacts);
 
         /** 给ListView设置adapter **/
         characterParser = CharacterParser.getInstance();
         mAllContactsList = new ArrayList<SortModel>();
         pinyinComparator = new PinyinComparator();
         Collections.sort(mAllContactsList, pinyinComparator);// 根据a-z进行排序源数据
-        adapter = new ContactsSortAdapter(getActivity(), mAllContactsList);
+        adapter = new ContactsSortAdapter(PhoneActivity.this, mAllContactsList);
         mListView.setAdapter(adapter);
     }
 
@@ -324,7 +245,7 @@ public class MailListFragment extends BaseFragment {
                 sb.append(depName).append(" ");
             }
             String deptName = sb.toString();
-            SortModel sortModel = new SortModel(deptName+data.get(i).name, data.get(i).phone, data.get(i).name, data.get(i).sex,data.get(i).id,data.get(i).userId,deptName);
+            SortModel sortModel = new SortModel(data.get(i).name, data.get(i).phone, data.get(i).name, data.get(i).sex,data.get(i).id,data.get(i).userId,deptName);
             sortModel.sortLetters = sortLetters;
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)

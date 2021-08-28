@@ -14,6 +14,7 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.uis.activities.MachineCheckListActivity;
 import com.hl.indpark.uis.activities.MeActivity;
 import com.hl.indpark.uis.activities.MyApprovalActivity;
 import com.hl.indpark.uis.activities.MyMsgActivity;
@@ -52,7 +53,7 @@ public class SelfFragment extends BaseFragment {
     private boolean hideNew;
     private String msgNum;
 
-    @OnClick({R.id.ll_wd_shenp, R.id.ll_wdsp, R.id.ll_wdxx, R.id.img_set_up, R.id.ll_info, R.id.ll_wd_wdjf,R.id.ll_wd_dwzj})
+    @OnClick({R.id.ll_wd_shenp, R.id.ll_wdsp, R.id.ll_wdxx, R.id.img_set_up, R.id.ll_info, R.id.ll_wd_wdjf, R.id.ll_wd_dwzj, R.id.ll_wd_dwxj})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_wd_shenp:
@@ -74,8 +75,11 @@ public class SelfFragment extends BaseFragment {
             case R.id.ll_wd_wdjf:
                 startActivity(new Intent(getActivity(), MyScoresActivity.class));
                 break;
-                case R.id.ll_wd_dwzj:
+            case R.id.ll_wd_dwzj:
                 startActivity(new Intent(getActivity(), SelfCheckActivity.class));
+                break;
+            case R.id.ll_wd_dwxj:
+                startActivity(new Intent(getActivity(), MachineCheckListActivity.class));
                 break;
             default:
         }

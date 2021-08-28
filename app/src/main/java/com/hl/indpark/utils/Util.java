@@ -46,8 +46,22 @@ public class Util {
         return userId;
     }
 
+    public static boolean getIsRoleld() {
+        boolean isTrue = false;
+        String userId = SharePreferenceUtil.getKeyValue("roleId");
+        if (userId != null && userId.equals("1")) {
+            isTrue = true;
+        }
+        return isTrue;
+    }
+
     public static String getEnterpriseId() {
         String userId = SharePreferenceUtil.getKeyValue("enterpriseId");
+        return userId;
+    }
+
+    public static String getEnterpriseName() {
+        String userId = SharePreferenceUtil.getKeyValue("enterpriseName");
         return userId;
     }
 

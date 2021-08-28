@@ -6,13 +6,13 @@
     android:background="@color/primary"
     android:orientation="vertical">
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srlDragRate="0.75"
-        app:srlEnableLoadMore="false"
-        app:srlEnablePureScrollMode="true">
+<!--    <com.scwang.smartrefresh.layout.SmartRefreshLayout-->
+<!--        android:id="@+id/refreshLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:srlDragRate="0.75"-->
+<!--        app:srlEnableLoadMore="false"-->
+<!--        app:srlEnablePureScrollMode="true">-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,6 +74,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <ImageView
@@ -90,7 +91,27 @@
                         android:textColor="#FFFFFF"
                         android:textSize="15sp" />
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_sbxj"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/img_home_sbxj" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="设备巡检"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/ll_sign_in"
                     android:layout_width="0dp"
@@ -185,6 +206,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_home_jc"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -193,12 +215,13 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@mipmap/img_home_jc"
                         android:layout_gravity="center" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text=""
+                        android:text="在线监测"
                         android:textColor="#FFFFFF"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -288,6 +311,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
         </LinearLayout>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+<!--    </com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
 
 </LinearLayout>
