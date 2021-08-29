@@ -233,6 +233,10 @@ public class PieChartSH1DataActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                EntSHSEvent.RecordsBean jumpData = (EntSHSEvent.RecordsBean) adapter.getItem(position);
+                Intent intent = new Intent(PieChartSH1DataActivity.this, LineChartWxyFxActivity.class);
+                intent.putExtra("labelId", jumpData.labelId);
+                startActivity(intent);
             }
         });
     }
@@ -304,23 +308,27 @@ public class PieChartSH1DataActivity extends BaseActivity {
             ArticlesRepo.getEntSHSEvent(id, tlid, pageNum, pageSize, timeType, type).observe(this, new ApiObserver<EntSHSEvent>() {
                 @Override
                 public void onSuccess(Response<EntSHSEvent> response) {
-                    EntSHSEvent shsEvent = response.getData();
-                    selectList = new ArrayList<>();
-                    selectList = shsEvent.records;
-                    if (selectList != null && selectList.size() > 0) {
-                        list.addAll(selectList);
-                        adapter.setNewData(list);
-                        total = 0;
-                    } else {
-                        if (list.size() <= 0) {
-                            View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) mRcyPieData.getParent(), false);
-                            list.clear();
+                    try {
+                        EntSHSEvent shsEvent = response.getData();
+                        selectList = new ArrayList<>();
+                        selectList = shsEvent.records;
+                        if (selectList != null && selectList.size() > 0) {
+                            list.addAll(selectList);
                             adapter.setNewData(list);
-                            adapter.setEmptyView(emptyView);
+                            total = 0;
+                        } else {
+                            if (list.size() <= 0) {
+                                View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) mRcyPieData.getParent(), false);
+                                list.clear();
+                                adapter.setNewData(list);
+                                adapter.setEmptyView(emptyView);
+                            }
+                            total = 1;
                         }
-                        total = 1;
+                        Log.e("危险源数据", "onSuccess: \n" + "企业ID" + id + "\n工艺类型" + tlid + "\n第几页" + pageNum + "\n一页数量" + pageSize + "\n事件跨度" + timeType + "\n事件报警类型" + type);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    Log.e("危险源数据", "onSuccess: \n" + "企业ID" + id + "\n工艺类型" + tlid + "\n第几页" + pageNum + "\n一页数量" + pageSize + "\n事件跨度" + timeType + "\n事件报警类型" + type);
 
 
                 }

@@ -1,5 +1,6 @@
 package com.hl.indpark.uis.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.entities.events.HSAlarmEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.uis.activities.PieChartEPDataActivity;
+import com.hl.indpark.uis.activities.PieChartSH1DataActivity;
 import com.hl.indpark.utils.Util;
 import com.xuexiang.xui.widget.progress.HorizontalProgressView;
 
@@ -34,6 +37,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
 
 public class TabAlarmCheckFragment extends BaseFragment implements HorizontalProgressView.HorizontalProgressUpdateListener {
 
@@ -63,6 +67,23 @@ public class TabAlarmCheckFragment extends BaseFragment implements HorizontalPro
     private Map<Integer, Float> map;
     private Map<Integer, Integer> mapShow;
     private String type = "2";
+    private Intent intent;
+
+    @OnClick({R.id.rl_hbfx, R.id.ll_wxyfx})
+    public void onClickView(View v) {
+        switch (v.getId()) {
+            case R.id.rl_hbfx:
+                intent = new Intent(getActivity(), PieChartEPDataActivity.class);
+                intent.putExtra("type", Integer.valueOf(type));
+                startActivity(intent);
+                break;
+            case R.id.ll_wxyfx:
+                intent = new Intent(getActivity(), PieChartSH1DataActivity.class);
+                intent.putExtra("timeType",Integer.valueOf(type));
+                startActivity(intent);
+                break;
+        }
+    }
 
     @OnCheckedChanged({R.id.rg_month, R.id.rg_quarter, R.id.rg_year})
     public void OnCheckedChangeListener(CompoundButton view, boolean ischanged) {

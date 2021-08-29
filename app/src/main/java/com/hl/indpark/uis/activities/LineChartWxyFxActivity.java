@@ -1,6 +1,7 @@
 package com.hl.indpark.uis.activities;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -17,6 +18,7 @@ import com.hl.indpark.utils.LineChatUtils;
 import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseActivity;
+import net.arvin.baselib.widgets.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,6 @@ public class LineChartWxyFxActivity extends BaseActivity {
     int fx7 = 1;
     int fx30 = 2;
     int DDType = 2;
-    int HHType = 1;
 
     @Override
     protected int getContentView() {
@@ -43,64 +44,27 @@ public class LineChartWxyFxActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        TitleBar titleBar = findViewById(R.id.title_bar);
+        titleBar.getCenterTextView().setText("危险源数据折线图");
+        titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         String labelId = getIntent().getStringExtra("labelId");
-        String fxOrTj = getIntent().getStringExtra("fxOrTj");
-        String unit = getIntent().getStringExtra("unit");
-        labelId = "456";
-//        getLineChart1(labelId);
         getLineChart7(labelId);
         getLineChart30(labelId);
         mLineChart1 = findViewById(R.id.chart_1);
         mLineChart7 = findViewById(R.id.chart_7);
         mLineChart30 = findViewById(R.id.chart_30);
     }
-
-    public void getLineChart1(String labelId) {
-        try {
-            ArticlesRepo.getLineChartWxy(labelId, fx7).observe(this, new ApiObserver<List<LineChartWxy>>() {
-                @Override
-                public void onSuccess(Response<List<LineChartWxy>> response) {
-                    lineChart1 = new ArrayList<>();
-                    lineChart1 = response.getData();
-
-                    lineChartDouble1 = new LineChartDouble(mLineChart1);
-                    LineData lineData = new LineData(lineChartDouble1.getDataSet(lineChart1));
-                    XAxis xAxis = mLineChart1.getXAxis();
-                    xAxis.setValueFormatter(new IAxisValueFormatter() {
-                        @Override
-                        public String getFormattedValue(float value, AxisBase axis) {
-                            return xValuesProcess(lineChart1, value, DDType);
-                        }
-                    });
-                    // 设置数据
-                    mLineChart1.setData(lineData);
-                    mLineChart1.invalidate();
-                }
-
-                @Override
-                public void onFailure(int code, String msg) {
-                    super.onFailure(code, msg);
-                    Util.login(String.valueOf(code), LineChartWxyFxActivity.this);
-                }
-
-                @Override
-                public void onError(Throwable throwable) {
-                    super.onError(throwable);
-
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public String xValuesProcess(List<LineChartWxy> list, float keyFloat, int dateType) {
         int date = (int) keyFloat;
         LineChatUtils lu = new LineChatUtils();
         return lu.StringX(list.get(date).key, dateType);
 
     }
-
     public void getLineChart7(String labelId) {
         try {
             ArticlesRepo.getLineChartWxy(labelId, fx7).observe(this, new ApiObserver<List<LineChartWxy>>() {

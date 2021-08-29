@@ -37,7 +37,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -65,9 +67,15 @@ public class PieChartSHDataActivity extends BaseActivity {
     private int pageSize = 10;
     private int total = 0;
     private int timeType;
-    private String selectType ="0";
+    private String selectType = "0";
     private String gyid;
     private int queryType = 0;
+    private Map<String, List<EntSHSEvent.RecordsBean>> listMap;
+    private List<EntSHSEvent.RecordsBean> gblist;
+    private List<EntSHSEvent.RecordsBean> ggblist;
+    private List<EntSHSEvent.RecordsBean> dblist;
+    private List<EntSHSEvent.RecordsBean> ddblist;
+    private String getEntName;
 
     @OnClick({R.id.ll_spin, R.id.ll_spin2})
     public void onClick(View v) {
@@ -102,6 +110,11 @@ public class PieChartSHDataActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        listMap = new HashMap<>();
+        gblist = new ArrayList<>();
+        ggblist = new ArrayList<>();
+        dblist = new ArrayList<>();
+        ddblist = new ArrayList<>();
         try {
             Intent intent = getIntent();
             timeType = intent.getIntExtra("timeType", 0);
@@ -140,6 +153,7 @@ public class PieChartSHDataActivity extends BaseActivity {
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
+                    getEntName = chooseText.getText().toString();
                     pageNum = 1;
                     pageSize = 10;
                     list.clear();
@@ -150,35 +164,83 @@ public class PieChartSHDataActivity extends BaseActivity {
                             selectType = "0";
                             queryType = 1;
 //                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                            getWxy(companyCode,selectType,queryType);
+                            getWxy(companyCode, selectType, queryType);
                             break;
                         case 1:
                             //高高报
                             selectType = "1";
                             queryType = 1;
 //                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                            getWxy(companyCode,selectType,queryType);
+                            if (getEntName.equals("全部")) {
+                                if (ggblist.size() <= 0) {
+                                    View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) mRcyPieData.getParent(), false);
+                                    ggblist.clear();
+                                    adapter.setNewData(ggblist);
+                                    adapter.setEmptyView(emptyView);
+                                } else {
+                                    adapter.setNewData(ggblist);
+                                }
+
+                            } else {
+                                getWxy(companyCode, selectType, queryType);
+                            }
                             break;
                         case 2:
                             //高报
                             selectType = "2";
                             queryType = 1;
 //                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                            getWxy(companyCode,selectType,queryType);
+                            if (getEntName.equals("全部")) {
+                                if (gblist.size() <= 0) {
+                                    View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) mRcyPieData.getParent(), false);
+                                    gblist.clear();
+                                    adapter.setNewData(gblist);
+                                    adapter.setEmptyView(emptyView);
+                                } else {
+                                    adapter.setNewData(gblist);
+                                }
+
+                            } else {
+                                getWxy(companyCode, selectType, queryType);
+                            }
                             break;
                         case 3:
                             //低低报
                             selectType = "4";
                             queryType = 1;
 //                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                            getWxy(companyCode,selectType,queryType);
+                            if (getEntName.equals("全部")) {
+                                if (ddblist.size() <= 0) {
+                                    View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) mRcyPieData.getParent(), false);
+                                    ddblist.clear();
+                                    adapter.setNewData(ddblist);
+                                    adapter.setEmptyView(emptyView);
+                                } else {
+                                    adapter.setNewData(ddblist);
+                                }
+
+                            } else {
+                                getWxy(companyCode, selectType, queryType);
+                            }
                             break;
                         case 4:
                             //低报
                             selectType = "3";
                             queryType = 1;
 //                            getEntSHS(qyid, gyid, pageNum, pageSize, timeType, selectType);
-                            getWxy(companyCode,selectType,queryType);
+                            if (getEntName.equals("全部")) {
+                                if (dblist.size() <= 0) {
+                                    View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) mRcyPieData.getParent(), false);
+                                    dblist.clear();
+                                    adapter.setNewData(dblist);
+                                    adapter.setEmptyView(emptyView);
+                                } else {
+                                    adapter.setNewData(dblist);
+                                }
+
+                            } else {
+                                getWxy(companyCode, selectType, queryType);
+                            }
                             break;
 
                     }
@@ -249,6 +311,10 @@ public class PieChartSHDataActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                EntSHSEvent.RecordsBean jumpData = (EntSHSEvent.RecordsBean) adapter.getItem(position);
+                Intent intent = new Intent(PieChartSHDataActivity.this, LineChartWxyTjActivity.class);
+                intent.putExtra("labelId", jumpData.tagId);
+                startActivity(intent);
             }
         });
     }
@@ -418,23 +484,28 @@ public class PieChartSHDataActivity extends BaseActivity {
     }
 
     public void getWxy(String id,String selectType,int queryType) {
+        getEntName = chooseText.getText().toString();
+        if (getEntName.equals("全部")) {
+            queryType = 0;
+        }
         try {
-            ArticlesRepo.getWxyEvent(id,queryType).observe(this, new ApiObserver<List<WxyEvent>>() {
+            ArticlesRepo.getWxyEvent(id, queryType).observe(this, new ApiObserver<List<WxyEvent>>() {
                 @Override
                 public void onSuccess(Response<List<WxyEvent>> response) {
                     List<WxyEvent> wxyEvents = new ArrayList<>();
                     wxyEvents = response.getData();
                     list = new ArrayList<>();
-                    if (wxyEvents!=null&&wxyEvents.size() > 0) {
-                        if (selectType.equals("0")){
+                    if (wxyEvents != null && wxyEvents.size() > 0) {
+                        if (selectType.equals("0")) {
                             for (int i = 0; i < wxyEvents.size(); i++) {
-                                    EntSHSEvent.RecordsBean data1 = new EntSHSEvent.RecordsBean();
-                                    data1.type = wxyEvents.get(i).type;
-                                    data1.pointName = wxyEvents.get(i).pointName;
-                                    data1.enterpriseName = wxyEvents.get(i).enterpriseName;
-                                    data1.value = wxyEvents.get(i).value;
-                                    data1.time = wxyEvents.get(i).time;
-                                    list.add(data1);
+                                EntSHSEvent.RecordsBean data1 = new EntSHSEvent.RecordsBean();
+                                data1.type = wxyEvents.get(i).type;
+                                data1.pointName = wxyEvents.get(i).pointName;
+                                data1.enterpriseName = wxyEvents.get(i).enterpriseName;
+                                data1.value = wxyEvents.get(i).value;
+                                data1.time = wxyEvents.get(i).time;
+                                data1.tagId = wxyEvents.get(i).tagId;
+                                list.add(data1);
                             }
                         }else{
                             for (int i = 0; i < wxyEvents.size(); i++) {
@@ -445,14 +516,34 @@ public class PieChartSHDataActivity extends BaseActivity {
                                     data1.enterpriseName = wxyEvents.get(i).enterpriseName;
                                     data1.value = wxyEvents.get(i).value;
                                     data1.time = wxyEvents.get(i).time;
+                                    data1.tagId = wxyEvents.get(i).tagId;
                                     list.add(data1);
                                 }
                             }
                         }
 
-                        if (list.size()>0){
+                        if (list.size() > 0) {
+                            gblist = new ArrayList<>();
+                            ggblist = new ArrayList<>();
+                            dblist = new ArrayList<>();
+                            ddblist = new ArrayList<>();
+                            for (int i = 0; i < list.size(); i++) {
+                                if (list.get(i).type.equals("1")) {
+                                    ggblist.add(list.get(i));
+                                } else if (list.get(i).type.equals("2")) {
+                                    gblist.add(list.get(i));
+                                } else if (list.get(i).type.equals("3")) {
+                                    dblist.add(list.get(i));
+                                } else if (list.get(i).type.equals("4")) {
+                                    ddblist.add(list.get(i));
+                                }
+                            }
+                            listMap.put("1", ggblist);
+                            listMap.put("2", gblist);
+                            listMap.put("3", dblist);
+                            listMap.put("4", ddblist);
                             adapter.setNewData(list);
-                        }else{
+                        } else {
                             View emptyView = getLayoutInflater().inflate(R.layout.layout_empty, (ViewGroup) mRcyPieData.getParent(), false);
                             list.clear();
                             adapter.setNewData(list);

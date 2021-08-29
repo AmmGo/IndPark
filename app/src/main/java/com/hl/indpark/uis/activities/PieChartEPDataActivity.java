@@ -236,6 +236,12 @@ public class PieChartEPDataActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                EntSEPEvent.RecordsBean jumpData = (EntSEPEvent.RecordsBean) adapter.getItem(position);
+                Intent intent = new Intent(PieChartEPDataActivity.this, LineChartHbActivity.class);
+                intent.putExtra("entId", qyid);
+                intent.putExtra("pointId", jumpData.equipmentName.contains("水")?"1":"2");
+                intent.putExtra("isTime", timeType>1?"2":"1");
+                startActivity(intent);
             }
         });
     }

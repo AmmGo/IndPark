@@ -1,5 +1,6 @@
 package com.hl.indpark.uis.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -22,6 +24,8 @@ import com.hl.indpark.entities.events.EPAlarmEvent;
 import com.hl.indpark.entities.events.WxyTjEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.uis.activities.PieChartEPDataActivity;
+import com.hl.indpark.uis.activities.PieChartSHDataActivity;
 import com.hl.indpark.utils.Util;
 import com.xuexiang.xui.widget.progress.HorizontalProgressView;
 
@@ -33,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class TabAlarmCountFragment extends BaseFragment implements HorizontalProgressView.HorizontalProgressUpdateListener {
     @BindView(R.id.hp_ggb)
@@ -50,8 +55,11 @@ public class TabAlarmCountFragment extends BaseFragment implements HorizontalPro
     @BindView(R.id.hp_db)
     HorizontalProgressView hp_db;
     @BindView(R.id.tv_db)
-    TextView tv_db;    @BindView(R.id.tv_sum)
+    TextView tv_db;
+    @BindView(R.id.tv_sum)
     TextView tv_sum;
+    @BindView(R.id.rl_hbtj)
+    RelativeLayout rl_hbtj;
     public static final int[] PIECOLORS = {
             Color.rgb(54, 136, 255), Color.rgb(244, 177, 136)
     };
@@ -59,6 +67,24 @@ public class TabAlarmCountFragment extends BaseFragment implements HorizontalPro
     private Typeface tf;
     private Map<Integer, Float> map;
     private Map<Integer, Integer> mapShow;
+    private Intent intent;
+
+    @OnClick({R.id.rl_hbtj, R.id.ll_wxytj})
+    public void onClickView(View v) {
+        switch (v.getId()) {
+            case R.id.rl_hbtj:
+                intent = new Intent(getActivity(), PieChartEPDataActivity.class);
+                intent.putExtra("type", Util.hbDay);
+                startActivity(intent);
+                break;
+            case R.id.ll_wxytj:
+                intent = new Intent(getActivity(), PieChartSHDataActivity.class);
+                intent.putExtra("timeType", Util.wxyDay);
+                startActivity(intent);
+                break;
+        }
+    }
+
     @Override
     protected int getContentView() {
         return R.layout.fragment_tab_alarm_count;

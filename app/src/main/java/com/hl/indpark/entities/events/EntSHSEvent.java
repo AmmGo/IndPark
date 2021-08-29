@@ -28,6 +28,7 @@ public class EntSHSEvent {
     public String time;
     public String type;
     public String value;
+    public String labelId;
     public List<RecordsBean> records;
 
     public static class RecordsBean {
@@ -42,5 +43,6 @@ public class EntSHSEvent {
         public String type;
         public String value;
         public String labelId;
+        public String labelid;
     }
 }

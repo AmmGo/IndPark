@@ -2,9 +2,14 @@ package com.hl.indpark.uis.activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ScrollView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -12,22 +17,17 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.hl.indpark.R;
-import com.hl.indpark.entities.Response;
-import com.hl.indpark.entities.events.LineChartWxy;
-import com.hl.indpark.nets.ApiObserver;
-import com.hl.indpark.nets.repositories.ArticlesRepo;
-import com.hl.indpark.utils.Util;
+import com.hl.indpark.utils.MyMarkerView;
 
 import net.arvin.baselib.base.BaseActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LineChartWxyFxTEstActivity extends BaseActivity {
-    private LineChart mLineChart;
+    private LineChart lineChart;
     List<Entry> list = new ArrayList<>();
 
     @Override
@@ -37,145 +37,130 @@ public class LineChartWxyFxTEstActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        mLineChart = findViewById(R.id.chart_1);
-        // Entry中两个数字对应的分别是 X轴 Y轴
-        list.add(new Entry(0, 7));
-        list.add(new Entry(1, 10));
-        list.add(new Entry(2, 12));
-        list.add(new Entry(3, 6));
-        list.add(new Entry(4, 3));
-        // list是这条线的数据 "语文"是对这条线的描述（也就是图例上的文字）
-        LineDataSet lineDataSet = new LineDataSet(list, "数值");
-        LineData lineData = new LineData(lineDataSet);
-        // 有多条数据则使用lineData.addDataSet()方法 参数是DataSet
-        // lineData.addDataSet(lineDataSet);
-        mLineChart.setData(lineData);
-
-        // TODO 美化
-        // 折线图背景
-        mLineChart.setBackgroundColor(0xFFFFFF); // 折线图背景颜色
-        mLineChart.getXAxis().setDrawGridLines(false); // 是否绘制X轴上的网格线
-        mLineChart.getAxisLeft().setDrawGridLines(false); // 是否绘制Y轴上的网格线
-
-        // 对于右下角一串字母的操作
-        mLineChart.getDescription().setEnabled(true); // 是否显示右下角描述
-        mLineChart.getDescription().setText("近七天数据"); // 修改右下角字母的显示
-        mLineChart.getDescription().setTextSize(16); // 字体大小
-        mLineChart.getDescription().setTextColor(Color.RED); // 字体颜色
-
-        // 图例
-        Legend legend = mLineChart.getLegend();
-        legend.setEnabled(true); // 是否显示图例
-        legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER); // 图例的位置
-
-        // X轴
-        XAxis xAxis = mLineChart.getXAxis();
-        xAxis.setAxisLineColor(getResources().getColor(R.color.secondary_text)); // X轴颜色
-        xAxis.setAxisLineWidth(1); // X轴粗细
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // X轴所在位置 默认在上面
-        xAxis.setValueFormatter(new IAxisValueFormatter() { // X轴自定义坐标
+        lineChart = findViewById(R.id.chart_7);
+        ScrollView scrollview = findViewById(R.id.scrollview);
+        //解决滑动冲突
+        lineChart.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                if (value == 0) {
-                    return "第一天";
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        scrollview.requestDisallowInterceptTouchEvent(true);
+                        break;
+                    }
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_UP: {
+                        scrollview.requestDisallowInterceptTouchEvent(false);
+                        break;
+                    }
                 }
-                if (value == 1) {
-                    return "第二天";
-                }
-                if (value == 2) {
-                    return "第三天";
-                }
-                if (value == 3) {
-                    return "第四天";
-                }
-                if (value == 4) {
-                    return "第五天";
-                }
-                return "";
+                return false;
             }
         });
-        xAxis.setAxisMaximum(5); // X轴最大数值
-        xAxis.setAxisMinimum(0); // X轴最小数值
-        xAxis.setLabelCount(5, false); // X轴坐标标签个数 第二个参数一般为 false ; true表示强制设置标签数
+        List<Integer> list1 = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            list1.add((int)  (i + 1));
+        }
+        initLineChart(list1);
+    }
 
-        // Y轴
-        YAxis yAxis = mLineChart.getAxisLeft();
-        yAxis.setAxisLineColor(getResources().getColor(R.color.secondary_text)); // Y轴颜色
-        yAxis.setAxisLineWidth(1); // Y轴粗细
+    /**
+     * 初始化曲线图表
+     *
+     * @param list 数据集
+     */
+    private void initLineChart(List<Integer> list) {
+        //显示边界
+        lineChart.setDrawBorders(false);
+        //设置数据
+        List<Entry> entries = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            entries.add(new Entry(i, (float) list.get(i)));
+        }
+        //一个LineDataSet就是一条线
+        LineDataSet lineDataSet = new LineDataSet(entries, "");
+        //线颜色
+        lineDataSet.setColor(Color.parseColor("#F15A4A"));
+        //线宽度
+        lineDataSet.setLineWidth(1.6f);
+        //不显示圆点
+//        lineDataSet.setDrawCircles(false);
+        lineDataSet.setDrawCircles(true);
+        //线条平滑
+//        lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        lineDataSet.setMode(LineDataSet.Mode.LINEAR);
+        //设置折线图填充
+//        lineDataSet.setDrawFilled(true);
+        LineData data = new LineData(lineDataSet);
+        //无数据时显示的文字
+        lineChart.setNoDataText("暂无数据");
+        //折线图不显示数值
+        data.setDrawValues(false);
+        //得到X轴
+        XAxis xAxis = lineChart.getXAxis();
+        //设置X轴的位置（默认在上方)
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //设置X轴坐标之间的最小间隔
+        xAxis.setGranularity(1f);
+        //设置X轴的刻度数量，第二个参数为true,将会画出明确数量（带有小数点），但是可能值导致不均匀，默认（6，false）
+        xAxis.setLabelCount(list.size() / 6, false);
+        //设置X轴的值（最小值、最大值、然后会根据设置的刻度数量自动分配刻度显示）
+        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisMaximum((float) list.size());
+        //不显示网格线
+        xAxis.setDrawGridLines(true);
+        // 标签倾斜
+        xAxis.setLabelRotationAngle(45);
+        //设置X轴值为字符串
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                int IValue = (int) value;
+                CharSequence format = DateFormat.format("MM/dd",
+                        System.currentTimeMillis() - (long) (list.size() - IValue) * 24 * 60 * 60 * 1000);
+                return format.toString();
+            }
+        });
+        //得到Y轴
+        YAxis yAxis = lineChart.getAxisLeft();
+        YAxis rightYAxis = lineChart.getAxisRight();
+        //设置Y轴是否显示
+        rightYAxis.setEnabled(false); //右侧Y轴不显示
+        //设置y轴坐标之间的最小间隔
+        //不显示网格线
+        yAxis.setDrawGridLines(true);
+        //设置Y轴坐标之间的最小间隔
+        yAxis.setGranularity(1);
+        //设置y轴的刻度数量
+        //+2：最大值n就有n+1个刻度，在加上y轴多一个单位长度，为了好看，so+2
+        yAxis.setLabelCount(Collections.max(list) + 2, false);
+        //设置从Y轴值
+        yAxis.setAxisMinimum(0f);
+        //+1:y轴多一个单位长度，为了好看
+        yAxis.setAxisMaximum(Collections.max(list) + 1);
+
+        //y轴
         yAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                for (int i = 0; i < 16; i++) {
-                    if (i == value) {
-                        return i + "℃";
-                    }
-                }
-                return "";
+                int IValue = (int) value;
+                return String.valueOf(IValue);
             }
         });
-
-        yAxis.setAxisMaximum(15); // Y轴最大数值
-        yAxis.setAxisMinimum(0); // Y轴最小数值
-        yAxis.setLabelCount(15, false); // Y轴坐标标签个数
-        mLineChart.getAxisRight().setEnabled(false); // 是否隐藏右边的Y轴（不设置的话有两条Y轴 同理可以隐藏左边的Y轴）
-
-        // 折线
-        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER); // 设置折线样式
-        lineDataSet.setColor(getResources().getColor(R.color.primary)); // 设置折线颜色
-        lineDataSet.setLineWidth(2); // 设置折线粗细
-        lineDataSet.setDrawCircleHole(true); // 是否画折线点上的空心圆 false表示直接画成实心圆
-        lineDataSet.setCircleHoleRadius(2); // 空心圆内圈半径
-        lineDataSet.setCircleColorHole(Color.WHITE); // 空心圆内圈颜色
-        //lineDataSet.setCircleColor(Color.BLACK); // 空心圆外圈颜色
-        lineDataSet.setCircleRadius(4); // 空心圆外圈半径
-        // 定义折线上的数据显示 实现添加单位
-        lineDataSet.setValueFormatter(new IValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                if (entry.getY() == value) {
-                    return value + "℃";
-                }
-                return "";
-            }
-        });
-
-        // 数据更新
-//        mLineChart.notifyDataSetChanged();
-//        mLineChart.invalidate();
-
-        // 动画 (如果使用动画,则可以省去数据更新步骤)
-        mLineChart.animateY(3000); // Y轴方向动画,由下向上出现折线
-//        mLineChart.animateX(2000); // X轴方向动画,从左向右逐段显示折线
-//        mLineChart.animateXY(2000,2000); // XY两轴混合动画
-
-        // X轴所在位置 默认在上面
-        mLineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        // 隐藏右边的Y轴
-        mLineChart.getAxisRight().setEnabled(false);
-    }
-
-    public void getLineChart(String labelId, int type) {
-        try {
-            ArticlesRepo.getLineChartWxy(labelId, type).observe(this, new ApiObserver<List<LineChartWxy>>() {
-                @Override
-                public void onSuccess(Response<List<LineChartWxy>> response) {
-                    List<LineChartWxy> wxyEvents = new ArrayList<>();
-                }
-
-                @Override
-                public void onFailure(int code, String msg) {
-                    super.onFailure(code, msg);
-                    Util.login(String.valueOf(code), LineChartWxyFxTEstActivity.this);
-                }
-
-                @Override
-                public void onError(Throwable throwable) {
-                    super.onError(throwable);
-
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //图例：得到Lengend
+        Legend legend = lineChart.getLegend();
+        //隐藏Lengend
+        legend.setEnabled(false);
+        //隐藏描述
+        Description description = new Description();
+        description.setEnabled(false);
+        lineChart.setDescription(description);
+        //折线图点的标记
+        MyMarkerView mv = new MyMarkerView(this);
+        lineChart.setMarker(mv);
+        //设置数据
+        lineChart.setData(data);
+        //图标刷新
+        lineChart.invalidate();
     }
 }

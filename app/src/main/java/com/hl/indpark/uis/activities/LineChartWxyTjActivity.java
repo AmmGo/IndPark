@@ -1,6 +1,7 @@
 package com.hl.indpark.uis.activities;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -17,6 +18,7 @@ import com.hl.indpark.utils.LineChatUtils;
 import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseActivity;
+import net.arvin.baselib.widgets.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +46,15 @@ public class LineChartWxyTjActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        TitleBar titleBar = findViewById(R.id.title_bar);
+        titleBar.getCenterTextView().setText("危险源数据折线图");
+        titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         String labelId = getIntent().getStringExtra("labelId");
-        String fxOrTj = getIntent().getStringExtra("fxOrTj");
-        String unit = getIntent().getStringExtra("unit");
-//        labelId = "456";
-        labelId = "e853bb473d114348b6f20e3d55be9b32";
         getLineChart1(labelId);
         getLineChart7(labelId);
         getLineChart30(labelId);
@@ -149,7 +155,6 @@ public class LineChartWxyTjActivity extends BaseActivity {
                 public void onSuccess(Response<List<LineChartWxy>> response) {
                     lineChart30 = new ArrayList<>();
                     lineChart30 = response.getData();
-
                     lineChartDouble30 = new LineChartDouble(mLineChart30);
                     LineData lineData = new LineData(lineChartDouble30.getDataSet(lineChart30));
                     XAxis xAxis = mLineChart30.getXAxis();

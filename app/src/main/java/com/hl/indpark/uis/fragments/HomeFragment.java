@@ -26,9 +26,9 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.CustomCaptureActivity;
 import com.hl.indpark.uis.activities.EventsReportActivity;
+import com.hl.indpark.uis.activities.LineChartWxyFxTEstActivity;
 import com.hl.indpark.uis.activities.LogManagerActivity;
 import com.hl.indpark.uis.activities.MachineCheckActivity;
-import com.hl.indpark.uis.activities.MachineCheckListActivity;
 import com.hl.indpark.uis.activities.NavigationManagerActivity;
 import com.hl.indpark.uis.activities.SelfTestActivity;
 import com.hl.indpark.uis.activities.SignInActivity;
@@ -117,7 +117,7 @@ public class HomeFragment extends BaseFragment {
             case R.id.ll_home_jc:
 //                startActivity(new Intent(getActivity(), LineChartWxyFxActivity.class));
 //                startActivity(new Intent(getActivity(), LineChartHbActivity.class));
-                startActivity(new Intent(getActivity(), MachineCheckListActivity.class));
+                startActivity(new Intent(getActivity(), LineChartWxyFxTEstActivity.class));
 
                 break;
         }

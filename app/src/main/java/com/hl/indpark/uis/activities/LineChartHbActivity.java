@@ -2,6 +2,7 @@ package com.hl.indpark.uis.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.hl.indpark.R;
@@ -12,6 +13,7 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 
 import net.arvin.baselib.base.BaseActivity;
+import net.arvin.baselib.widgets.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,16 +41,30 @@ public class LineChartHbActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-
+        TitleBar titleBar = findViewById(R.id.title_bar);
+        titleBar.getCenterTextView().setText("环保数据折线图");
+        titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        String entId = getIntent().getStringExtra("entId");
+        String pointId = getIntent().getStringExtra("pointId");
+        String timeType = getIntent().getStringExtra("isTime");
         mLineChart1 = findViewById(R.id.chart_1);
         mLineChart7 = findViewById(R.id.chart_7);
         mLineChart30 = findViewById(R.id.chart_30);
-        String entId = "640500000072";
-        String pointId = "2";
-        String timeType = "30";
-        getHb1(entId, pointId, "1");
-//        getHb1(entId, pointId, "7");
-//        getHb1(entId, pointId, "30");
+        if (timeType.equals("1")) {
+            getHb1(entId, pointId, "1");
+            getHb1(entId, pointId, "7");
+            getHb1(entId, pointId, "30");
+        } else {
+            getHb1(entId, pointId, "7");
+            getHb1(entId, pointId, "30");
+        }
+
+
     }
 
     public void getHb1(String entId, String pkId, String dateType) {

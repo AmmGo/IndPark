@@ -45,6 +45,9 @@
             android:name=".uis.activities.LineChartWxyFxActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".uis.activities.LineChartWxyFxTEstActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".uis.activities.LineChartHbActivity"
             android:screenOrientation="portrait" />
         <activity
