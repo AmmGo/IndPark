@@ -1,19 +1,33 @@
 package com.hl.indpark.entities.events;
 
+import android.app.Activity;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.hl.indpark.utils.MyMarkerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LineChartDouble {
-    public LineChartDouble(LineChart chart) {
+    public LineChartDouble(LineChart chart,List<LineChartWxy> lineChartData, Activity activity) {
+        LineData lineData = new LineData(getDataSet(lineChartData));
+        lineData.setDrawValues(false);
+        //折线图点的标记
+        MyMarkerView mv = new MyMarkerView(activity,map);
+        chart.setMarker(mv);
+        chart.setNoDataText("暂无数据");
         // 数据描述
         chart.getDescription().setEnabled(true);
         //背景
@@ -56,10 +70,23 @@ public class LineChartDouble {
         mLegend.setFormSize(4f);
         //是否显示注释
         mLegend.setEnabled(false);
+        //隐藏描述
+        Description description = new Description();
+        description.setEnabled(false);
+        chart.setDescription(description);
         // 字体颜色
 //        mLegend.setTextColor(Color.parseColor("#7e7e7e"));
         //设置X轴位置
         XAxis xAxis = chart.getXAxis();
+        xAxis.setLabelRotationAngle(45);
+        //设置X轴值为字符串
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                int IValue = (int) value;
+                return map.get(IValue);
+            }
+        });
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         // 前面xAxis.setEnabled(false);则下面绘制的Grid不会有"竖的线"（与X轴有关）
         // 上面第一行代码设置了false,所以下面第一行即使设置为true也不会绘制AxisLine
@@ -84,15 +111,20 @@ public class LineChartDouble {
 //        leftAxis.setAxisLineWidth(5f);
         // 顶部居最大值站距离占比
         leftAxis.setSpaceTop(20f);
+        // 设置数据
+        chart.setData(lineData);
         chart.invalidate();
     }
+    Map<Integer,String> map = new HashMap<>();
     public LineDataSet getDataSet(List<LineChartWxy> list) {
+        map = new HashMap<>();
         ArrayList<Entry> valueSet1 = new ArrayList<Entry>();
         for (int i = 0 ;i<list.size();i++){
             Entry vle = new Entry();
             vle.setX(i);
             vle.setY((float) list.get(i).value);
             valueSet1.add(vle);
+            map.put(i,list.get(i).key);
         }
         LineDataSet barDataSet1 = new LineDataSet(valueSet1, "数据1注解");
         barDataSet1.setColor(Color.parseColor("#45a2ff"));
@@ -104,11 +136,5 @@ public class LineChartDouble {
         barDataSet1.setCircleColorHole(Color.parseColor("#ffffff"));
         return barDataSet1;
     }
-    public ArrayList<String> getXAxisValues() {
-        ArrayList<String> xAxis = new ArrayList<String>();
-        for (int j = 0; j < 12; j++){
-            xAxis.add((j+1)+"");
-        }
-        return xAxis;
-    }
+
 }

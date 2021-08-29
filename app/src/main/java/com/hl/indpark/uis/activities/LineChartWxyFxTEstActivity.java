@@ -18,7 +18,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hl.indpark.R;
-import com.hl.indpark.utils.MyMarkerView;
 
 import net.arvin.baselib.base.BaseActivity;
 
@@ -156,8 +155,8 @@ public class LineChartWxyFxTEstActivity extends BaseActivity {
         description.setEnabled(false);
         lineChart.setDescription(description);
         //折线图点的标记
-        MyMarkerView mv = new MyMarkerView(this);
-        lineChart.setMarker(mv);
+//        MyMarkerView mv = new MyMarkerView(this);
+//        lineChart.setMarker(mv);
         //设置数据
         lineChart.setData(data);
         //图标刷新

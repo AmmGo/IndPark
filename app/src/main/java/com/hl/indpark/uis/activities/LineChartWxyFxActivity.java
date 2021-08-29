@@ -4,17 +4,12 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.LineChartDouble;
 import com.hl.indpark.entities.events.LineChartWxy;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
-import com.hl.indpark.utils.LineChatUtils;
 import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseActivity;
@@ -35,7 +30,6 @@ public class LineChartWxyFxActivity extends BaseActivity {
     private List<LineChartWxy> lineChart30;
     int fx7 = 1;
     int fx30 = 2;
-    int DDType = 2;
 
     @Override
     protected int getContentView() {
@@ -59,12 +53,6 @@ public class LineChartWxyFxActivity extends BaseActivity {
         mLineChart7 = findViewById(R.id.chart_7);
         mLineChart30 = findViewById(R.id.chart_30);
     }
-    public String xValuesProcess(List<LineChartWxy> list, float keyFloat, int dateType) {
-        int date = (int) keyFloat;
-        LineChatUtils lu = new LineChatUtils();
-        return lu.StringX(list.get(date).key, dateType);
-
-    }
     public void getLineChart7(String labelId) {
         try {
             ArticlesRepo.getLineChartWxy(labelId, fx7).observe(this, new ApiObserver<List<LineChartWxy>>() {
@@ -72,19 +60,7 @@ public class LineChartWxyFxActivity extends BaseActivity {
                 public void onSuccess(Response<List<LineChartWxy>> response) {
                     lineChart7 = new ArrayList<>();
                     lineChart7 = response.getData();
-
-                    lineChartDouble7 = new LineChartDouble(mLineChart7);
-                    LineData lineData = new LineData(lineChartDouble7.getDataSet(lineChart7));
-                    XAxis xAxis = mLineChart7.getXAxis();
-                    xAxis.setValueFormatter(new IAxisValueFormatter() {
-                        @Override
-                        public String getFormattedValue(float value, AxisBase axis) {
-                            return xValuesProcess(lineChart7, value, DDType);
-                        }
-                    });
-                    // 设置数据
-                    mLineChart7.setData(lineData);
-                    mLineChart7.invalidate();
+                    lineChartDouble7 = new LineChartDouble(mLineChart7,lineChart7,LineChartWxyFxActivity.this);
                 }
 
                 @Override
@@ -111,19 +87,7 @@ public class LineChartWxyFxActivity extends BaseActivity {
                 public void onSuccess(Response<List<LineChartWxy>> response) {
                     lineChart30 = new ArrayList<>();
                     lineChart30 = response.getData();
-
-                    lineChartDouble30 = new LineChartDouble(mLineChart30);
-                    LineData lineData = new LineData(lineChartDouble30.getDataSet(lineChart30));
-                    XAxis xAxis = mLineChart30.getXAxis();
-                    xAxis.setValueFormatter(new IAxisValueFormatter() {
-                        @Override
-                        public String getFormattedValue(float value, AxisBase axis) {
-                            return xValuesProcess(lineChart30, value, DDType);
-                        }
-                    });
-                    // 设置数据
-                    mLineChart30.setData(lineData);
-                    mLineChart30.invalidate();
+                    lineChartDouble30 = new LineChartDouble(mLineChart30,lineChart30,LineChartWxyFxActivity.this);
                 }
 
                 @Override

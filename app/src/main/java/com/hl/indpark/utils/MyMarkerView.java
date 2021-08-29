@@ -1,7 +1,6 @@
 package com.hl.indpark.utils;
 
 import android.content.Context;
-import android.text.format.DateFormat;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
@@ -11,22 +10,26 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.hl.indpark.R;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MyMarkerView extends MarkerView
-{
+public class MyMarkerView extends MarkerView {
+    Map<Integer, String> map = new HashMap<>();
+
 
     private TextView tvContent;
     private DecimalFormat format = new DecimalFormat("##0");
 
-    public MyMarkerView(Context context) {
+    public MyMarkerView(Context context, Map<Integer, String> map) {
         super(context, R.layout.layout_markerview);//这个布局自己定义
+        this.map = map;
         tvContent = (TextView) findViewById(R.id.tvContent);
     }
 
     //显示的内容
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        tvContent.setText(format(e.getX())+"\n"+format.format(e.getY())+"辆");
+        tvContent.setText(String.valueOf(map.get((int)e.getX())));
         super.refreshContent(e, highlight);
     }
 
@@ -34,13 +37,5 @@ public class MyMarkerView extends MarkerView
     @Override
     public MPPointF getOffset() {
         return new MPPointF(-(getWidth() / 2), -getHeight());
-    }
-
-    //时间格式化（显示今日往前30天的每一天日期）
-    public String  format(float x)
-    {
-        CharSequence format = DateFormat.format("MM月dd日",
-                System.currentTimeMillis()-(long) (30-(int)x)*24*60*60*1000);
-        return format.toString();
     }
 }
