@@ -281,9 +281,13 @@ public interface Api {
     @GET(BASE_JAVA + "/phone/realStatistics")
     LiveData<Resource<Response<List<LineChartWxy>>>> getLineChartWxyTj(@Query("labelId") String labelId, @Query("type") int type);
 
-    /*=======环保数据======*/
-    @GET(BASE_JAVA + "/environmentStatistics/analysisTrendChartEnvironment")
+    /*=======环保数据折线图======*/
+    @POST(BASE_JAVA + "/environmentStatistics/analysisTrendChartEnvironment")
     LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHb(@Query("enterpriseId") String enterpriseId, @Query("pointId") String pointId, @Query("timeType") String timeType);
+
+    /*=======环保数据折线图======*/
+    @POST(BASE_JAVA + "/environmentStatistics/analysisTrendChartEnvironment")
+    LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHbPost(@Body HashMap<String, String> map);
 
     /*=======巡检人员======*/
     @GET(BASE_JAVA + "/equipmentexaminedetails/enterpriseedetails")

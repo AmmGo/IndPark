@@ -63,7 +63,7 @@ public class LineChartHbActivity extends BaseActivity {
             getHb1(entId, pointId, "7");
             getHb1(entId, pointId, "30");
         }
-
+//        getHb1Post(entId, pointId, "30");
 
     }
 
