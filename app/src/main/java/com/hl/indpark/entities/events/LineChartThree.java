@@ -1,22 +1,36 @@
 package com.hl.indpark.entities.events;
 
 
+import android.app.Activity;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.hl.indpark.uis.activities.LineChartHbActivity;
+import com.hl.indpark.utils.MyMarkerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LineChartThree {
-    public LineChartThree(LineChart chart) {
+    public LineChartThree(LineChart chart, Activity activity) {
+        LineData lineData = new LineData(getDataSet());
+        lineData.setDrawValues(false);
+        //折线图点的标记
+//        MyMarkerView mv = new MyMarkerView(activity,map);
+//        chart.setMarker(mv);
+        chart.setNoDataText("暂无数据");
         // 数据描述
-        chart.setDescription(new Description());
+        chart.getDescription().setEnabled(true);
         //背景
         chart.setBackgroundColor(0xffffffff);
         //定义数据描述得位置
@@ -57,10 +71,23 @@ public class LineChartThree {
         mLegend.setFormSize(4f);
         //是否显示注释
         mLegend.setEnabled(false);
+        //隐藏描述
+        Description description = new Description();
+        description.setEnabled(false);
+        chart.setDescription(description);
         // 字体颜色
 //        mLegend.setTextColor(Color.parseColor("#7e7e7e"));
         //设置X轴位置
         XAxis xAxis = chart.getXAxis();
+        xAxis.setLabelRotationAngle(45);
+        //设置X轴值为字符串
+//        xAxis.setValueFormatter(new IAxisValueFormatter() {
+//            @Override
+//            public String getFormattedValue(float value, AxisBase axis) {
+//                int IValue = (int) value;
+//                return map.get(IValue);
+//            }
+//        });
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         // 前面xAxis.setEnabled(false);则下面绘制的Grid不会有"竖的线"（与X轴有关）
         // 上面第一行代码设置了false,所以下面第一行即使设置为true也不会绘制AxisLine
@@ -68,6 +95,7 @@ public class LineChartThree {
         xAxis.setAxisLineColor(0xfff5f5f5);
 //        xAxis.setDrawAxisLine(false);
 //        xAxis.setDrawGridLines(false);
+//        xAxis.setSpaceBetweenLabels(2);
         //设置网色
         xAxis.setGridColor(0xfff5f5f5);
         //设置X轴字颜色
@@ -84,62 +112,28 @@ public class LineChartThree {
 //        leftAxis.setAxisLineWidth(5f);
         // 顶部居最大值站距离占比
         leftAxis.setSpaceTop(20f);
+        // 设置数据
+        chart.setData(lineData);
         chart.invalidate();
     }
 
-    public ArrayList<LineDataSet> getDataSet(boolean a, String underLineColor1, String underLineColor2) {
-        ArrayList<LineDataSet> dataSets = null;
+    public ArrayList<ILineDataSet> getDataSet() {
+        ArrayList<ILineDataSet> dataSets = null;
         ArrayList<Entry> valueSet1 = new ArrayList<Entry>();
-        Entry v1e1 = new Entry(120.000f, 0); // Jan
-        valueSet1.add(v1e1);
-        Entry v1e2 = new Entry(160.000f, 1); // Feb
-        valueSet1.add(v1e2);
-        Entry v1e3 = new Entry(180.000f, 2); // Mar
-        valueSet1.add(v1e3);
-        Entry v1e4 = new Entry(220.000f, 3); // Apr
-        valueSet1.add(v1e4);
-        Entry v1e5 = new Entry(230.000f, 4); // May
-        valueSet1.add(v1e5);
-        Entry v1e6 = new Entry(230.000f, 5); // Jun
-        valueSet1.add(v1e6);
-        Entry v1e7 = new Entry(230.000f, 6); // Jan
-        valueSet1.add(v1e7);
-        Entry v1e8 = new Entry(220.000f, 7); // Feb
-        valueSet1.add(v1e8);
-        Entry v1e9 = new Entry(220.000f, 8); // Mar
-        valueSet1.add(v1e9);
-        Entry v1e10 = new Entry(250.000f, 9); // Apr
-        valueSet1.add(v1e10);
-        Entry v1e11 = new Entry(270.000f, 10); // May
-        valueSet1.add(v1e11);
-        Entry v1e12 = new Entry(270.000f, 11); // Jun
-        valueSet1.add(v1e12);
-
+        for (int i = 0; i < LineChartHbActivity.mapZl.size(); i++) {
+            Entry v1e1 = new Entry(i, LineChartHbActivity.mapZl.get(i)); // Jan
+            valueSet1.add(v1e1);
+        }
         ArrayList<Entry> valueSet2 = new ArrayList<Entry>();
-        Entry v2e1 = new Entry(100.000f, 0); // Jan
-        valueSet2.add(v2e1);
-        Entry v2e2 = new Entry(130.000f, 1); // Feb
-        valueSet2.add(v2e2);
-        Entry v2e3 = new Entry(140.000f, 2); // Mar
-        valueSet2.add(v2e3);
-        Entry v2e4 = new Entry(180.000f, 3); // Apr
-        valueSet2.add(v2e4);
-        Entry v2e5 = new Entry(190.000f, 4); // May
-        valueSet2.add(v2e5);
-        Entry v2e6 = new Entry(200.000f, 5); // Jun
-        valueSet2.add(v2e6);
-        Entry v2e7 = new Entry(200.000f, 6); // Jan
-        valueSet2.add(v2e7);
-        Entry v2e8 = new Entry(190.000f, 7); // Feb
-        valueSet2.add(v2e8);
-        Entry v2e9 = new Entry(180.000f, 8); // Mar
-        valueSet2.add(v2e9);
-        Entry v2e10 = new Entry(220.000f, 9); // Apr
-        valueSet2.add(v2e10);
-        Entry v2e11 = new Entry(240.000f, 10); // May
-        valueSet2.add(v2e11);
-        Entry v2e12 = new Entry(230.000f, 11); // Jun
-        valueSet2.add(v2e12);
+        for (int i = 0; i < LineChartHbActivity.mapAd.size(); i++) {
+            Entry v1e1 = new Entry(i, LineChartHbActivity.mapAd.get(i)); // Jan
+            valueSet2.add(v1e1);
+        }
+        ArrayList<Entry> valueSet3 = new ArrayList<Entry>();
+        for (int i = 0; i < LineChartHbActivity.mapCod.size(); i++) {
+            Entry v1e1 = new Entry(i, LineChartHbActivity.mapCod.get(i)); // Jan
+            valueSet3.add(v1e1);
+        }
 
         LineDataSet barDataSet1 = new LineDataSet(valueSet1, "数据1注解");
         barDataSet1.setColor(Color.parseColor("#45a2ff"));
@@ -150,24 +144,39 @@ public class LineChartThree {
         //设置内圈颜色
         barDataSet1.setCircleColorHole(Color.parseColor("#ffffff"));
 
+
         LineDataSet barDataSet2 = new LineDataSet(valueSet2, "数据2注解");
         barDataSet2.setColor(Color.parseColor("#22cdc6"));
         //设置外圈颜色
         barDataSet2.setCircleColor(Color.parseColor("#22cdc6"));
         //圈大小
         barDataSet2.setCircleSize(3);
-        barDataSet1.setDrawFilled(a);
-        barDataSet2.setDrawFilled(a);
-        //设置内圈颜色
-        barDataSet2.setCircleColorHole(Color.parseColor("#ffffff"));
-        //设置线下阴影颜色
-        barDataSet1.setFillColor(Color.parseColor(underLineColor1));
-        //设置线下阴影颜色
-        barDataSet2.setFillColor(Color.parseColor(underLineColor2));
 
-        dataSets = new ArrayList<LineDataSet>();
+        LineDataSet barDataSet3 = new LineDataSet(valueSet2, "数据2注解");
+        barDataSet3.setColor(Color.parseColor("#22cdc6"));
+        //设置外圈颜色
+        barDataSet3.setCircleColor(Color.parseColor("#22cdc6"));
+        //圈大小
+        barDataSet3.setCircleSize(3);
+
+
+        barDataSet1.setDrawFilled(true);
+        barDataSet2.setDrawFilled(true);
+        barDataSet3.setDrawFilled(true);
+
+        //设置内圈颜色
+        barDataSet1.setCircleColorHole(Color.parseColor("#ffffff"));
+        barDataSet2.setCircleColorHole(Color.parseColor("#ffffff"));
+        barDataSet3.setCircleColorHole(Color.parseColor("#ffffff"));
+//        //设置线下阴影颜色
+//        barDataSet1.setFillColor(Color.parseColor(underLineColor1));
+//        //设置线下阴影颜色
+//        barDataSet2.setFillColor(Color.parseColor(underLineColor2));
+
+        dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(barDataSet1);
         dataSets.add(barDataSet2);
+        dataSets.add(barDataSet3);
         return dataSets;
     }
 }
