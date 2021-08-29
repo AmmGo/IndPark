@@ -26,10 +26,10 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.CustomCaptureActivity;
 import com.hl.indpark.uis.activities.EventsReportActivity;
-import com.hl.indpark.uis.activities.LineChartWxyFxTEstActivity;
 import com.hl.indpark.uis.activities.LogManagerActivity;
 import com.hl.indpark.uis.activities.MachineCheckActivity;
 import com.hl.indpark.uis.activities.NavigationManagerActivity;
+import com.hl.indpark.uis.activities.OnlineMonitorActivity;
 import com.hl.indpark.uis.activities.SelfTestActivity;
 import com.hl.indpark.uis.activities.SignInActivity;
 import com.hl.indpark.uis.adapters.ViewPagerAdapter;
@@ -67,7 +67,7 @@ public class HomeFragment extends BaseFragment {
 //                intent.setData(uri);
 //                getActivity().startActivity(intent);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage( R.string.tip_bluetooth_permission);
+                builder.setMessage(R.string.tip_bluetooth_permission);
                 builder.setTitle("提示");
                 builder.setPositiveButton(R.string.lab_yes, new DialogInterface.OnClickListener() {
                     @Override
@@ -112,12 +112,9 @@ public class HomeFragment extends BaseFragment {
                 break;
             case R.id.ll_sbxj:
                 startActivity(new Intent(getActivity(), MachineCheckActivity.class));
-//                startActivity(new Intent(getActivity(), MachineCheckIdActivity.class));
                 break;
             case R.id.ll_home_jc:
-//                startActivity(new Intent(getActivity(), LineChartWxyFxActivity.class));
-//                startActivity(new Intent(getActivity(), LineChartHbActivity.class));
-                startActivity(new Intent(getActivity(), LineChartWxyFxTEstActivity.class));
+                startActivity(new Intent(getActivity(), OnlineMonitorActivity.class));
 
                 break;
         }
@@ -254,16 +251,16 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void getCallPolice() {
-        ArticlesRepo.getCallPolice(locAddress,userInfoEvent.name,userInfoEvent.phone).observe(this, new ApiObserver<String>() {
+        ArticlesRepo.getCallPolice(locAddress, userInfoEvent.name, userInfoEvent.phone).observe(this, new ApiObserver<String>() {
             @Override
             public void onSuccess(Response<String> response) {
-            ToastUtil.showToast(getContext(),"一键报警成功");
+                ToastUtil.showToast(getContext(), "一键报警成功");
             }
 
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                ToastUtil.showToast(getContext(),msg);
+                ToastUtil.showToast(getContext(), msg);
             }
 
             @Override
@@ -273,6 +270,7 @@ public class HomeFragment extends BaseFragment {
             }
         });
     }
+
     public void initData() {
         ArticlesRepo.getUserInfoEvent().observe(this, new ApiObserver<UserInfoEvent>() {
             @Override
@@ -295,6 +293,7 @@ public class HomeFragment extends BaseFragment {
             }
         });
     }
+
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
     //声明AMapLocationClient类对象
@@ -307,19 +306,20 @@ public class HomeFragment extends BaseFragment {
                 if (aMapLocation.getErrorCode() == 0) {
                     aMapLocation.getLatitude();//获取纬度
                     aMapLocation.getLongitude();//获取经度
-                    Log.e("获取纬度", "onLocationChanged: "+aMapLocation.getLatitude() );
-                    Log.e("获取经度", "onLocationChanged: "+aMapLocation.getLongitude() );
+                    Log.e("获取纬度", "onLocationChanged: " + aMapLocation.getLatitude());
+                    Log.e("获取经度", "onLocationChanged: " + aMapLocation.getLongitude());
                     locAddress = aMapLocation.getAddress();
-                }else {
+                } else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    Log.e("AmapError","location Error, ErrCode:"
+                    Log.e("AmapError", "location Error, ErrCode:"
                             + aMapLocation.getErrorCode() + ", errInfo:"
                             + aMapLocation.getErrorInfo());
                 }
             }
         }
     };
-    public void loc(){
+
+    public void loc() {
         //初始化定位
         mLocationClient = new AMapLocationClient(getActivity().getApplicationContext());
         //设置定位回调监听

@@ -18,7 +18,12 @@
         <item name="android:layout_height">46.67dp</item>
         <item name="android:orientation">horizontal</item>
     </style>
+    <style name="AnimationFade">
 
+        <!-- PopupWindow左右弹出的效果 -->
+        <item name="android:windowEnterAnimation">@anim/inputodown</item>
+        <item name="android:windowExitAnimation">@anim/outdowntoup</item>
+    </style>
 
     <style name="checkBoxStyle">
         <item name="android:button">@drawable/checkbox_style</item>
