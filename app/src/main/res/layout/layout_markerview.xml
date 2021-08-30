@@ -7,8 +7,9 @@
     android:padding="10dp">
 
     <TextView
-        android:background="@drawable/bg_item_pie_data"
+        android:background="@drawable/chart_popu"
         android:id="@+id/tvContent"
+        android:textColor="@color/background_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

@@ -63,7 +63,14 @@ public class LineChartWxyTjActivity extends BaseActivity {
                 public void onSuccess(Response<List<LineChartWxy>> response) {
                     lineChart1 = new ArrayList<>();
                     lineChart1 = response.getData();
-                    lineChartDouble1 = new LineChartDouble(mLineChart1,lineChart1 ,LineChartWxyTjActivity.this);
+                    try {
+                        if (lineChart1.size() > 0) {
+                            lineChartDouble1 = new LineChartDouble(mLineChart1, lineChart1, LineChartWxyTjActivity.this);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
                 @Override
@@ -91,7 +98,13 @@ public class LineChartWxyTjActivity extends BaseActivity {
                 public void onSuccess(Response<List<LineChartWxy>> response) {
                     lineChart7 = new ArrayList<>();
                     lineChart7 = response.getData();
-                    lineChartDouble7 = new LineChartDouble(mLineChart7,lineChart7 ,LineChartWxyTjActivity.this);
+                    try {
+                        if (lineChart7.size() > 0) {
+                            lineChartDouble7 = new LineChartDouble(mLineChart7, lineChart7, LineChartWxyTjActivity.this);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
@@ -118,7 +131,14 @@ public class LineChartWxyTjActivity extends BaseActivity {
                 public void onSuccess(Response<List<LineChartWxy>> response) {
                     lineChart30 = new ArrayList<>();
                     lineChart30 = response.getData();
-                    lineChartDouble30 = new LineChartDouble(mLineChart30,lineChart30,LineChartWxyTjActivity.this);
+                    try {
+                        if (lineChart30.size() > 0) {
+
+                            lineChartDouble30 = new LineChartDouble(mLineChart30, lineChart30, LineChartWxyTjActivity.this);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override

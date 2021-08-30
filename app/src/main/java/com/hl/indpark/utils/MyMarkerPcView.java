@@ -13,23 +13,27 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyMarkerView extends MarkerView {
-    Map<Integer, String> map = new HashMap<>();
+public class MyMarkerPcView extends MarkerView {
+    Map<Integer, Float> map1 = new HashMap<>();
+    Map<Integer, Float> map2 = new HashMap<>();
+    Map<Integer, Float> map3 = new HashMap<>();
 
 
     private TextView tvContent;
     private DecimalFormat format = new DecimalFormat("##0");
 
-    public MyMarkerView(Context context, Map<Integer, String> map) {
+    public MyMarkerPcView(Context context, Map<Integer, Float> map1,Map<Integer, Float> map2,Map<Integer, Float> map3) {
         super(context, R.layout.layout_markerview);//这个布局自己定义
-        this.map = map;
+        this.map1 = map1;
+        this.map2 = map2;
+        this.map3 = map3;
         tvContent = (TextView) findViewById(R.id.tvContent);
     }
 
     //显示的内容
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        tvContent.setText(String.valueOf(map.get((int)e.getY())));
+        tvContent.setText(String.valueOf(map1.get((int)e.getY()))+String.valueOf(map2.get((int)e.getY()))+String.valueOf(map3.get((int)e.getY())));
         super.refreshContent(e, highlight);
     }
 

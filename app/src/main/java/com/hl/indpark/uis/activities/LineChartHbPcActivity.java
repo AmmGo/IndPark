@@ -72,7 +72,12 @@ public class LineChartHbPcActivity extends BaseActivity {
         String startDate30 = TimeUtils.dateToString(TimeUtils.NumberOfDaysStartUnixTime(30));
         String endDate1 = TimeUtils.dateToString(System.currentTimeMillis());
 
-
+        entId = "640500000076";
+        pointId = "2";
+        startDate1 = "2021-06-01 00:00:00";
+        startDate7 = "2021-06-01 00:00:00";
+        startDate30 = "2021-06-01 00:00:00";
+        endDate1 = "2021-09-01 00:00:00";
         textView = findViewById(R.id.tv_sssj);
         mLineChart1 = findViewById(R.id.chart_1);
         mLineChart7 = findViewById(R.id.chart_7);
@@ -134,9 +139,9 @@ public class LineChartHbPcActivity extends BaseActivity {
             @Override
             public void onSuccess(Response<List<LineChartsHb>> response) {
                 List<LineChartsHb> chartsHbs = new ArrayList<>();
+                chartsHbs = response.getData();
                 try {
                     if (chartsHbs.size() > 0) {
-                        chartsHbs = response.getData();
                         update7(chartsHbs);
                     }
                 } catch (Exception e) {

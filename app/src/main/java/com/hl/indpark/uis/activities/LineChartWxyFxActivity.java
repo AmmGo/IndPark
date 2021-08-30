@@ -60,7 +60,14 @@ public class LineChartWxyFxActivity extends BaseActivity {
                 public void onSuccess(Response<List<LineChartWxy>> response) {
                     lineChart7 = new ArrayList<>();
                     lineChart7 = response.getData();
-                    lineChartDouble7 = new LineChartDouble(mLineChart7,lineChart7,LineChartWxyFxActivity.this);
+                    try {
+                        if (lineChart7.size()>0){
+
+                            lineChartDouble7 = new LineChartDouble(mLineChart7,lineChart7,LineChartWxyFxActivity.this);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
@@ -87,7 +94,14 @@ public class LineChartWxyFxActivity extends BaseActivity {
                 public void onSuccess(Response<List<LineChartWxy>> response) {
                     lineChart30 = new ArrayList<>();
                     lineChart30 = response.getData();
-                    lineChartDouble30 = new LineChartDouble(mLineChart30,lineChart30,LineChartWxyFxActivity.this);
+                    try {
+                        if (lineChart30.size()>0){
+
+                            lineChartDouble30 = new LineChartDouble(mLineChart30,lineChart30,LineChartWxyFxActivity.this);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override

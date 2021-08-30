@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.hl.indpark.uis.activities.LineChartHbPcActivity;
+import com.hl.indpark.utils.MyMarkerPcView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,8 @@ public class LineChartThreePc {
         LineData lineData = new LineData(getDataSet());
         lineData.setDrawValues(false);
         //折线图点的标记
-//        MyMarkerView mv = new MyMarkerView(activity,map);
-//        chart.setMarker(mv);
+        MyMarkerPcView mv = new MyMarkerPcView(activity,LineChartHbPcActivity.mapZl,LineChartHbPcActivity.mapAd,LineChartHbPcActivity.mapCod);
+        chart.setMarker(mv);
         chart.setNoDataText("暂无数据");
         // 数据描述
         chart.getDescription().setEnabled(true);
