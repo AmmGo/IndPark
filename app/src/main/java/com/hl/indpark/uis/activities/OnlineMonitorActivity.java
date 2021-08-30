@@ -30,7 +30,7 @@ public class OnlineMonitorActivity extends BaseActivity {
     private static String hbtitle = "环保在线监测";
     private static String wxytitle = "危险源在线监测";
 
-    @OnClick({R.id.ll_title})
+    @OnClick({R.id.ll_title, R.id.img_back})
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.ll_title:
@@ -41,6 +41,9 @@ public class OnlineMonitorActivity extends BaseActivity {
                     initmPopupWindowView();
                     popupwindow.showAsDropDown(v, 0, 5);
                 }
+                break;
+            case R.id.img_back:
+                onBackPressed();
                 break;
             default:
                 break;

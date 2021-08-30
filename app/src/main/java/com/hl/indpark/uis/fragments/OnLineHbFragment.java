@@ -2,19 +2,17 @@ package com.hl.indpark.uis.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.tu.loadingdialog.LoadingDailog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.hl.indpark.R;
@@ -27,7 +25,6 @@ import com.hl.indpark.entities.events.TypeEp;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.LineChartHbActivity;
-import com.hl.indpark.uis.activities.PieChartEPDataActivity;
 import com.hl.indpark.uis.adapters.EntSEPAdapter;
 import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.EntDialog;
@@ -36,7 +33,6 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import net.arvin.baselib.base.BaseFragment;
-import net.arvin.baselib.widgets.TitleBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -296,7 +292,15 @@ public class OnLineHbFragment extends BaseFragment {
         }
         return type;
     }
+    private LoadingDailog dialog;
     public void getEntSEP(String qyid, String pkid, int pageNum, int pageSize, int timeType, String selectType) {
+        LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(getActivity())
+                .setMessage("加载中...")
+                .setCancelable(false)
+                .setCancelOutside(false);
+        dialog = loadBuilder.create();
+        dialog.getWindow().setDimAmount(0f);
+        dialog.show();
         try {
             ArticlesRepo.getEntSEPEvent(qyid, pkid, pageNum, pageSize, timeType, selectType).observe(this, new ApiObserver<EntSEPEvent>() {
                 @Override
@@ -318,19 +322,20 @@ public class OnLineHbFragment extends BaseFragment {
                         total = 1;
                     }
                     Log.e("环保数据", "onSuccess: \n" + "企业ID" + qyid + "\n排口类型" + pkid + "\n第几页" + pageNum + "\n一页数量" + pageSize + "\n事件跨度" + timeType + "\n事件报警类型" + selectType);
-
+                    dialog.cancel();
                 }
 
                 @Override
                 public void onFailure(int code, String msg) {
                     super.onFailure(code, msg);
                     Util.login(String.valueOf(code),getActivity());
+                    dialog.cancel();
                 }
 
                 @Override
                 public void onError(Throwable throwable) {
                     super.onError(throwable);
-
+                    dialog.cancel();
                 }
             });
         } catch (Exception e) {

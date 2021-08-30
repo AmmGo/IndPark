@@ -56,9 +56,9 @@ import retrofit2.http.Query;
 public interface Api {
     /**
      * java测试*/
-//    String BASE_URL = "http://192.168.119.224:11035/";
-//        String BASE_JAVA = "";
-//        String BASE_URL_IMG = "http://appimg.hlx.com/";
+    String BASE_URL = "http://192.168.119.224:11035/";
+        String BASE_JAVA = "";
+        String BASE_URL_IMG = "http://appimg.hlx.com/";
     /**
      * 内网服务1
      */
@@ -81,9 +81,9 @@ public interface Api {
     /**
      * 外网发布
      */
-    String BASE_URL = "https://www.nxzwgyyqgwh.com.cn/";
-    String BASE_URL_IMG = "https://www.nxzwgyyqgwh.com.cn/img/";
-    String BASE_JAVA = "java";
+//    String BASE_URL = "https://www.nxzwgyyqgwh.com.cn/";
+//    String BASE_URL_IMG = "https://www.nxzwgyyqgwh.com.cn/img/";
+//    String BASE_JAVA = "java";
 
     /*=======登陆注册======*/
     @POST(BASE_JAVA + "/loginPhone")

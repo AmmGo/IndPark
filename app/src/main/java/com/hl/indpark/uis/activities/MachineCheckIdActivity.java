@@ -81,10 +81,10 @@ public class MachineCheckIdActivity extends BaseActivity {
         String str4 = item.phone == null ? "" : item.phone;
         String str5 = item.examineTime == null ? "" : item.examineTime;
         String str6 = item.enterpriseName == null ? "" : item.enterpriseName;
-        String str7 = item.enterpriseName == null ? "" : item.enterpriseContactPerson;
-        String str8 = item.enterpriseName == null ? "" : item.enterpriseContactPhone;
-        String str9 = item.enterpriseName.equals("1")? "是" : "否";
-        String str10 = item.enterpriseName == null ? "" : item.description;
+        String str7 = item.enterpriseContactPerson == null ? "" : item.enterpriseContactPerson;
+        String str8 = item.enterpriseContactPhone == null ? "" : item.enterpriseContactPhone;
+        String str9 = item.isException.equals("1")? "是" : "否";
+        String str10 = item.description == null ? "" : item.description;
         tv_sbmc.setText("设备名称："+str1);
         tv_sbdz.setText("设备地址："+str2);
         tv_xjry.setText("巡检人员："+str3);
@@ -95,11 +95,15 @@ public class MachineCheckIdActivity extends BaseActivity {
         tv_qylxr_lxdh.setText("联系电话："+str8);
         tv_yqjzsfzc.setText("仪器校准是否正常："+str9);
         tv_ycms.setText("异常描述："+str10);
-        String[] image = new String[]{};
-        image = item.image.split(",");
-        if (image != null && image.length > 0) {
-            mediaList = Arrays.asList(image);
-            mediaFragment.setActivity(this, mediaList);
+        try {
+            String[] image = new String[]{};
+            image = item.image.split(",");
+            if (image != null && image.length > 0) {
+                mediaList = Arrays.asList(image);
+                mediaFragment.setActivity(this, mediaList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

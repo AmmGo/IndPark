@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.tu.loadingdialog.LoadingDailog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.hl.indpark.R;
@@ -99,7 +100,7 @@ public class PieChartEPDataActivity extends BaseActivity {
                 break;
         }
     }
-
+    private LoadingDailog dialog;
     @Override
     protected int getContentView() {
         return R.layout.activity_pie_chart_ep_data;
@@ -109,6 +110,7 @@ public class PieChartEPDataActivity extends BaseActivity {
     protected void init(Bundle savedInstanceState) {
         try {
             Intent intent = getIntent();
+
             timeType = intent.getIntExtra("type", 0);
             String titleText = "";
             popEvent = new PopEvent();
@@ -298,6 +300,13 @@ public List<TypeEp> typeEps(String key){
         return type;
 }
     public void getEntSEP(String qyid, String pkid, int pageNum, int pageSize, int timeType, String selectType) {
+        LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(PieChartEPDataActivity.this)
+                .setMessage("加载中...")
+                .setCancelable(false)
+                .setCancelOutside(false);
+        dialog = loadBuilder.create();
+        dialog.getWindow().setDimAmount(0f);
+        dialog.show();
         try {
             ArticlesRepo.getEntSEPEvent(qyid, pkid, pageNum, pageSize, timeType, selectType).observe(this, new ApiObserver<EntSEPEvent>() {
                 @Override
@@ -319,19 +328,20 @@ public List<TypeEp> typeEps(String key){
                         total = 1;
                     }
                     Log.e("环保数据", "onSuccess: \n" + "企业ID" + qyid + "\n排口类型" + pkid + "\n第几页" + pageNum + "\n一页数量" + pageSize + "\n事件跨度" + timeType + "\n事件报警类型" + selectType);
-
+                    dialog.cancel();
                 }
 
                 @Override
                 public void onFailure(int code, String msg) {
                     super.onFailure(code, msg);
                     Util.login(String.valueOf(code),PieChartEPDataActivity.this);
+                    dialog.cancel();
                 }
 
                 @Override
                 public void onError(Throwable throwable) {
                     super.onError(throwable);
-
+                    dialog.cancel();
                 }
             });
         } catch (Exception e) {

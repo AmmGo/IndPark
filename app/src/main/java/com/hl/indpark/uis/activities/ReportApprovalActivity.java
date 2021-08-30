@@ -61,6 +61,12 @@ public class ReportApprovalActivity extends BaseActivity {
     RelativeLayout rlNote;
     @BindView(R.id.rl_ed_event_onte)
     RelativeLayout rledNote;
+    @BindView(R.id.tv_event_time)
+    TextView tv_event_time;
+    @BindView(R.id.tv_event_person)
+    TextView tv_event_person;
+    @BindView(R.id.tv_event_phone)
+    TextView tv_event_phone;
     boolean islMaxCount;
     private int idEvent;
     private int reorap;
@@ -164,6 +170,9 @@ public class ReportApprovalActivity extends BaseActivity {
         tvType.setText("事件类型:" + idEvent.typeName);
         tvTitle.setText("事件名称:" + idEvent.title);
         tvDes.setText("事件内容:" + idEvent.content);
+        tv_event_time.setText("上报时间:" + idEvent.createTime);
+        tv_event_person.setText("上报人:" + idEvent.reportedName);
+        tv_event_phone.setText("联系电话:" + idEvent.phone);
         if (idEvent.imageList != null && idEvent.imageList.size() > 0) {
             mediaList = idEvent.imageList;
             mediaFragment.setActivity(this, mediaList);
