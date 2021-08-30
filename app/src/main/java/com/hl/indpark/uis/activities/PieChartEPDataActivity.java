@@ -241,8 +241,9 @@ public class PieChartEPDataActivity extends BaseActivity {
                 EntSEPEvent.RecordsBean jumpData = (EntSEPEvent.RecordsBean) adapter.getItem(position);
                 Intent intent = new Intent(PieChartEPDataActivity.this, LineChartHbActivity.class);
                 intent.putExtra("entId", qyid);
-                intent.putExtra("pointId", jumpData.equipmentName.contains("水")?"1":"2");
+                intent.putExtra("pointId", pkid);
                 intent.putExtra("isTime", timeType>1?"2":"1");
+                intent.putExtra("type", jumpData.equipmentName.contains("水")?"1":"2");
                 startActivity(intent);
             }
         });

@@ -75,26 +75,30 @@ public class MachineCheckIdActivity extends BaseActivity {
 
 
     public void showData(MachineCheckId item) {
-        String str1 = item.equipmentName == null ? "" : item.equipmentName;
-        String str2 = item.equipmentAddress == null ? "" : item.equipmentAddress;
-        String str3 = item.examinePerson == null ? "" : item.examinePerson;
-        String str4 = item.phone == null ? "" : item.phone;
-        String str5 = item.examineTime == null ? "" : item.examineTime;
-        String str6 = item.enterpriseName == null ? "" : item.enterpriseName;
-        String str7 = item.enterpriseContactPerson == null ? "" : item.enterpriseContactPerson;
-        String str8 = item.enterpriseContactPhone == null ? "" : item.enterpriseContactPhone;
-        String str9 = item.isException.equals("1")? "是" : "否";
-        String str10 = item.description == null ? "" : item.description;
-        tv_sbmc.setText("设备名称："+str1);
-        tv_sbdz.setText("设备地址："+str2);
-        tv_xjry.setText("巡检人员："+str3);
-        tv_xjry_lxdh.setText("联系电话："+str4);
-        tv_xjrq.setText("巡检日期："+str5);
-        tv_xjqy.setText("巡检企业："+str6);
-        tv_qylxr.setText("企业联系人："+str7);
-        tv_qylxr_lxdh.setText("联系电话："+str8);
-        tv_yqjzsfzc.setText("仪器校准是否正常："+str9);
-        tv_ycms.setText("异常描述："+str10);
+        try {
+            String str1 = item.equipmentName == null ? "" : item.equipmentName;
+            String str2 = item.equipmentAddress == null ? "" : item.equipmentAddress;
+            String str3 = item.examinePerson == null ? "" : item.examinePerson;
+            String str4 = item.phone == null ? "" : item.phone;
+            String str5 = item.examineTime == null ? "" : item.examineTime;
+            String str6 = item.enterpriseName == null ? "" : item.enterpriseName;
+            String str7 = item.enterpriseContactPerson == null ? "" : item.enterpriseContactPerson;
+            String str8 = item.enterpriseContactPhone == null ? "" : item.enterpriseContactPhone;
+            String str9 = item.isException.equals("1")? "是" : "否";
+            String str10 = item.description == null ? "" : item.description;
+            tv_sbmc.setText("设备名称："+str1);
+            tv_sbdz.setText("设备地址："+str2);
+            tv_xjry.setText("巡检人员："+str3);
+            tv_xjry_lxdh.setText("联系电话："+str4);
+            tv_xjrq.setText("巡检日期："+str5);
+            tv_xjqy.setText("巡检企业："+str6);
+            tv_qylxr.setText("企业联系人："+str7);
+            tv_qylxr_lxdh.setText("联系电话："+str8);
+            tv_yqjzsfzc.setText("仪器校准是否正常："+str9);
+            tv_ycms.setText("异常描述："+str10);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         try {
             String[] image = new String[]{};
             image = item.image.split(",");

@@ -13,10 +13,13 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.EPAlarmEvent;
@@ -68,11 +71,13 @@ public class TabAlarmCheckFragment extends BaseFragment implements HorizontalPro
     private Map<Integer, Integer> mapShow;
     private String type = "2";
     private Intent intent;
-
-    @OnClick({R.id.rl_hbfx, R.id.ll_wxyfx})
+    @BindView(R.id.pieChart1)
+    PieChart pieChart;
+    @OnClick({R.id.rl_hbfx,R.id.pieChart1, R.id.ll_wxyfx})
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.rl_hbfx:
+            case R.id.pieChart1:
                 intent = new Intent(getActivity(), PieChartEPDataActivity.class);
                 intent.putExtra("type", Integer.valueOf(type));
                 startActivity(intent);
@@ -126,6 +131,18 @@ public class TabAlarmCheckFragment extends BaseFragment implements HorizontalPro
         hp_gb.setProgressViewUpdateListener(this);
         hp_ddb.setProgressViewUpdateListener(this);
         hp_db.setProgressViewUpdateListener(this);
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry entry, Highlight highlight) {
+                intent = new Intent(getActivity(), PieChartEPDataActivity.class);
+                intent.putExtra("type", Integer.valueOf(type));
+                startActivity(intent);
+            }
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
         initWxyData();
         PieCountHb();
         getWxyTj();
@@ -164,7 +181,7 @@ public class TabAlarmCheckFragment extends BaseFragment implements HorizontalPro
         ds1.setColors(PIECOLORS);
         ds1.setSliceSpace(2f);
         ds1.setValueTextColor(Color.WHITE);
-        ds1.setValueTextSize(4f);
+        ds1.setValueTextSize(2f);
         PieData d = new PieData(ds1);
         d.setValueTypeface(tf);
         return d;

@@ -16,7 +16,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.hl.indpark.uis.activities.LineChartHbActivity;
-import com.hl.indpark.utils.MyMarkerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,13 +80,13 @@ public class LineChartThree {
         XAxis xAxis = chart.getXAxis();
         xAxis.setLabelRotationAngle(45);
         //设置X轴值为字符串
-//        xAxis.setValueFormatter(new IAxisValueFormatter() {
-//            @Override
-//            public String getFormattedValue(float value, AxisBase axis) {
-//                int IValue = (int) value;
-//                return map.get(IValue);
-//            }
-//        });
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                int IValue = (int) value;
+                return LineChartHbActivity.mapCodTime.get(IValue);
+            }
+        });
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         // 前面xAxis.setEnabled(false);则下面绘制的Grid不会有"竖的线"（与X轴有关）
         // 上面第一行代码设置了false,所以下面第一行即使设置为true也不会绘制AxisLine
@@ -117,28 +116,28 @@ public class LineChartThree {
         chart.invalidate();
     }
 
-    public ArrayList<ILineDataSet> getDataSet() {
+    public List<ILineDataSet> getDataSet() {
         ArrayList<ILineDataSet> dataSets = null;
         ArrayList<Entry> valueSet1 = new ArrayList<Entry>();
         for (int i = 0; i < LineChartHbActivity.mapZl.size(); i++) {
-            Entry v1e1 = new Entry(i, LineChartHbActivity.mapZl.get(i)); // Jan
+            Entry v1e1 = new Entry(i, LineChartHbActivity.mapZl.get(i));
             valueSet1.add(v1e1);
         }
         ArrayList<Entry> valueSet2 = new ArrayList<Entry>();
         for (int i = 0; i < LineChartHbActivity.mapAd.size(); i++) {
-            Entry v1e1 = new Entry(i, LineChartHbActivity.mapAd.get(i)); // Jan
+            Entry v1e1 = new Entry(i, LineChartHbActivity.mapAd.get(i));
             valueSet2.add(v1e1);
         }
         ArrayList<Entry> valueSet3 = new ArrayList<Entry>();
         for (int i = 0; i < LineChartHbActivity.mapCod.size(); i++) {
-            Entry v1e1 = new Entry(i, LineChartHbActivity.mapCod.get(i)); // Jan
+            Entry v1e1 = new Entry(i, LineChartHbActivity.mapCod.get(i));
             valueSet3.add(v1e1);
         }
 
         LineDataSet barDataSet1 = new LineDataSet(valueSet1, "数据1注解");
-        barDataSet1.setColor(Color.parseColor("#45a2ff"));
+        barDataSet1.setColor(Color.parseColor("#95F204"));
         //设置外圈颜色
-        barDataSet1.setCircleColor(Color.parseColor("#45a2ff"));
+        barDataSet1.setCircleColor(Color.parseColor("#95F204"));
         //圈大小
         barDataSet1.setCircleSize(3);
         //设置内圈颜色
@@ -146,23 +145,23 @@ public class LineChartThree {
 
 
         LineDataSet barDataSet2 = new LineDataSet(valueSet2, "数据2注解");
-        barDataSet2.setColor(Color.parseColor("#22cdc6"));
+        barDataSet2.setColor(Color.parseColor("#F59A23"));
         //设置外圈颜色
-        barDataSet2.setCircleColor(Color.parseColor("#22cdc6"));
+        barDataSet2.setCircleColor(Color.parseColor("#F59A23"));
         //圈大小
         barDataSet2.setCircleSize(3);
 
-        LineDataSet barDataSet3 = new LineDataSet(valueSet2, "数据2注解");
-        barDataSet3.setColor(Color.parseColor("#22cdc6"));
+        LineDataSet barDataSet3 = new LineDataSet(valueSet3, "数据3注解");
+        barDataSet3.setColor(Color.parseColor("#0000FF"));
         //设置外圈颜色
-        barDataSet3.setCircleColor(Color.parseColor("#22cdc6"));
+        barDataSet3.setCircleColor(Color.parseColor("#0000FF"));
         //圈大小
         barDataSet3.setCircleSize(3);
 
 
         barDataSet1.setDrawFilled(true);
         barDataSet2.setDrawFilled(true);
-        barDataSet3.setDrawFilled(true);
+        barDataSet3.setDrawFilled(false);
 
         //设置内圈颜色
         barDataSet1.setCircleColorHole(Color.parseColor("#ffffff"));
@@ -174,9 +173,10 @@ public class LineChartThree {
 //        barDataSet2.setFillColor(Color.parseColor(underLineColor2));
 
         dataSets = new ArrayList<ILineDataSet>();
+        dataSets.add(barDataSet3);
         dataSets.add(barDataSet1);
         dataSets.add(barDataSet2);
-        dataSets.add(barDataSet3);
+
         return dataSets;
     }
 }

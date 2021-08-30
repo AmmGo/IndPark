@@ -56,9 +56,9 @@ import retrofit2.http.Query;
 public interface Api {
     /**
      * java测试*/
-    String BASE_URL = "http://192.168.119.224:11035/";
-        String BASE_JAVA = "";
-        String BASE_URL_IMG = "http://appimg.hlx.com/";
+//    String BASE_URL = "http://192.168.119.224:11035/";
+//        String BASE_JAVA = "";
+//        String BASE_URL_IMG = "http://appimg.hlx.com/";
     /**
      * 内网服务1
      */
@@ -68,9 +68,9 @@ public interface Api {
     /**
      * 内网服务2
      */
-//    String BASE_URL = "http://192.168.119.249:11035/";
-//    String BASE_JAVA = "";
-//    String BASE_URL_IMG = "http://appimg.hlx.com/";
+    String BASE_URL = "http://192.168.119.249:11035/";
+    String BASE_JAVA = "";
+    String BASE_URL_IMG = "http://appimg.hlx.com/";
     /**
      * 外网测试
      */
@@ -282,12 +282,9 @@ public interface Api {
     LiveData<Resource<Response<List<LineChartWxy>>>> getLineChartWxyTj(@Query("labelId") String labelId, @Query("type") int type);
 
     /*=======环保数据折线图======*/
-    @POST(BASE_JAVA + "/environmentStatistics/analysisTrendChartEnvironment")
-    LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHb(@Query("enterpriseId") String enterpriseId, @Query("pointId") String pointId, @Query("timeType") String timeType);
+    @GET(BASE_JAVA + "/environmentStatistics/analysisTrendChartEnvironment")
+    LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHb(@Query("enterpriseId") String enterpriseId, @Query("pointId") String pointId, @Query("timeType") String timeType, @Query("type") String type);
 
-    /*=======环保数据折线图======*/
-    @POST(BASE_JAVA + "/environmentStatistics/analysisTrendChartEnvironment")
-    LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHbPost(@Body HashMap<String, String> map);
 
     /*=======巡检人员======*/
     @GET(BASE_JAVA + "/equipmentexaminedetails/enterpriseedetails")

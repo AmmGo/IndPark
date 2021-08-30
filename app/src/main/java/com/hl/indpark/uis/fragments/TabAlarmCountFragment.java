@@ -14,10 +14,13 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.EPAlarmEvent;
@@ -63,16 +66,19 @@ public class TabAlarmCountFragment extends BaseFragment implements HorizontalPro
     public static final int[] PIECOLORS = {
             Color.rgb(54, 136, 255), Color.rgb(244, 177, 136)
     };
+    @BindView(R.id.pieChart1)
+    PieChart pieChart;
     private PieChart chart;
     private Typeface tf;
     private Map<Integer, Float> map;
     private Map<Integer, Integer> mapShow;
     private Intent intent;
 
-    @OnClick({R.id.rl_hbtj, R.id.ll_wxytj})
+    @OnClick({R.id.rl_hbtj,R.id.pieChart1, R.id.ll_wxytj})
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.rl_hbtj:
+            case R.id.pieChart1:
                 intent = new Intent(getActivity(), PieChartEPDataActivity.class);
                 intent.putExtra("type", Util.hbDay);
                 startActivity(intent);
@@ -100,6 +106,19 @@ public class TabAlarmCountFragment extends BaseFragment implements HorizontalPro
         initWxyData();
         PieCountHb();
         getWxyTj();
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry entry, Highlight highlight) {
+                intent = new Intent(getActivity(), PieChartEPDataActivity.class);
+                intent.putExtra("type", Util.hbDay);
+                startActivity(intent);
+            }
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
     }
     public void initWxyData() {
         map = new HashMap<>();
