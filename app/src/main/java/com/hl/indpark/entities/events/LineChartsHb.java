@@ -37,6 +37,6 @@ public class LineChartsHb {
         public static class ValueBean {
                 public String monitorTime;
                 public String pollutantCode;
-                public String avgStrength;
+                public String avgStrength = "0";
         }
 }

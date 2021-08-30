@@ -2,6 +2,7 @@ package com.hl.indpark.uis.fragments;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -11,6 +12,9 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -28,6 +32,7 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.PieChartEPDataActivity;
 import com.hl.indpark.uis.activities.PieChartSH1DataActivity;
+import com.hl.indpark.utils.DensityUtils;
 import com.hl.indpark.utils.Util;
 import com.xuexiang.xui.widget.progress.HorizontalProgressView;
 
@@ -143,6 +148,10 @@ public class TabAlarmCheckFragment extends BaseFragment implements HorizontalPro
 
             }
         });
+        pieChart.setNoDataText("暂无数据");
+        pieChart.setNoDataTextColor(ContextCompat.getColor(getActivity(), R.color.third_text));
+        Paint paint = pieChart.getPaint(Chart.PAINT_INFO);
+        paint.setTextSize(DensityUtils.dp2px(getActivity(), 14));
         initWxyData();
         PieCountHb();
         getWxyTj();

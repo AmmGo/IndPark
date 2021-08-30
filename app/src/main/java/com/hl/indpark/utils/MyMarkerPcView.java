@@ -1,6 +1,7 @@
 package com.hl.indpark.utils;
 
 import android.content.Context;
+import android.text.Html;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
@@ -8,6 +9,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.hl.indpark.R;
+import com.hl.indpark.uis.activities.LineChartHbActivity;
+import com.hl.indpark.uis.activities.LineChartHbPcActivity;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -22,18 +25,28 @@ public class MyMarkerPcView extends MarkerView {
     private TextView tvContent;
     private DecimalFormat format = new DecimalFormat("##0");
 
-    public MyMarkerPcView(Context context, Map<Integer, Float> map1,Map<Integer, Float> map2,Map<Integer, Float> map3) {
+    public MyMarkerPcView(Context context) {
         super(context, R.layout.layout_markerview);//这个布局自己定义
-        this.map1 = map1;
-        this.map2 = map2;
-        this.map3 = map3;
+        this.map1 = LineChartHbPcActivity.mapAd;
+        this.map2 = LineChartHbPcActivity.mapZl;
+        this.map3 = LineChartHbPcActivity.mapCod;
         tvContent = (TextView) findViewById(R.id.tvContent);
     }
 
     //显示的内容
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        tvContent.setText(String.valueOf(map1.get((int)e.getY()))+String.valueOf(map2.get((int)e.getY()))+String.valueOf(map3.get((int)e.getY())));
+        StringBuffer sb = new StringBuffer();
+        if (map1.size() > 0) {
+            sb.append(LineChartHbPcActivity.KEY_NAME1).append(":").append(""+map1.get((int) e.getX())).append("<br>");
+        }
+        if (map2.size() > 0) {
+            sb.append(LineChartHbPcActivity.KEY_NAME2).append(":").append(""+map2.get((int) e.getX())).append("<br>");
+        }
+        if (map3.size() > 0) {
+            sb.append(LineChartHbPcActivity.KEY_NAME3).append(":").append(""+map3.get((int) e.getX()));
+        }
+        tvContent.setText(Html.fromHtml(sb.toString()));
         super.refreshContent(e, highlight);
     }
 

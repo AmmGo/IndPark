@@ -1,8 +1,12 @@
 package com.hl.indpark.uis.activities;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
+
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
@@ -10,6 +14,7 @@ import com.hl.indpark.entities.events.LineChartDouble;
 import com.hl.indpark.entities.events.LineChartWxy;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.utils.DensityUtils;
 import com.hl.indpark.utils.Util;
 
 import net.arvin.baselib.base.BaseActivity;
@@ -54,6 +59,19 @@ public class LineChartWxyTjActivity extends BaseActivity {
         mLineChart1 = findViewById(R.id.chart_1);
         mLineChart7 = findViewById(R.id.chart_7);
         mLineChart30 = findViewById(R.id.chart_30);
+        mLineChart1.setNoDataText("暂无数据");
+        mLineChart1.setNoDataTextColor(ContextCompat.getColor(this, R.color.third_text));
+        Paint paint = mLineChart1.getPaint(Chart.PAINT_INFO);
+        paint.setTextSize(DensityUtils.dp2px(this, 14));
+
+        mLineChart7.setNoDataText("暂无数据");
+        mLineChart7.setNoDataTextColor(ContextCompat.getColor(this, R.color.third_text));
+        Paint paint7 = mLineChart7.getPaint(Chart.PAINT_INFO);
+        paint7.setTextSize(DensityUtils.dp2px(this, 14));
+        mLineChart30.setNoDataText("暂无数据");
+        mLineChart30.setNoDataTextColor(ContextCompat.getColor(this, R.color.third_text));
+        Paint paint30 = mLineChart30.getPaint(Chart.PAINT_INFO);
+        paint30.setTextSize(DensityUtils.dp2px(this, 14));
     }
 
     public void getLineChart1(String labelId) {

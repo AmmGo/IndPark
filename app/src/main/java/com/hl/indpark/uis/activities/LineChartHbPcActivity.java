@@ -1,9 +1,13 @@
 package com.hl.indpark.uis.activities;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
@@ -11,6 +15,8 @@ import com.hl.indpark.entities.events.LineChartThreePc;
 import com.hl.indpark.entities.events.LineChartsHb;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.utils.DensityUtils;
+import com.hl.indpark.utils.LineChatUtils;
 import com.hl.indpark.utils.TimeUtils;
 
 import net.arvin.baselib.base.BaseActivity;
@@ -37,6 +43,7 @@ public class LineChartHbPcActivity extends BaseActivity {
     private String pointIdString;
     private LineChartThreePc lineChartThree;
     private TextView textView;
+    private String value;
 
     @Override
     protected int getContentView() {
@@ -45,6 +52,7 @@ public class LineChartHbPcActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        value = "";
         mapCod = new HashMap<>();
         mapZl = new HashMap<>();
         mapAd = new HashMap<>();
@@ -72,16 +80,32 @@ public class LineChartHbPcActivity extends BaseActivity {
         String startDate30 = TimeUtils.dateToString(TimeUtils.NumberOfDaysStartUnixTime(30));
         String endDate1 = TimeUtils.dateToString(System.currentTimeMillis());
 
-        entId = "640500000076";
-        pointId = "2";
-        startDate1 = "2021-06-01 00:00:00";
-        startDate7 = "2021-06-01 00:00:00";
-        startDate30 = "2021-06-01 00:00:00";
-        endDate1 = "2021-09-01 00:00:00";
+//        entId = "640500000076";
+//        pointId = "2";
+//        startDate1 = "2021-06-01 00:00:00";
+//        startDate7 = "2021-06-01 00:00:00";
+//        startDate30 = "2021-06-01 00:00:00";
+//        endDate1 = "2021-09-01 00:00:00";
         textView = findViewById(R.id.tv_sssj);
         mLineChart1 = findViewById(R.id.chart_1);
         mLineChart7 = findViewById(R.id.chart_7);
         mLineChart30 = findViewById(R.id.chart_30);
+
+        mLineChart1.setNoDataText("暂无数据");
+        mLineChart1.setNoDataTextColor(ContextCompat.getColor(this, R.color.third_text));
+        Paint paint = mLineChart1.getPaint(Chart.PAINT_INFO);
+        paint.setTextSize(DensityUtils.dp2px(this, 14));
+
+        mLineChart7.setNoDataText("暂无数据");
+        mLineChart7.setNoDataTextColor(ContextCompat.getColor(this, R.color.third_text));
+        Paint paint7 = mLineChart7.getPaint(Chart.PAINT_INFO);
+        paint7.setTextSize(DensityUtils.dp2px(this, 14));
+        mLineChart30.setNoDataText("暂无数据");
+        mLineChart30.setNoDataTextColor(ContextCompat.getColor(this, R.color.third_text));
+        Paint paint30 = mLineChart30.getPaint(Chart.PAINT_INFO);
+        paint30.setTextSize(DensityUtils.dp2px(this, 14));
+
+
         if (timeType.equals("1")) {
             getHb1(entId, pointId, startDate1, endDate1);
             getHb7(entId, pointId, startDate7, endDate1);
@@ -142,7 +166,8 @@ public class LineChartHbPcActivity extends BaseActivity {
                 chartsHbs = response.getData();
                 try {
                     if (chartsHbs.size() > 0) {
-                        update7(chartsHbs);
+                        update(chartsHbs);
+                        lineChartThree = new LineChartThreePc(mLineChart7, LineChartHbPcActivity.this);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -207,70 +232,60 @@ public class LineChartHbPcActivity extends BaseActivity {
     public static List<LineChartsHb.ValueBean> listZl = new ArrayList<>();
     public static List<LineChartsHb.ValueBean> listAd = new ArrayList<>();
     public static List<LineChartsHb.ValueBean> listCod = new ArrayList<>();
+    public static String KEY_NAME1 = "";
+    public static String KEY_NAME2 = "";
+    public static String KEY_NAME3 = "";
 
-    //        map.put("w21003", "氨氮");
-//        map.put("w21011", "总磷");
-//        map.put("w01018", "化学需氧量(COD)");
     public void update(List<LineChartsHb> chartsHbs) {
         for (int i = 0; i < chartsHbs.size(); i++) {
-            if (chartsHbs.get(i).key.equals("氨氮")) {
+            if (chartsHbs.get(i).key.equals(LineChatUtils.AD)) {
+                KEY_NAME1 = LineChatUtils.AD;
                 listAd = chartsHbs.get(i).value;
-            } else if (chartsHbs.get(i).key.equals("总氮")) {
+            } else if (chartsHbs.get(i).key.equals(LineChatUtils.ZD)) {
+                KEY_NAME2 = LineChatUtils.ZD;
                 listZl = chartsHbs.get(i).value;
-            } else if (chartsHbs.get(i).key.equals("化学需氧量(COD)")) {
+            } else if (chartsHbs.get(i).key.equals(LineChatUtils.COD)) {
+                KEY_NAME3 = LineChatUtils.COD;
+                listCod = chartsHbs.get(i).value;
+            }else if (chartsHbs.get(i).key.equals(LineChatUtils.YC)){
+                KEY_NAME1 = LineChatUtils.YC;
+                listAd = chartsHbs.get(i).value;
+            }else if (chartsHbs.get(i).key.equals(LineChatUtils.EYHL)){
+                KEY_NAME2 = LineChatUtils.EYHL;
+                listZl = chartsHbs.get(i).value;
+            }else if (chartsHbs.get(i).key.equals(LineChatUtils.DYHW)){
+                KEY_NAME3 = LineChatUtils.DYHW;
                 listCod = chartsHbs.get(i).value;
             }
         }
         try {
             for (int i = 0; i < listZl.size(); i++) {
-                String value = listZl.get(i).avgStrength == null ? "0" : listZl.get(i).avgStrength;
+                value = listZl.get(i).avgStrength;
+                if (value == null || value.equals("")) {
+                    value = "0";
+                }
                 mapZl.put(i, Float.valueOf(value));
                 mapZlTime.put(i, listZl.get(i).monitorTime);
             }
             for (int i = 0; i < listAd.size(); i++) {
-                String value = listAd.get(i).avgStrength == null ? "0" : listAd.get(i).avgStrength;
+                value = listAd.get(i).avgStrength;
+                if (value == null || value.equals("")) {
+                    value = "0";
+                }
                 mapAd.put(i, Float.valueOf(value));
                 mapAdTime.put(i, listAd.get(i).monitorTime);
             }
             for (int i = 0; i < listCod.size(); i++) {
-                String value = listCod.get(i).avgStrength == null ? "0" : listCod.get(i).avgStrength;
+                value = listCod.get(i).avgStrength;
+                if (value == null || value.equals("")) {
+                    value = "0";
+                }
                 mapCod.put(i, Float.valueOf(value));
                 mapCodTime.put(i, listCod.get(i).monitorTime);
             }
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void update7(List<LineChartsHb> chartsHbs) {
-        for (int i = 0; i < chartsHbs.size(); i++) {
-            if (chartsHbs.get(i).key.equals("氨氮")) {
-                listAd = chartsHbs.get(i).value;
-            } else if (chartsHbs.get(i).key.equals("总氮")) {
-                listZl = chartsHbs.get(i).value;
-            } else if (chartsHbs.get(i).key.equals("化学需氧量(COD)")) {
-                listCod = chartsHbs.get(i).value;
-            }
-        }
-        try {
-            for (int i = 0; i < listZl.size(); i++) {
-                String value = listZl.get(i).avgStrength == null ? "0" : listZl.get(i).avgStrength;
-                mapZl.put(i, Float.valueOf(value));
-                mapZlTime.put(i, listZl.get(i).monitorTime);
-            }
-            for (int i = 0; i < listAd.size(); i++) {
-                String value = listAd.get(i).avgStrength == null ? "0" : listAd.get(i).avgStrength;
-                mapAd.put(i, Float.valueOf(value));
-                mapAdTime.put(i, listAd.get(i).monitorTime);
-            }
-            for (int i = 0; i < listCod.size(); i++) {
-                String value = listCod.get(i).avgStrength == null ? "0" : listCod.get(i).avgStrength;
-                mapCod.put(i, Float.valueOf(value));
-                mapCodTime.put(i, listCod.get(i).monitorTime);
-            }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        lineChartThree = new LineChartThreePc(mLineChart7, LineChartHbPcActivity.this);
-    }
 }

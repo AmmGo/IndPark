@@ -1,6 +1,7 @@
 package com.hl.indpark.utils;
 
 import android.content.Context;
+import android.text.Html;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
@@ -8,6 +9,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.hl.indpark.R;
+import com.hl.indpark.uis.activities.LineChartHbPcActivity;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -29,7 +31,12 @@ public class MyMarkerView extends MarkerView {
     //显示的内容
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        tvContent.setText(String.valueOf(map.get((int)e.getY())));
+        StringBuffer sb = new StringBuffer();
+        sb.append(""+e.getY());
+        if (map.size() > 0) {
+            sb.append(map.get((int)e.getY())).append("<br>");
+        }
+        tvContent.setText(Html.fromHtml(sb.toString()));
         super.refreshContent(e, highlight);
     }
 

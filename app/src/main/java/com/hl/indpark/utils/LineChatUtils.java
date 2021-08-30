@@ -10,6 +10,12 @@ public class LineChatUtils {
 
 
     public static Map<String, String> map = new HashMap<>();
+    public static String AD = "氨氮";
+    public static String ZD = "总氮";
+    public static String COD = "化学需氧量(COD)";
+    public static String YC = "烟尘";
+    public static String EYHL = "二氧化硫";
+    public static String DYHW = "氮氧化物";
 
     public static Map<String, String> getHbWrw() {
         map.put("w21003", "氨氮");

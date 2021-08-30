@@ -26,8 +26,7 @@ public class LineChartThreePc {
         LineData lineData = new LineData(getDataSet());
         lineData.setDrawValues(false);
         //折线图点的标记
-        MyMarkerPcView mv = new MyMarkerPcView(activity,LineChartHbPcActivity.mapZl,LineChartHbPcActivity.mapAd,LineChartHbPcActivity.mapCod);
-        chart.setMarker(mv);
+
         chart.setNoDataText("暂无数据");
         // 数据描述
         chart.getDescription().setEnabled(true);
@@ -112,6 +111,8 @@ public class LineChartThreePc {
 //        leftAxis.setAxisLineWidth(5f);
         // 顶部居最大值站距离占比
         leftAxis.setSpaceTop(20f);
+        MyMarkerPcView mv = new MyMarkerPcView(activity);
+        chart.setMarker(mv);
         // 设置数据
         chart.setData(lineData);
         chart.invalidate();
