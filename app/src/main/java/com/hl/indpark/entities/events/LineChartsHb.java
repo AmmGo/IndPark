@@ -1,5 +1,7 @@
 package com.hl.indpark.entities.events;
 
+import java.util.List;
+
 public class LineChartsHb {
         /**
          * availableStatus : 0
@@ -30,4 +32,11 @@ public class LineChartsHb {
         public String monitorTime;
         public String pollutantCode;
         public String realTimeData;
+        public String key;
+        public List<ValueBean> value;
+        public static class ValueBean {
+                public String monitorTime;
+                public String pollutantCode;
+                public String avgStrength;
+        }
 }

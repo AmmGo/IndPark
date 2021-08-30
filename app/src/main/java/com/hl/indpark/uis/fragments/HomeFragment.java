@@ -115,7 +115,6 @@ public class HomeFragment extends BaseFragment {
                 break;
             case R.id.ll_home_jc:
                 startActivity(new Intent(getActivity(), OnlineMonitorActivity.class));
-
                 break;
         }
     }

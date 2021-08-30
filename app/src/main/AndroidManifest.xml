@@ -26,6 +26,12 @@
             android:name=".uis.activities.LineChartHbActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".uis.activities.LineChartHbDataActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".uis.activities.LineChartHbPcActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".uis.activities.LineChartWxyTjActivity"
             android:screenOrientation="portrait" />
         <activity

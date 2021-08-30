@@ -283,7 +283,10 @@ public interface Api {
 
     /*=======环保数据折线图======*/
     @GET(BASE_JAVA + "/environmentStatistics/analysisTrendChartEnvironment")
-    LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHb(@Query("enterpriseId") String enterpriseId, @Query("pointId") String pointId, @Query("timeType") String timeType, @Query("type") String type);
+    LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHb(@Query("enterpriseId") String enterpriseId, @Query("pointId") String pointId, @Query("timeType") String timeType, @Query("type") String type);    /*=======环保数据折线图======*/
+
+    @GET(BASE_JAVA + "/environmentStatistics/queryMonitoringDataByEnterpriseIdAndPointId")
+    LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHbPc(@Query("enterpriseId") String enterpriseId, @Query("pointId") String pointId, @Query("startDate") String startDate, @Query("endDate") String endDate);
 
 
     /*=======巡检人员======*/

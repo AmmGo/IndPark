@@ -239,7 +239,7 @@ public class PieChartEPDataActivity extends BaseActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 EntSEPEvent.RecordsBean jumpData = (EntSEPEvent.RecordsBean) adapter.getItem(position);
-                Intent intent = new Intent(PieChartEPDataActivity.this, LineChartHbActivity.class);
+                Intent intent = new Intent(PieChartEPDataActivity.this, LineChartHbPcActivity.class);
                 intent.putExtra("entId", qyid);
                 intent.putExtra("pointId", pkid);
                 intent.putExtra("isTime", timeType>1?"2":"1");

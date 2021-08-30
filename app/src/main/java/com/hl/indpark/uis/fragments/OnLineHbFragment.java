@@ -24,7 +24,7 @@ import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.entities.events.TypeEp;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
-import com.hl.indpark.uis.activities.LineChartHbActivity;
+import com.hl.indpark.uis.activities.LineChartHbPcActivity;
 import com.hl.indpark.uis.adapters.EntSEPAdapter;
 import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.EntDialog;
@@ -232,7 +232,7 @@ public class OnLineHbFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 EntSEPEvent.RecordsBean jumpData = (EntSEPEvent.RecordsBean) adapter.getItem(position);
-                Intent intent = new Intent(getActivity(), LineChartHbActivity.class);
+                Intent intent = new Intent(getActivity(), LineChartHbPcActivity.class);
                 intent.putExtra("entId", qyid);
                 intent.putExtra("pointId", pkid);
                 intent.putExtra("isTime", timeType>1?"2":"1");

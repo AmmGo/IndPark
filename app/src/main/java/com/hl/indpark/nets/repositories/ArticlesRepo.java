@@ -230,9 +230,14 @@ public class ArticlesRepo {
         return Net.api().getLineChartWxyTj(labelId, type);
     }
 
-    public static LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHb(String enterpriseId, String pointId, String timeType,String type) {
-        return Net.api().getLineChartHb(enterpriseId, pointId, timeType,type);
+    public static LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHb(String enterpriseId, String pointId, String timeType, String type) {
+        return Net.api().getLineChartHb(enterpriseId, pointId, timeType, type);
     }
+
+    public static LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHbPc(String enterpriseId, String pointId, String timeType, String type) {
+        return Net.api().getLineChartHbPc(enterpriseId, pointId, timeType, type);
+    }
+
     public static LiveData<Resource<Response<List<PhoneEvent>>>> getXjryCheck() {
         return Net.api().getXjryCheck();
     }
