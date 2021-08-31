@@ -9,7 +9,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.hl.indpark.R;
-import com.hl.indpark.uis.activities.LineChartHbPcActivity;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -32,9 +31,9 @@ public class MyMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
         StringBuffer sb = new StringBuffer();
-        sb.append(""+e.getY());
+        sb.append(""+e.getY()).append("<br>");
         if (map.size() > 0) {
-            sb.append(map.get((int)e.getY())).append("<br>");
+            sb.append(map.get((int)e.getX()));
         }
         tvContent.setText(Html.fromHtml(sb.toString()));
         super.refreshContent(e, highlight);

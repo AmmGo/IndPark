@@ -19,7 +19,9 @@ import com.hl.indpark.uis.activities.LineChartHbPcActivity;
 import com.hl.indpark.utils.MyMarkerPcView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LineChartThreePc {
     public LineChartThreePc(LineChart chart, Activity activity) {
@@ -84,7 +86,15 @@ public class LineChartThreePc {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 int IValue = (int) value;
-                return LineChartHbPcActivity.mapCodTime.get(IValue);
+                Map<Integer, String> map = new HashMap<>();
+                if (LineChartHbPcActivity.mapCodTime.size() > 0) {
+                    map = LineChartHbPcActivity.mapCodTime;
+                } else if (LineChartHbPcActivity.mapAdTime.size() > 0) {
+                    map = LineChartHbPcActivity.mapAdTime;
+                } else if (LineChartHbPcActivity.mapZlTime.size() > 0) {
+                    map = LineChartHbPcActivity.mapZlTime;
+                }
+                return map.get(IValue);
             }
         });
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -175,10 +185,15 @@ public class LineChartThreePc {
 //        barDataSet2.setFillColor(Color.parseColor(underLineColor2));
 
         dataSets = new ArrayList<ILineDataSet>();
-        dataSets.add(barDataSet3);
-        dataSets.add(barDataSet1);
-        dataSets.add(barDataSet2);
-
+        if (LineChartHbPcActivity.mapCodTime.size() > 0) {
+            dataSets.add(barDataSet3);
+        }
+        if (LineChartHbPcActivity.mapAdTime.size() > 0) {
+            dataSets.add(barDataSet2);
+        }
+        if (LineChartHbPcActivity.mapZlTime.size() > 0) {
+            dataSets.add(barDataSet1);
+        }
         return dataSets;
     }
 }
