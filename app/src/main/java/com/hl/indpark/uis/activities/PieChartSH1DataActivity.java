@@ -236,6 +236,9 @@ public class PieChartSH1DataActivity extends BaseActivity {
                 EntSHSEvent.RecordsBean jumpData = (EntSHSEvent.RecordsBean) adapter.getItem(position);
                 Intent intent = new Intent(PieChartSH1DataActivity.this, LineChartWxyFxActivity.class);
                 intent.putExtra("labelId", jumpData.labelId);
+                intent.putExtra("dw_str", jumpData.dataType);
+                intent.putExtra("tv_pk_name", jumpData.pointName);
+                intent.putExtra("dw_name", jumpData.dataType);
                 startActivity(intent);
             }
         });

@@ -2,18 +2,15 @@ package com.hl.indpark.uis.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -27,7 +24,6 @@ import com.hl.indpark.entities.events.WxyEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.LineChartWxyTjActivity;
-import com.hl.indpark.uis.activities.PieChartSHDataActivity;
 import com.hl.indpark.uis.adapters.EntSHSAdapter;
 import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.EntDialog;
@@ -36,7 +32,6 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import net.arvin.baselib.base.BaseFragment;
-import net.arvin.baselib.widgets.TitleBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -312,6 +307,15 @@ public class OnLineWxyFragment extends BaseFragment {
                 EntSHSEvent.RecordsBean jumpData = (EntSHSEvent.RecordsBean) adapter.getItem(position);
                 Intent intent = new Intent(getActivity(), LineChartWxyTjActivity.class);
                 intent.putExtra("labelId", jumpData.tagId);
+                String dw_str = jumpData.value;
+                if (dw_str!=null&&!dw_str.equals("")){
+                    dw_str = dw_str.replace(".","").replaceAll("[\\d]+","");
+                }else{
+                    dw_str = "";
+                }
+                intent.putExtra("dw_str", dw_str);
+                intent.putExtra("tv_pk_name", jumpData.pointName);
+                intent.putExtra("dw_name", jumpData.dataType);
                 startActivity(intent);
             }
         });

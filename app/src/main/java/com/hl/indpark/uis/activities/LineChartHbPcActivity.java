@@ -43,7 +43,9 @@ public class LineChartHbPcActivity extends BaseActivity {
     int DDType = 2;
     int HHType = 1;
     private String pointIdString;
-    private LineChartThreePc lineChartThree;
+    private LineChartThreePc lineChartThree1;
+    private LineChartThreePc lineChartThree7;
+    private LineChartThreePc lineChartThree30;
     private TextView textView;
     private String value;
     @BindView(R.id.tv_ad)
@@ -150,10 +152,10 @@ public class LineChartHbPcActivity extends BaseActivity {
                 chartsHbs = response.getData();
                 try {
                     if (chartsHbs.size() > 0) {
-                        if (chartsHbs.get(0).value.get(0).avgStrength != null && !chartsHbs.get(0).value.get(0).avgStrength.equals("")) {
+//                        if (chartsHbs.get(0).value.get(0).avgStrength != null && !chartsHbs.get(0).value.get(0).avgStrength.equals("")) {
                             update(chartsHbs);
-                            lineChartThree = new LineChartThreePc(mLineChart1, LineChartHbPcActivity.this);
-                        }
+                            lineChartThree1 = new LineChartThreePc(mLineChart1, LineChartHbPcActivity.this);
+//                        }
 
                     }
                 } catch (Exception e) {
@@ -186,10 +188,10 @@ public class LineChartHbPcActivity extends BaseActivity {
                 chartsHbs = response.getData();
                 try {
                     if (chartsHbs.size() > 0) {
-                        if (chartsHbs.get(0).value.get(0).avgStrength != null && !chartsHbs.get(0).value.get(0).avgStrength.equals("")) {
+//                        if (chartsHbs.get(0).value.get(0).avgStrength != null && !chartsHbs.get(0).value.get(0).avgStrength.equals("")) {
                             update(chartsHbs);
-                            lineChartThree = new LineChartThreePc(mLineChart7, LineChartHbPcActivity.this);
-                        }
+                            lineChartThree7 = new LineChartThreePc(mLineChart7, LineChartHbPcActivity.this);
+//                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -221,10 +223,10 @@ public class LineChartHbPcActivity extends BaseActivity {
                     List<LineChartsHb> chartsHbs = new ArrayList<>();
                     chartsHbs = response.getData();
                     if (chartsHbs.size() > 0) {
-                        if (chartsHbs.get(0).value.get(0).avgStrength != null && !chartsHbs.get(0).value.get(0).avgStrength.equals("")) {
+//                        if (chartsHbs.get(0).value.get(0).avgStrength != null && !chartsHbs.get(0).value.get(0).avgStrength.equals("")) {
                             update(chartsHbs);
-                            lineChartThree = new LineChartThreePc(mLineChart30, LineChartHbPcActivity.this);
-                        }
+                            lineChartThree30 = new LineChartThreePc(mLineChart30, LineChartHbPcActivity.this);
+//                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -253,6 +255,7 @@ public class LineChartHbPcActivity extends BaseActivity {
     public static Map<Integer, String> mapCodTime = new HashMap<>();
     public static Map<Integer, String> mapZlTime = new HashMap<>();
     public static Map<Integer, String> mapAdTime = new HashMap<>();
+    public static Map<Integer, String> mapTime = new HashMap<>();
     public static List<LineChartsHb.ValueBean> listZl = new ArrayList<>();
     public static List<LineChartsHb.ValueBean> listAd = new ArrayList<>();
     public static List<LineChartsHb.ValueBean> listCod = new ArrayList<>();
@@ -270,6 +273,7 @@ public class LineChartHbPcActivity extends BaseActivity {
         mapCod = new HashMap<>();
         mapZl = new HashMap<>();
         mapAd = new HashMap<>();
+        mapTime = new HashMap<>();
         for (int i = 0; i < chartsHbs.size(); i++) {
             if (chartsHbs.get(i).key.equals(LineChatUtils.AD)) {
                 KEY_NAME1 = LineChatUtils.AD;
@@ -291,6 +295,7 @@ public class LineChartHbPcActivity extends BaseActivity {
                 listCod = chartsHbs.get(i).value;
             }
         }
+        mapTime = new HashMap<>();
         try {
             if (listZl.size() > 0) {
                 for (int i = 0; i < listZl.size(); i++) {
@@ -317,7 +322,6 @@ public class LineChartHbPcActivity extends BaseActivity {
                 }
             }
             if (listCod.size() > 0) {
-
                 for (int i = 0; i < listCod.size(); i++) {
                     value = listCod.get(i).avgStrength;
                     if (value == null || value.equals("")) {
@@ -331,6 +335,17 @@ public class LineChartHbPcActivity extends BaseActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        int i=mapZlTime.size();
+        int j=mapAdTime.size();
+        int k=mapCodTime.size();
+        int max=(i>j? i:j)>k? (i>j? i:j):k;
+        if (max==mapZlTime.size()){
+            mapTime = mapZlTime;
+        }else if (max==mapAdTime.size()){
+            mapTime = mapAdTime;
+        }else if (max ==mapCodTime.size()){
+            mapTime = mapCodTime;
         }
     }
 

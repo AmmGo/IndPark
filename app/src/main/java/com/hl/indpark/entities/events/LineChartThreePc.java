@@ -87,13 +87,7 @@ public class LineChartThreePc {
             public String getFormattedValue(float value, AxisBase axis) {
                 int IValue = (int) value;
                 Map<Integer, String> map = new HashMap<>();
-                if (LineChartHbPcActivity.mapCodTime.size() > 0) {
-                    map = LineChartHbPcActivity.mapCodTime;
-                } else if (LineChartHbPcActivity.mapAdTime.size() > 0) {
-                    map = LineChartHbPcActivity.mapAdTime;
-                } else if (LineChartHbPcActivity.mapZlTime.size() > 0) {
-                    map = LineChartHbPcActivity.mapZlTime;
-                }
+                    map = LineChartHbPcActivity.mapTime;
                 return map.get(IValue);
             }
         });

@@ -3,6 +3,7 @@ package com.hl.indpark.uis.activities;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
@@ -23,6 +24,8 @@ import net.arvin.baselib.widgets.TitleBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 public class LineChartWxyFxActivity extends BaseActivity {
     private LineChart mLineChart1;
     private LineChart mLineChart7;
@@ -35,6 +38,12 @@ public class LineChartWxyFxActivity extends BaseActivity {
     private List<LineChartWxy> lineChart30;
     int fx7 = 1;
     int fx30 = 2;
+    @BindView(R.id.tv_dw)
+    TextView tv_dw;
+    @BindView(R.id.tv_pk_name)
+    TextView tv_pk_name;
+    @BindView(R.id.tv_dw_name)
+    TextView tv_dw_name;
 
     @Override
     protected int getContentView() {
@@ -52,6 +61,12 @@ public class LineChartWxyFxActivity extends BaseActivity {
             }
         });
         String labelId = getIntent().getStringExtra("labelId");
+        String dw_str = getIntent().getStringExtra("dw_str");
+        String tv_pk_nameStr = getIntent().getStringExtra("tv_pk_name");
+        String dw_name = getIntent().getStringExtra("dw_name");
+        tv_pk_name.setText(tv_pk_nameStr);
+        tv_dw.setText(dw_str);
+        tv_dw_name.setText(dw_name);
         getLineChart7(labelId);
         getLineChart30(labelId);
         mLineChart1 = findViewById(R.id.chart_1);

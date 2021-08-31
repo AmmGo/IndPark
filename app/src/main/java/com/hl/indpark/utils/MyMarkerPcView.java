@@ -37,18 +37,22 @@ public class MyMarkerPcView extends MarkerView {
     public void refreshContent(Entry e, Highlight highlight) {
         StringBuffer sb = new StringBuffer();
         if (map1.size() > 0) {
-            sb.append(LineChartHbPcActivity.KEY_NAME1).append(":").append(""+map1.get((int) e.getX())).append("<br>");
-            time  = LineChartHbPcActivity.mapAdTime.get((int) e.getX());
+            if (e.getX() <= map1.size()) {
+                sb.append(LineChartHbPcActivity.KEY_NAME1).append(":").append("" + map1.get((int) e.getX())).append("<br>");
+            }
         }
         if (map2.size() > 0) {
-            sb.append(LineChartHbPcActivity.KEY_NAME2).append(":").append(""+map2.get((int) e.getX())).append("<br>");
-            time  = LineChartHbPcActivity.mapZlTime.get((int) e.getX());
+            if (e.getX() <= map2.size()) {
+                sb.append(LineChartHbPcActivity.KEY_NAME2).append(":").append("" + map2.get((int) e.getX())).append("<br>");
+            }
         }
         if (map3.size() > 0) {
-            sb.append(LineChartHbPcActivity.KEY_NAME3).append(":").append(""+map3.get((int) e.getX())).append("<br>");
-            time  = LineChartHbPcActivity.mapCodTime.get((int) e.getX());
+            if (e.getX() <= map3.size()) {
+                sb.append(LineChartHbPcActivity.KEY_NAME3).append(":").append("" + map3.get((int) e.getX())).append("<br>");
+            }
         }
-        sb.append("时间:"+time);
+        time = LineChartHbPcActivity.mapTime.get((int) e.getX());
+        sb.append("时间:" + time);
         tvContent.setText(Html.fromHtml(sb.toString()));
         super.refreshContent(e, highlight);
     }
@@ -56,6 +60,6 @@ public class MyMarkerPcView extends MarkerView {
     //标记相对于折线图的偏移量
     @Override
     public MPPointF getOffset() {
-        return new MPPointF(-(getWidth() / 2), -getHeight());
+        return new MPPointF(-(0), -getHeight());
     }
 }

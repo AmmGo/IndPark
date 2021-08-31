@@ -131,7 +131,7 @@ public class LineChartDouble {
         //设置外圈颜色
         barDataSet1.setCircleColor(Color.parseColor("#45a2ff"));
         //圈大小
-        barDataSet1.setCircleSize(3);
+        barDataSet1.setCircleSize(2);
         //设置内圈颜色
         barDataSet1.setCircleColorHole(Color.parseColor("#ffffff"));
         return barDataSet1;

@@ -42,6 +42,6 @@ public class MyMarkerView extends MarkerView {
     //标记相对于折线图的偏移量
     @Override
     public MPPointF getOffset() {
-        return new MPPointF(-(getWidth() / 2), -getHeight());
+        return new MPPointF(-(0), -getHeight());
     }
 }

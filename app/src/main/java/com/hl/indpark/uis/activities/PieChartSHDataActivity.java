@@ -314,6 +314,15 @@ public class PieChartSHDataActivity extends BaseActivity {
                 EntSHSEvent.RecordsBean jumpData = (EntSHSEvent.RecordsBean) adapter.getItem(position);
                 Intent intent = new Intent(PieChartSHDataActivity.this, LineChartWxyTjActivity.class);
                 intent.putExtra("labelId", jumpData.tagId);
+                String dw_str = jumpData.value;
+                if (dw_str!=null&&!dw_str.equals("")){
+                    dw_str = dw_str.replace(".","").replaceAll("[\\d]+","");
+                }else{
+                    dw_str = "";
+                }
+                intent.putExtra("dw_str", dw_str);
+                intent.putExtra("tv_pk_name", jumpData.pointName);
+                intent.putExtra("dw_name", jumpData.dataType);
                 startActivity(intent);
             }
         });
