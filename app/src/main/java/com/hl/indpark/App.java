@@ -108,8 +108,8 @@ private void init1() {
     initEngine();
 }
     private RtcEngine mRtcEngine;
-    private RtmClient mRtmClient;
-    private RtmCallManager rtmCallManager;
+     public static RtmClient mRtmClient;
+     private RtmCallManager rtmCallManager;
     private EngineEventListener mEventListener;
     private Config mConfig;
     private Global mGlobal;
@@ -188,14 +188,29 @@ private void init1() {
         return mGlobal;
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        destroyEngine();
-    }
+     @Override
+     public void onTerminate() {
+         super.onTerminate();
+         destroyEngine();
+     }
 
-    private void destroyEngine() {
-        RtcEngine.destroy();
+     public static void destroySp() {
+         RtcEngine.destroy();
+         mRtmClient.logout(new ResultCallback<Void>() {
+             @Override
+             public void onSuccess(Void aVoid) {
+                 Log.i(TAG, "rtm client logout success");
+             }
+
+             @Override
+             public void onFailure(ErrorInfo errorInfo) {
+                 Log.i(TAG, "rtm client logout failed:" + errorInfo.getErrorDescription());
+             }
+         });
+     }
+
+     private void destroyEngine() {
+         RtcEngine.destroy();
 
         mRtmClient.logout(new ResultCallback<Void>() {
             @Override

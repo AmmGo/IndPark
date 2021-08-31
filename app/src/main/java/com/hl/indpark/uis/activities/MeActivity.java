@@ -62,6 +62,7 @@ public class MeActivity extends BaseActivity {
                 clearDB();
                 SharePreferenceUtil.clearAllValue(MeActivity.this);
                 App.closeAllActivityByMap();
+                App.destroySp();
                 Intent intent = new Intent(MeActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
