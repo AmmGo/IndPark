@@ -334,7 +334,24 @@ public class PieChartSHDataActivity extends BaseActivity {
         ArticlesRepo.getEnterpriseEvent().observe(this, new ApiObserver<List<EntNameEvent>>() {
             @Override
             public void onSuccess(Response<List<EntNameEvent>> response) {
-                popEvent.entNameEvents = response.getData();
+                List<EntNameEvent> list = new ArrayList<>();
+                if (Util.getIsRoleld()){
+                    EntNameEvent entNameEvent = new EntNameEvent();
+                    entNameEvent.companyCode = "1";
+                    entNameEvent.name = "全部";
+                    entNameEvent.psCode = "1";
+                    entNameEvent.id = 1;
+                    list.add(entNameEvent);
+                    if (response.getData().size()>0){
+                        for (int i = 0 ;i<response.getData().size();i++){
+                            list.add(response.getData().get(i));
+                        }
+                    }
+                }else{
+                    list = response.getData();
+                }
+
+                popEvent.entNameEvents = list;
 //                try {
 //                    if (response.getData() != null && response.getData().size() == 1) {
 //                        chooseText.setText(response.getData().get(0).name);
@@ -462,6 +479,11 @@ public class PieChartSHDataActivity extends BaseActivity {
         pageSize =10;
 //        getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
         companyCode=event.companyCode;
+        if (event.name.equals("全部")){
+            queryType = 0;
+        }else{
+            queryType = 1;
+        }
         getWxy(companyCode,selectType,queryType);
 //        getEntType(event.id);
         pop.cancel();
