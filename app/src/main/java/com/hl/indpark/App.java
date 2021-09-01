@@ -41,16 +41,16 @@ import io.agora.rtm.RtmCallManager;
 import io.agora.rtm.RtmClient;
 
 
- /**
-  * Created by yjl on 2021/3/30 15:41
-  * Function：
-  * Desc：
-  */
+/**
+ * Created by yjl on 2021/3/30 15:41
+ * Function：
+ * Desc：
+ */
 public class App extends TinkerApplication {
     private static final String TAG = "fdsa";
     private static App app;
-//    private ArticleDatabase db;
-private static App instance;
+    //    private ArticleDatabase db;
+    private static App instance;
 
     public static App getInstance() {
         return instance;
@@ -100,16 +100,16 @@ private static App instance;
         return app;
     }
 
-//    public ArticleDatabase getDB() {
+    //    public ArticleDatabase getDB() {
 //        return db;
 //    }
-private void init1() {
-    initConfig();
-    initEngine();
-}
+    private void init1() {
+        initConfig();
+        initEngine();
+    }
     private RtcEngine mRtcEngine;
-     public static RtmClient mRtmClient;
-     private RtmCallManager rtmCallManager;
+    private RtmClient mRtmClient;
+    private RtmCallManager rtmCallManager;
     private EngineEventListener mEventListener;
     private Config mConfig;
     private Global mGlobal;
@@ -188,29 +188,14 @@ private void init1() {
         return mGlobal;
     }
 
-     @Override
-     public void onTerminate() {
-         super.onTerminate();
-         destroyEngine();
-     }
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        destroyEngine();
+    }
 
-     public static void destroySp() {
-         RtcEngine.destroy();
-         mRtmClient.logout(new ResultCallback<Void>() {
-             @Override
-             public void onSuccess(Void aVoid) {
-                 Log.i(TAG, "rtm client logout success");
-             }
-
-             @Override
-             public void onFailure(ErrorInfo errorInfo) {
-                 Log.i(TAG, "rtm client logout failed:" + errorInfo.getErrorDescription());
-             }
-         });
-     }
-
-     private void destroyEngine() {
-         RtcEngine.destroy();
+    private void destroyEngine() {
+        RtcEngine.destroy();
 
         mRtmClient.logout(new ResultCallback<Void>() {
             @Override

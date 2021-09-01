@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.hl.indpark.App;
+import com.android.tu.loadingdialog.LoadingDailog;
 import com.hl.indpark.R;
 import com.hl.indpark.uis.activities.videoactivities.utils.RtcUtils;
 import com.hl.indpark.utils.Util;
@@ -49,8 +49,8 @@ public class Main2Activity extends BaseCallActivity {
             Manifest.permission.WRITE_CALL_LOG
     };
     private String id;
-    private int count=0;
-
+    private int count = 0;
+    private LoadingDailog dialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,25 +59,43 @@ public class Main2Activity extends BaseCallActivity {
         id = intent.getStringExtra("id");
         setIdentifier();
         checkPermissions();
-        App.destroySp();
-        App.getInstance().rtmClient().login(null, Util.getUserId(), new ResultCallback<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-
-                Log.e("main", "rtm client login success");
-            }
-            @Override
-            public void onFailure(ErrorInfo errorInfo) {
-                Log.e("main", "rtm client login failed:" + errorInfo.getErrorDescription());
-            }
-        });
-        gotoDialerActivity();
-//        gotoDialerActivity();
-        if (count==0){
-            finish();
-        }
+//        RtcEngine.destroy();
+        LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(Main2Activity.this)
+                .setMessage("连接中...")
+                .setCancelable(false)
+                .setCancelOutside(false);
+        dialog = loadBuilder.create();
+        dialog.getWindow().setDimAmount(0f);
+        dialog.show();
+        loginVideo();
     }
 
+    public void loginVideo() {
+        rtmClient().logout(new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.i(TAG, "rtm client logout success");
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                Log.i(TAG, "rtm client logout failed:" + errorInfo.getErrorDescription());
+            }
+        });
+        rtmClient().login(null, Util.getUserId(), new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                dialog.cancel();
+                gotoDialerActivity();
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                dialog.cancel();
+                Toast.makeText(Main2Activity.this, "请重新登录", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     @Override
     protected void onGlobalLayoutCompleted() {
@@ -124,7 +142,7 @@ public class Main2Activity extends BaseCallActivity {
                 requestCode == PERMISSION_REQ_STAY) {
             boolean granted = permissionArrayGranted(permissions);
             if (granted && requestCode == PERMISSION_REQ_FORWARD) {
-                gotoDialerActivity();
+                loginVideo();
             } else if (!granted) {
                 toastNeedPermissions();
             }
@@ -136,7 +154,7 @@ public class Main2Activity extends BaseCallActivity {
     }
 
     private void toastNeedPermissions() {
-        Toast.makeText(this, "dasfddsf", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "需要权限", Toast.LENGTH_LONG).show();
     }
 
     public void setActivity(Main2Activity activity) {
@@ -187,6 +205,5 @@ public class Main2Activity extends BaseCallActivity {
 
                     }
                 });
-        Log.e("是否在线", "onFailure: 不在线");
     }
 }

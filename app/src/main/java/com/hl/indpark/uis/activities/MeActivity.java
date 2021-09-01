@@ -19,6 +19,9 @@ import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.widgets.TitleBar;
 
+import io.agora.rtm.ErrorInfo;
+import io.agora.rtm.ResultCallback;
+
 import static com.hl.indpark.utils.JPushUtils.isPushStopped;
 
 
@@ -62,7 +65,14 @@ public class MeActivity extends BaseActivity {
                 clearDB();
                 SharePreferenceUtil.clearAllValue(MeActivity.this);
                 App.closeAllActivityByMap();
-                App.destroySp();
+                App.getInstance().rtmClient().logout(new ResultCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                    @Override
+                    public void onFailure(ErrorInfo errorInfo) {
+                    }
+                });
                 Intent intent = new Intent(MeActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
