@@ -22,6 +22,7 @@ import io.agora.rtm.LocalInvitation;
 import io.agora.rtm.RemoteInvitation;
 import io.agora.rtm.RtmCallManager;
 import io.agora.rtm.RtmClient;
+
 ;
 
 public abstract class BaseActivity extends AppCompatActivity implements IEventListener {
@@ -127,6 +128,19 @@ public abstract class BaseActivity extends AppCompatActivity implements IEventLi
     @Override
     public void onConnectionStateChanged(int status, int reason) {
         Log.i(TAG, "onConnectionStateChanged status:" + status + " reason:" + reason);
+        if (status==1){
+//            App.getInstance().rtmClient().login(null, Util.getUserId(), new ResultCallback<Void>() {
+//                @Override
+//                public void onSuccess(Void aVoid) {
+//                    Log.e("main", "rtm client login success");
+//                }
+//
+//                @Override
+//                public void onFailure(ErrorInfo errorInfo) {
+//                    Log.e("main", "rtm client login failed:" + errorInfo.getErrorDescription());
+//                }
+//            });
+        }
     }
 
     @Override

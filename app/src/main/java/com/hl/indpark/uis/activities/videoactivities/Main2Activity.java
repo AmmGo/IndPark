@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.hl.indpark.App;
 import com.hl.indpark.R;
 import com.hl.indpark.uis.activities.videoactivities.utils.RtcUtils;
 import com.hl.indpark.utils.Util;
@@ -58,11 +59,21 @@ public class Main2Activity extends BaseCallActivity {
         id = intent.getStringExtra("id");
         setIdentifier();
         checkPermissions();
+        App.destroySp();
+        App.getInstance().rtmClient().login(null, Util.getUserId(), new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                Log.e("main", "rtm client login success");
+            }
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                Log.e("main", "rtm client login failed:" + errorInfo.getErrorDescription());
+            }
+        });
         gotoDialerActivity();
-        Log.e("呼叫对方Id", "onSuccess: "+id);
+//        gotoDialerActivity();
         if (count==0){
-//            ToastUtil.showToast(Main2Activity.this, "对方不在线");
-            Log.e("对方不在线", "count: "+count);
             finish();
         }
     }
@@ -170,8 +181,7 @@ public class Main2Activity extends BaseCallActivity {
 
                     @Override
                     public void onFailure(ErrorInfo errorInfo) {
-                        Log.e("是否在线", "onFailure: 不在线111 ");
-                        ToastUtil.showToast(Main2Activity.this, "对方不在线");
+                        ToastUtil.showToast(Main2Activity.this, "该用户暂无账号");
                         count++;
                         finish();
 

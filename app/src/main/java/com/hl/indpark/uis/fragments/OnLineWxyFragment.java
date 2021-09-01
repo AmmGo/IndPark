@@ -309,7 +309,7 @@ public class OnLineWxyFragment extends BaseFragment {
                 intent.putExtra("labelId", jumpData.tagId);
                 String dw_str = jumpData.value;
                 if (dw_str!=null&&!dw_str.equals("")){
-                    dw_str = dw_str.replace(".","").replaceAll("[\\d]+","");
+                    dw_str = dw_str.replace(".","").replaceAll("[\\d]+","").replace("-","");
                 }else{
                     dw_str = "";
                 }

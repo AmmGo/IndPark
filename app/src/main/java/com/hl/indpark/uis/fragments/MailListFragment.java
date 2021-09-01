@@ -250,9 +250,14 @@ public class MailListFragment extends BaseFragment {
             ToastUtil.showToast(getActivity(),"请选择有效用户");
             return;
         }
-        Intent intent = new Intent(getActivity(), Main2Activity.class);
-        intent.putExtra("id",id );
-        startActivity(intent);
+        if (id!=null){
+            Intent intent = new Intent(getActivity(), Main2Activity.class);
+            intent.putExtra("id",id );
+            startActivity(intent);
+        }else{
+            ToastUtil.showToast(getActivity(),"该用户暂无账号");
+        }
+
 //        getVideoPush(id);
 
     }
