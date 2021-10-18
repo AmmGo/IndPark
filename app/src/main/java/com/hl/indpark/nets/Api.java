@@ -79,10 +79,17 @@ public interface Api {
 //        String BASE_JAVA = "";
 
     /**
-     * 外网发布
+     * 中卫外网发布
      */
-    String BASE_URL = "https://www.nxzwgyyqgwh.com.cn/";
-    String BASE_URL_IMG = "https://www.nxzwgyyqgwh.com.cn/img/";
+//    String BASE_URL = "https://www.nxzwgyyqgwh.com.cn/";
+//    String BASE_URL_IMG = "https://www.nxzwgyyqgwh.com.cn/img/";
+//    String BASE_JAVA = "java";
+    /**
+     * 盐池外网发布
+     *
+     */
+    String BASE_URL = "https://ycgwh.zwhldk.com:444/";
+    String BASE_URL_IMG = "https://ycgwh.zwhldk.com:444/img";
     String BASE_JAVA = "java";
 
     /*=======登陆注册======*/

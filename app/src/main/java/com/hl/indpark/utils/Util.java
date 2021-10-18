@@ -7,12 +7,11 @@ import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.hl.indpark.App;
 import com.hl.indpark.BuildConfig;
 import com.hl.indpark.uis.activities.LoginActivity;
-
-import net.arvin.baselib.utils.ToastUtil;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -68,14 +67,14 @@ public class Util {
     public static void login(String code, Activity activity) {
 
         if (code.equals("10015")) {
-            ToastUtil.showToast(activity, "登录过期，请重新登录");
+            showToast("登录过期，请重新登录", activity);
             activity.finish();
             SharePreferenceUtil.clearAllValue(activity);
             App.closeAllActivityByMap();
             Intent intent = new Intent(activity, LoginActivity.class);
             activity.startActivity(intent);
         }else if (code.equals("10016")){
-            ToastUtil.showToast(activity, "你的账号已在别处登录");
+            showToast("你的账号已在别处登录", activity);
             activity.finish();
             SharePreferenceUtil.clearAllValue(activity);
             App.closeAllActivityByMap();
@@ -83,6 +82,19 @@ public class Util {
             activity.startActivity(intent);
         }
 
+    }
+
+    private static Toast toast = null;
+
+    public static void showToast(String msg, Activity activity) {
+        if (toast != null) {
+            toast.setText(msg);
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            toast = Toast.makeText(activity, msg, Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     public static int getRandomColor(Random random) {

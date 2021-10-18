@@ -2,17 +2,16 @@ package com.hl.indpark.uis.uihelpers;
 
 import android.content.Context;
 
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-
-import net.arvin.itemdecorationhelper.ItemDecorationFactory;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
+
+import net.arvin.itemdecorationhelper.ItemDecorationFactory;
 
 import java.util.ArrayList;
 import java.util.List;
