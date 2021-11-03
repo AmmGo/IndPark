@@ -1,5 +1,8 @@
 package com.hl.indpark.entities.events;
 
+import com.hl.indpark.entities.new2.Clr;
+import com.hl.indpark.entities.new2.Level;
+
 import java.util.List;
 
 /**
@@ -17,5 +20,7 @@ public class PopEvent {
     public List<ReportTypeEvent> reportTypeEventList;
     public List<PhoneEvent> phoneList;
     public List<MapPointEvent> machineList;
+    public List<Clr> clrList;
+    public List<Level> LevelList;
 
 }

@@ -29,6 +29,7 @@ import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.entities.events.MyScoresEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
+import com.hl.indpark.entities.new2.Ryqr;
 import com.hl.indpark.entities.events.ScoresDetailsEvent;
 import com.hl.indpark.entities.events.SelfCheck;
 import com.hl.indpark.entities.events.SelfReportEvent;
@@ -36,6 +37,8 @@ import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.entities.events.WxyEvent;
 import com.hl.indpark.entities.events.WxyTjEvent;
+import com.hl.indpark.entities.new2.Sbry;
+import com.hl.indpark.entities.new2.Wpry;
 
 import java.util.HashMap;
 import java.util.List;
@@ -88,12 +91,27 @@ public interface Api {
      * 盐池外网发布
      *
      */
-    String BASE_URL = "https://ycgwh.zwhldk.com:444/";
-    String BASE_URL_IMG = "https://ycgwh.zwhldk.com:444/img";
+//    String BASE_URL = "https://ycgwh.zwhldk.com:444/";
+//    String BASE_URL_IMG = "https://ycgwh.zwhldk.com:444/img";
+//    String BASE_JAVA = "java";
+
+//    /**
+//     * 2.0版本测试地址
+//     *
+//     */
+    String BASE_URL = "http://testindustry.zwhldk.com/";
+    String BASE_URL_IMG = "https://testindustry.zwhldk.com/img/";
     String BASE_JAVA = "java";
+    /**
+     * 2.0版本线上地址
+     *
+     */
+//    String BASE_URL = "http://nxzwgyyq.zwhldk.com/";
+//    String BASE_URL_IMG = "https://nxzwgyyq.zwhldk.com/img/";
+//    String BASE_JAVA = "java";
 
     /*=======登陆注册======*/
-    @POST(BASE_JAVA + "/loginPhone")
+    @POST(BASE_JAVA + "/login/app/signIn")
     LiveData<Resource<Response<LoginResultEntity>>> login(@Body HashMap<String, String> map);
 
     /*=======环保报警======*/
@@ -176,9 +194,6 @@ public interface Api {
     @POST(BASE_JAVA + "/user/update")
     LiveData<Resource<Response<String>>> getPushMsgEvent(@Body HashMap<String, String> map);
 
-    /*=======上报事件======*/
-    @POST(BASE_JAVA + "/event/insert/")
-    LiveData<Resource<Response<String>>> getReportEvent(@Body HashMap<String, String> map);
 
     /**
      * 上传单张图片
@@ -315,4 +330,22 @@ public interface Api {
     /*=======一键报警======*/
     @GET(BASE_JAVA + "/phone/giveAnAlarm")
     LiveData<Resource<Response<String>>> getCallPolice(@Query("address") String address,@Query("name") String name,@Query("phone") String phone);
+
+
+    //2.0新增接口
+    /*=======身份确认======*/
+    @GET(BASE_JAVA + "/personnel/identificationm")
+    LiveData<Resource<Response<Ryqr>>> getRyqr();
+
+    /*=======委派人员======*/
+    @GET(BASE_JAVA + "/personnel/getSubordinate")
+    LiveData<Resource<Response<List<Wpry>>>> getWpry();
+
+    /*=======上报人员======*/
+    @GET(BASE_JAVA + "/personnel/getSuperior")
+    LiveData<Resource<Response<List<Sbry>>>> getSbry();
+
+    /*=======上报事件2.0======*/
+    @POST(BASE_JAVA + "/event/insert")
+    LiveData<Resource<Response<String>>> getReportEvent(@Body HashMap<String, String> map);
 }

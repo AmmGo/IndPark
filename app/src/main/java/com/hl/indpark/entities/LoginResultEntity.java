@@ -11,37 +11,36 @@ import android.os.Parcelable;
  */
 public class LoginResultEntity implements Parcelable {
     /**
-     * id : 1
-     * token : 54f1510b02bb4358a3309bc4aa9535f8
-     * date : 2021-03-05 17:33:58
-     * expirationTime : 2021-03-05 19:33:58
-     * name : 管理员
-     * deptId : 11
-     * deptName : 工程技术部
-     * enterpriseId : 358
-     * enterpriseName : 中卫市管委会
-     * category : 2
+     * token : f66fa26c08464f139f5fc34ebd191a17
+     * userId : 3
+     * nickName : 测试企业负责人
+     * account : eventEnt
+     * phone : 18123456789
+     * name : 测试企业负责人
+     * sex : 0
+     * deptId : 28
+     * deptName : 生产运营部
+     * enterpriseId : null
+     * enterpriseName : null
      * roleId : 1
-     * roleName : 超级管理员
-     * menuList : null
-     * authURL : null
+     * roleName : 生产运营部
      * ico : null
      */
-    public int id;
+
     public String token;
-    private String date;
-    private String expirationTime;
-    private String name;
-    private int deptId;
-    private String deptName;
-    public int enterpriseId;
+    public int userId;
+    public String nickName;
+    public String account;
+    public String phone;
+    public String name;
+    public int sex;
+    public int deptId;
+    public String deptName;
+    public String enterpriseId;
     public String enterpriseName;
-    public int category;
     public int roleId;
-    private String roleName;
-    private Object menuList;
-    private Object authURL;
-    private Object ico;
+    public String roleName;
+    public String ico;
 
     protected LoginResultEntity(Parcel in) {
         this.token = in.readString();

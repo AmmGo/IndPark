@@ -25,6 +25,11 @@ import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.entities.events.ReportEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
+import com.hl.indpark.entities.new2.Clr;
+import com.hl.indpark.entities.new2.Level;
+import com.hl.indpark.entities.new2.Ryqr;
+import com.hl.indpark.entities.new2.Sbry;
+import com.hl.indpark.entities.new2.Wpry;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.permission.DefaultResourceProvider;
@@ -64,6 +69,10 @@ public class EventsReportActivity extends BaseActivity {
     TextView tvCount;
     @BindView(R.id.tv_type)
     TextView tvType;
+    @BindView(R.id.tv_clr)
+    TextView tv_clr;
+    @BindView(R.id.tv_level)
+    TextView tv_level;
     @BindView(R.id.ed_event_titile)
     EditText ed_event_titile;
     @BindView(R.id.ed_event_decs)
@@ -73,13 +82,18 @@ public class EventsReportActivity extends BaseActivity {
     private List<LocalMedia> selectList = new ArrayList<>();
     private List<LocalMedia> mediaList = new ArrayList<>();
     private ReportEvent eventReport;
+    private Clr eventClr;
+    private Level eventLevel;
     private String imgS;
     private String uploadEventTitile;
     private String uploadEventDecs;
     private String uploadTvType;
+    private String uploadTvClr;
+    private String uploadTvLevel;
     private LoadingDailog dialog;
     private double getLongitude;
     private double getLatitude;
+    private String eventAddress;
 
     @OnTextChanged(value = R.id.ed_event_decs, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void editTextDetailChange(Editable editable) {
@@ -99,7 +113,7 @@ public class EventsReportActivity extends BaseActivity {
     PopEvent popEvent = new PopEvent();
     EntDialog pop;
 
-    @OnClick({R.id.img_add, R.id.tv_report, R.id.ll_type})
+    @OnClick({R.id.img_add, R.id.tv_report, R.id.ll_type, R.id.ll_level, R.id.ll_clr})
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.img_add:
@@ -131,11 +145,21 @@ public class EventsReportActivity extends BaseActivity {
                 Util.hideInputManager(EventsReportActivity.this, v);
 //                getUpdateUserImg(uploadFile.get(0));
 //                getUploadEvent();
-                uploadTvType = tvType.getText().toString().replaceAll(" ", "").replace("请选择事件类型","");
+                uploadTvType = tvType.getText().toString().replaceAll(" ", "").replace("请选择事件类型", "");
+                uploadTvLevel = tv_level.getText().toString().replaceAll(" ", "").replace("请选择级别", "");
+                uploadTvClr = tv_clr.getText().toString().replaceAll(" ", "").replace("请选择处理人", "");
                 uploadEventTitile = ed_event_titile.getText().toString().replaceAll(" ", "");
                 uploadEventDecs = ed_event_decs.getText().toString().replaceAll(" ", "");
                 if (TextUtils.isEmpty(uploadTvType)) {
                     ToastUtil.showToast(this, "请选择事件类型");
+                    return;
+                }
+                if (TextUtils.isEmpty(uploadTvLevel)) {
+                    ToastUtil.showToast(this, "请选择级别");
+                    return;
+                }
+                if (TextUtils.isEmpty(uploadTvClr)) {
+                    ToastUtil.showToast(this, "请选择处理人");
                     return;
                 }
 
@@ -173,6 +197,24 @@ public class EventsReportActivity extends BaseActivity {
                     e.printStackTrace();
                 }
                 break;
+            case R.id.ll_level:
+                try {
+                    pop = new EntDialog(EventsReportActivity.this, popEvent, 106);
+                    pop.setCanceledOnTouchOutside(true);
+                    pop.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.ll_clr:
+                try {
+                    pop = new EntDialog(EventsReportActivity.this, popEvent, 107);
+                    pop.setCanceledOnTouchOutside(true);
+                    pop.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
             default:
         }
     }
@@ -182,6 +224,29 @@ public class EventsReportActivity extends BaseActivity {
         tvType.setText(event.name);
         eventReport.id = event.id;
         pop.cancel();
+    }
+
+    @Subscribe
+    public void getLevel(Level event) {
+        tv_level.setText(event.name);
+        eventLevel.id = event.id;
+        pop.cancel();
+    }
+
+    @Subscribe
+    public void getClr(Clr event) {
+        tv_clr.setText(event.name);
+        eventClr.id = event.id;
+        pop.cancel();
+    }
+
+    public void initLevel() {
+        List<Level> levels = new ArrayList<>();
+        levels.add(new Level("一般", 1));
+        levels.add(new Level("较大", 2));
+        levels.add(new Level("重大", 3));
+        levels.add(new Level("特别重大", 4));
+        popEvent.LevelList = levels;
     }
 
     @Override
@@ -201,13 +266,14 @@ public class EventsReportActivity extends BaseActivity {
                 if (aMapLocation.getErrorCode() == 0) {
                     aMapLocation.getLatitude();//获取纬度
                     aMapLocation.getLongitude();//获取经度
-                    Log.e("获取纬度", "onLocationChanged: "+aMapLocation.getLatitude() );
-                    Log.e("获取经度", "onLocationChanged: "+aMapLocation.getLongitude() );
+                    Log.e("获取纬度", "onLocationChanged: " + aMapLocation.getLatitude());
+                    Log.e("获取经度", "onLocationChanged: " + aMapLocation.getLongitude());
                     getLongitude = aMapLocation.getLongitude();
                     getLatitude = aMapLocation.getLatitude();
-                }else {
+                    eventAddress = aMapLocation.getAoiName();
+                } else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    Log.e("AmapError","location Error, ErrCode:"
+                    Log.e("AmapError", "location Error, ErrCode:"
                             + aMapLocation.getErrorCode() + ", errInfo:"
                             + aMapLocation.getErrorInfo());
                 }
@@ -250,9 +316,13 @@ public class EventsReportActivity extends BaseActivity {
                 onBackPressed();
             }
         });
+        getRyqr();
+        initLevel();
         initData();
         setMediaFragment();
         eventReport = new ReportEvent();
+        eventClr = new Clr();
+        eventLevel = new Level();
     }
 
     private PermissionUtil permissionUtil;
@@ -404,15 +474,22 @@ public class EventsReportActivity extends BaseActivity {
         /**
          * 通用参数配置
          * */
-        paramMap.put("title", uploadEventTitile);
-        paramMap.put("type", String.valueOf(eventReport.id));
+        paramMap.put("name", uploadEventTitile);
+        paramMap.put("eventType", String.valueOf(eventReport.id));
+        paramMap.put("level", String.valueOf(eventLevel.id));
+        paramMap.put("createTime", Util.stampToDate(String.valueOf(System.currentTimeMillis())));
+        paramMap.put("type", String.valueOf(1));
+        paramMap.put("assignId", String.valueOf(eventClr.id));
+        paramMap.put("handlePersonId", String.valueOf(eventClr.id));
+//        paramMap.put("联系电话", uploadEventTitile);
+        paramMap.put("address", eventAddress);
+        paramMap.put("longitude", String.valueOf(getLongitude));
+        paramMap.put("latitude", String.valueOf(getLatitude));
+        paramMap.put("detail", uploadEventDecs);
         paramMap.put("content", uploadEventDecs);
         if (imgS != null && !imgS.equals("")) {
             paramMap.put("image", imgS);
         }
-        paramMap.put("longitude", String.valueOf(getLongitude));
-        paramMap.put("latitude", String.valueOf(getLatitude));
-
         ArticlesRepo.getReportEvent(paramMap).observe(this, new ApiObserver<String>() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -533,4 +610,110 @@ public class EventsReportActivity extends BaseActivity {
         }
     }
 
+    public void getRyqr() {
+        ArticlesRepo.getRyqr().observe(this, new ApiObserver<Ryqr>() {
+            @Override
+            public void onSuccess(Response<Ryqr> response) {
+                Ryqr ryqr = response.getData();
+                if (ryqr.isDep) {
+                    getWpry();
+                } else {
+                    getSbry();
+                }
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+                Util.login(String.valueOf(code), EventsReportActivity.this);
+                if (false) {
+                    getWpry();
+                } else {
+                    getSbry();
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+                if (false) {
+                    getWpry();
+                } else {
+                    getSbry();
+                }
+            }
+        });
+    }
+
+    public void getWpry() {
+        ArticlesRepo.getWpry().observe(this, new ApiObserver<List<Wpry>>() {
+            @Override
+            public void onSuccess(Response<List<Wpry>> response) {
+                List<Wpry> wpry = wpryTest();
+                List<Clr> clrs = new ArrayList<>();
+                for (int i = 0; i < wpry.size(); i++) {
+                    clrs.add(new Clr(wpry.get(i).name, wpry.get(i).id));
+                }
+                popEvent.clrList = clrs;
+
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+                Util.login(String.valueOf(code), EventsReportActivity.this);
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+            }
+        });
+    }
+
+    public void getSbry() {
+        ArticlesRepo.getSbry().observe(this, new ApiObserver<List<Sbry>>() {
+            @Override
+            public void onSuccess(Response<List<Sbry>> response) {
+                List<Sbry> sbry = sbryTest();
+                List<Clr> clrs = new ArrayList<>();
+                for (int i = 0; i < sbry.size(); i++) {
+                    clrs.add(new Clr(sbry.get(i).name, sbry.get(i).id));
+                }
+                popEvent.clrList = clrs;
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+                Util.login(String.valueOf(code), EventsReportActivity.this);
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+            }
+        });
+    }
+
+    public List<Sbry> sbryTest() {
+        List<Sbry> sbries = new ArrayList<>();
+        sbries.add(new Sbry("昭仪", 1));
+        sbries.add(new Sbry("挽茨", 2));
+        sbries.add(new Sbry("刘骅骝", 3));
+        sbries.add(new Sbry("晋王及", 4));
+        return sbries;
+    }
+
+    public List<Wpry> wpryTest() {
+        List<Wpry> sbries = new ArrayList<>();
+        sbries.add(new Wpry("昭仪", 1));
+        sbries.add(new Wpry("挽茨", 2));
+        sbries.add(new Wpry("刘骅骝", 3));
+        sbries.add(new Wpry("晋王及", 4));
+        return sbries;
+    }
 }

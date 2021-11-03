@@ -23,6 +23,7 @@ class CookieInterceptor implements Interceptor {
         String token = SharePreferenceUtil.getKeyValue("token");
         if (token != null&&!token.equals("")) {
             builder.addHeader("TOKEN", token);
+            builder.addHeader("terminal", "android");
 //            builder.addHeader("Cookie", "loginUserPassword=" + user.getPassword());
         }
         return chain.proceed(builder.build());

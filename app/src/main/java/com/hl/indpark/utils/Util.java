@@ -15,7 +15,9 @@ import com.hl.indpark.uis.activities.LoginActivity;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -66,21 +68,21 @@ public class Util {
 
     public static void login(String code, Activity activity) {
 
-        if (code.equals("10015")) {
-            showToast("登录过期，请重新登录", activity);
-            activity.finish();
-            SharePreferenceUtil.clearAllValue(activity);
-            App.closeAllActivityByMap();
-            Intent intent = new Intent(activity, LoginActivity.class);
-            activity.startActivity(intent);
-        }else if (code.equals("10016")){
-            showToast("你的账号已在别处登录", activity);
-            activity.finish();
-            SharePreferenceUtil.clearAllValue(activity);
-            App.closeAllActivityByMap();
-            Intent intent = new Intent(activity, LoginActivity.class);
-            activity.startActivity(intent);
-        }
+//        if (code.equals("10015")) {
+//            showToast("登录过期，请重新登录", activity);
+//            activity.finish();
+//            SharePreferenceUtil.clearAllValue(activity);
+//            App.closeAllActivityByMap();
+//            Intent intent = new Intent(activity, LoginActivity.class);
+//            activity.startActivity(intent);
+//        }else if (code.equals("10016")){
+//            showToast("你的账号已在别处登录", activity);
+//            activity.finish();
+//            SharePreferenceUtil.clearAllValue(activity);
+//            App.closeAllActivityByMap();
+//            Intent intent = new Intent(activity, LoginActivity.class);
+//            activity.startActivity(intent);
+//        }
 
     }
 
@@ -158,5 +160,14 @@ public class Util {
             result += String.format("%02x", b);
         }
         return result;
+    }
+    public static String stampToDate(String s){
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //如果它本来就是long类型的,则不用写这一步
+        long lt = new Long(s);
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
     }
 }

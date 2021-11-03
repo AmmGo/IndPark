@@ -185,8 +185,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         final String psw = Util.getMd5(password);
         dialogUtil.showProgressDialog("登录中...");
         Map<String, String> map = new HashMap<>();
-        map.put("account", name);
-        map.put("password", psw);
+        map.put("phone", name);
+        map.put("terminal", "android");
+        map.put("password", password);
         UserRepo.login(map).observe(this, new ApiObserver<LoginResultEntity>() {
             @Override
             public void onSuccess(Response<LoginResultEntity> response) {
@@ -195,10 +196,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 SharePreferenceUtil.saveKeyValue("token", data.token);
                 SharePreferenceUtil.saveKeyValue("roleId", String.valueOf(data.roleId));
                 SharePreferenceUtil.saveKeyValue("enterpriseName", String.valueOf(data.enterpriseName));
-                SharePreferenceUtil.saveKeyValue("userId", String.valueOf(data.id));
+                SharePreferenceUtil.saveKeyValue("userId", String.valueOf(data.userId));
                 SharePreferenceUtil.saveKeyValue("enterpriseId", String.valueOf(data.enterpriseId));
-                SharePreferenceUtil.saveKeyValue("category", String.valueOf(data.category));
-                Log.e("登录用户Id", "onSuccess: "+data.id );
+                SharePreferenceUtil.saveKeyValue("category", String.valueOf(data.deptId));
                 Log.e("TOKEN", data.token);
                 dialogUtil.hideProgressDialog();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));

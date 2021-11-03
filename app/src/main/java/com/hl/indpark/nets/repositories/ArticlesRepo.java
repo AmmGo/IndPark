@@ -34,6 +34,9 @@ import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.entities.events.WxyEvent;
 import com.hl.indpark.entities.events.WxyTjEvent;
+import com.hl.indpark.entities.new2.Ryqr;
+import com.hl.indpark.entities.new2.Sbry;
+import com.hl.indpark.entities.new2.Wpry;
 import com.hl.indpark.nets.Net;
 
 import java.util.HashMap;
@@ -202,7 +205,7 @@ public class ArticlesRepo {
         return Net.api().getLookout(sizePage, isP);
     }
 
-    public static LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(int sizePage, int isP,String str,String name) {
+    public static LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(int sizePage, int isP, String str, String name) {
         return Net.api().getHazardCamera(sizePage, isP, str, name);
     }
 
@@ -253,7 +256,22 @@ public class ArticlesRepo {
     public static LiveData<Resource<Response<String>>> getMachineCheckReportEvent(Map map) {
         return Net.api().getMachineCheckReportEvent((HashMap<String, String>) map);
     }
-    public static LiveData<Resource<Response<String>>> getCallPolice(String address,String name,String phone) {
-        return Net.api().getCallPolice(address,name,phone);
+
+    public static LiveData<Resource<Response<String>>> getCallPolice(String address, String name, String phone) {
+        return Net.api().getCallPolice(address, name, phone);
+    }
+    //2.0新增部分
+
+
+    public static LiveData<Resource<Response<Ryqr>>> getRyqr() {
+        return Net.api().getRyqr();
+    }
+
+    public static LiveData<Resource<Response<List<Wpry>>>> getWpry() {
+        return Net.api().getWpry();
+    }
+
+    public static LiveData<Resource<Response<List<Sbry>>>> getSbry() {
+        return Net.api().getSbry();
     }
 }

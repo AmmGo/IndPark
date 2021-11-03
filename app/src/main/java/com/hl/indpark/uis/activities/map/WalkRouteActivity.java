@@ -100,7 +100,11 @@ public class WalkRouteActivity extends Activity implements OnMapClickListener,
 			aMap = mapView.getMap();	
 		}
 		registerListener();
-		mRouteSearch = new RouteSearch(this);
+		try {
+			mRouteSearch = new RouteSearch(this);
+		} catch (AMapException e) {
+			e.printStackTrace();
+		}
 		mRouteSearch.setRouteSearchListener(this);
 		mBottomLayout = (RelativeLayout) findViewById(R.id.bottom_layout);
 		mHeadLayout = (RelativeLayout) findViewById(R.id.routemap_header);
