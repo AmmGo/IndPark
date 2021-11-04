@@ -129,7 +129,7 @@ public interface Api {
     LiveData<Resource<Response<List<ReportTypeEvent>>>> getReportType();
 
     /*=======通讯录======*/
-    @GET(BASE_JAVA + "/phone/person/")
+    @GET(BASE_JAVA + "/app/statistics/person")
     LiveData<Resource<Response<List<PhoneEvent>>>> getPhoneEvent();
 
     /*=======用户信息======*/
@@ -168,17 +168,12 @@ public interface Api {
     @GET(BASE_JAVA + "/push/pageList/")
     LiveData<Resource<Response<MyMsgEvent>>> getMyMsgEvent(@Query("current") int page, @Query("size") int pageSize);
 
-//    /*=======上报列表======*/
-//    @GET(BASE_JAVA + "/phone/events/")
-//    LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(@Query("current") int page, @Query("size") int pageSize, @Query("status") String state);
 
     /*=======审批列表======*/
     @GET(BASE_JAVA + "/phone/approveEvents/")
     LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(@Query("current") int page, @Query("size") int pageSize, @Query("status") String state);
 
-//    /*=======审批列表-ID-查询事件======*/
-//    @GET(BASE_JAVA + "/event/findById/")
-//    LiveData<Resource<Response<MyPeportIDEvent>>> getMyPeportIDEvent(@Query("id") String id);
+
 
     /*=======视频呼叫======*/
     @GET(BASE_JAVA + "/phone/push/")
@@ -226,7 +221,7 @@ public interface Api {
     /**
      * 版本更新
      */
-    @GET(BASE_JAVA + "/appmanagement/newest")
+    @GET(BASE_JAVA + "/appVersion/newest")
     LiveData<Resource<Response<UpdateVersion>>> getUpdateVersion(@Query("version") String version);
 
     /*=======用户签到======*/
@@ -274,11 +269,11 @@ public interface Api {
     LiveData<Resource<Response<List<MapPointEvent>>>> getEventPoint();
 
     /*=======   监控系统-高空瞭望视频======*/
-    @GET(BASE_JAVA + "/phone/lookout")
+    @GET(BASE_JAVA + "/app/statistics/lookout")
     LiveData<Resource<Response<List<CameraVideoEvent>>>> getLookout(@Query("current") int page, @Query("size") int pageSize);
 
     /*======= 监控系统-危险源视频======*/
-    @GET(BASE_JAVA + "/phone/hazardCamera")
+    @GET(BASE_JAVA + "/app/statistics/hazardCamera")
     LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(@Query("current") int page, @Query("size")int pageSize ,@Query("enterpriseId") String enterpriseId,@Query("name") String name);
 
     /*=======自检列表======*/

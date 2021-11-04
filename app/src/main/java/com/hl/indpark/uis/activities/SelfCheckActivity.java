@@ -112,7 +112,7 @@ public class SelfCheckActivity extends BaseActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 try {
-                    int id =  list.get(position).checkingId;
+                    int id =  list.get(position).id;
                     Intent intent = new Intent(SelfCheckActivity.this, SelfCheckIdActivity.class);
                     intent.putExtra("id", id);
                     startActivity(intent);

@@ -27,6 +27,7 @@ public class SelfCheck {
     public static class RecordsBean {
         //@ApiModelProperty(value = "单位自检主键id", name = "checkingId")
         public int checkingId;
+        public int id;
 
         //@ApiModelProperty(value = "自检类型 1：安全自检 2： 消防自检 3：设备自检 4：其他自检", name = "checkType")
         public int checkType;
