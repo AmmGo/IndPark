@@ -367,7 +367,7 @@ public class PieChartSHDataActivity extends BaseActivity {
                 try {
                     if (response.getData() != null) {
 
-                        companyCode = String.valueOf(response.getData().get(0).companyCode);
+                        companyCode = String.valueOf(response.getData().get(0).id);
                         if (response.getData().size()==1){
                             queryType=1;
                             chooseText.setText(response.getData().get(0).name);
@@ -478,7 +478,7 @@ public class PieChartSHDataActivity extends BaseActivity {
         pageNum = 1;
         pageSize =10;
 //        getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
-        companyCode=event.companyCode;
+        companyCode= String.valueOf(event.id);
         if (event.name.equals("全部")){
             queryType = 0;
         }else{
@@ -520,7 +520,7 @@ public class PieChartSHDataActivity extends BaseActivity {
             queryType = 0;
         }
         try {
-            ArticlesRepo.getWxyEvent(id, queryType).observe(this, new ApiObserver<List<WxyEvent>>() {
+            ArticlesRepo.getWxyEvent(id, queryType,1).observe(this, new ApiObserver<List<WxyEvent>>() {
                 @Override
                 public void onSuccess(Response<List<WxyEvent>> response) {
                     List<WxyEvent> wxyEvents = new ArrayList<>();

@@ -491,7 +491,7 @@ public class OnLineWxyFragment extends BaseFragment {
             queryType = 0;
         }
         try {
-            ArticlesRepo.getWxyEvent(id, queryType).observe(this, new ApiObserver<List<WxyEvent>>() {
+            ArticlesRepo.getWxyEvent(id, queryType,1).observe(this, new ApiObserver<List<WxyEvent>>() {
                 @Override
                 public void onSuccess(Response<List<WxyEvent>> response) {
                     List<WxyEvent> wxyEvents = new ArrayList<>();

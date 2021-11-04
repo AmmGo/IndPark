@@ -13,7 +13,7 @@ public class HSAlarmEvent {
      * key : 667
      * value : [{"num":268,"type":1},{"num":259,"type":3},{"num":86,"type":2},{"num":54,"type":4}]
      */
-    public String key;
+    public String name;
     public List<ValueBean> value;
 
     public static class ValueBean {

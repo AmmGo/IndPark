@@ -78,7 +78,7 @@ public class TabSHSFragment extends BaseFragment {
             jsonObject.put("gb", getPieJson(2));
             jsonObject.put("ddb", getPieJson(4));
             jsonObject.put("db", getPieJson(3));
-            jsonObject.put("sum", alarmEvent.key);
+            jsonObject.put("sum", alarmEvent.name);
             result = jsonObject.toString();
         } catch (Exception e) {
 
@@ -125,15 +125,15 @@ public class TabSHSFragment extends BaseFragment {
 
                     }
                     alarmEvent.value = one;
-                    alarmEvent.key = String.valueOf(count);
+                    alarmEvent.name = String.valueOf(count);
                 }
                 try {
-                    if (response != null && response.getData() != null&&alarmEvent.key!=null) {
-                        if (!alarmEvent.key.equals("0")){
+                    if (response != null && response.getData() != null&&alarmEvent.name!=null) {
+                        if (!alarmEvent.name.equals("0")){
                             setWebview();
                             linearLayout.setVisibility(View.VISIBLE);
                             Log.e("危险源统计", "onSuccess: ");
-                        }else if (alarmEvent.key.equals("0")){
+                        }else if (alarmEvent.name.equals("0")){
                             setWebview();
                             linearLayout.setVisibility(View.VISIBLE);
                         }else{
@@ -170,13 +170,13 @@ public class TabSHSFragment extends BaseFragment {
             @Override
             public void onSuccess(Response<HSAlarmEvent> response) {
                 try {
-                    if (response != null && response.getData() != null&&response.getData().key!=null) {
+                    if (response != null && response.getData() != null&&response.getData().name!=null) {
                         alarmEvent = response.getData();
-                        if (!response.getData().key.equals("0")){
+                        if (!response.getData().name.equals("0")){
                             setWebview();
                             linearLayout.setVisibility(View.VISIBLE);
                             Log.e("危险源统计", "onSuccess: ");
-                        }else if (response.getData().key.equals("0")){
+                        }else if (response.getData().name.equals("0")){
                             setWebview();
                             linearLayout.setVisibility(View.VISIBLE);
                         }else{

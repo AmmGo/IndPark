@@ -117,11 +117,11 @@ public interface Api {
     LiveData<Resource<Response<LoginResultEntity>>> login(@Body HashMap<String, String> map);
 
     /*=======环保报警======*/
-    @GET(BASE_JAVA + "/phone/environment/")
+    @GET(BASE_JAVA + "/app/statistics/environment")
     LiveData<Resource<Response<EPAlarmEvent>>> getEpAlarm(@Query("type") String type);
 
     /*=======危险源报警======*/
-    @GET(BASE_JAVA + "/phone/hazard/")
+    @GET(BASE_JAVA + "/app/statistics/hazard")
     LiveData<Resource<Response<HSAlarmEvent>>> getHSAlarm(@Query("type") String type);
 
     /*=======上报事件type======*/
@@ -149,11 +149,11 @@ public interface Api {
     LiveData<Resource<Response<List<EntTypeEvent>>>> getEntTypeEvent(@Query("enterpriseId") int id);
 
     /*=======危险源信息======*/
-    @GET(BASE_JAVA + "/transmission/querySourceDangerRealDate/")
+    @GET(BASE_JAVA + "/app/statistics/hazardDetail")
     LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid);
 
     /*=======危险源信息分页======*/
-    @GET(BASE_JAVA + "/phone/hazardDetail")
+    @GET(BASE_JAVA + "/app/statistics/hazardDetail")
     LiveData<Resource<Response<EntSHSEvent>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid, @Query("current") int pageNum, @Query("size") int pageSiz, @Query("dataType") int timeType, @Query("type") String Type);
 
     /*=======企业排污口列表======*/
@@ -184,7 +184,7 @@ public interface Api {
     LiveData<Resource<Response<String>>> getMyPeportIDUpdateEvent(@Body HashMap<String, String> mape);
 
     /*=======用户信息修改======*/
-    @POST(BASE_JAVA + "/phone/update/")
+    @POST(BASE_JAVA + "/app/statistics/update")
     LiveData<Resource<Response<String>>> getUserInfoUpdateEvent(@Body HashMap<String, String> map);
 
     /*=======是否推送======*/
@@ -285,8 +285,8 @@ public interface Api {
     LiveData<Resource<Response<SelfCheck.RecordsBean>>> getCheckIDEvent(@Query("id") String id);
 
     /*=======新增危险源实时统计======*/
-    @GET(BASE_JAVA + "/transmission/querySourceDangerRealDate")
-    LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(@Query("enterpriseId") String id, @Query("queryType") int queryType);
+    @GET(BASE_JAVA + "/app/statistics/hazardDetail")
+    LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(@Query("enterpriseId") String id, @Query("queryType") int queryType, @Query("dataType") int dateType);
 
     /*=======危险源报警统计======*/
     @GET(BASE_JAVA + "/transmission/hazardNum")

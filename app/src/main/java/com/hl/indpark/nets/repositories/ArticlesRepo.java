@@ -219,8 +219,8 @@ public class ArticlesRepo {
         return Net.api().getCheckIDEvent(id);
     }
 
-    public static LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(String id, int queryType) {
-        return Net.api().getWxyEvent(id, queryType);
+    public static LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(String id, int queryType, int dateType) {
+        return Net.api().getWxyEvent(id, queryType,dateType);
     }
 
     public static LiveData<Resource<Response<List<WxyTjEvent>>>> getWxyTjEvent() {

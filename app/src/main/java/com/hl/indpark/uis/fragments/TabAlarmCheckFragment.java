@@ -295,7 +295,7 @@ public class TabAlarmCheckFragment extends BaseFragment implements HorizontalPro
                         for (int i = 0; i < 4; i++) {
                             if (valueBeans.get(i).type != 0) {
                                 count += valueBeans.get(i).num;
-                                map.put(valueBeans.get(i).type, (float) (valueBeans.get(i).num/Float.valueOf(response.getData().key)*100));
+                                map.put(valueBeans.get(i).type, (float) (valueBeans.get(i).num/Float.valueOf(response.getData().name)*100));
                                 mapShow.put(valueBeans.get(i).type, valueBeans.get(i).num);
                             }
                         }
@@ -303,7 +303,7 @@ public class TabAlarmCheckFragment extends BaseFragment implements HorizontalPro
                         for (int i = 0; i < valueBeans.size(); i++) {
                             if (valueBeans.get(i).type != 0) {
                                 count += valueBeans.get(i).num;
-                                map.put(valueBeans.get(i).type, (float) (valueBeans.get(i).num/Float.valueOf(response.getData().key)*100));
+                                map.put(valueBeans.get(i).type, (float) (valueBeans.get(i).num/Float.valueOf(response.getData().name)*100));
                                 mapShow.put(valueBeans.get(i).type, valueBeans.get(i).num);
                             }
                         }
