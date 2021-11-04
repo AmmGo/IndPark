@@ -54,8 +54,8 @@ public class PieChartSH1DataActivity extends BaseActivity {
     TextView chooseText2;
     private EntDialog pop;
     private String qyid;
-    private List<EntSHSEvent.RecordsBean> list = new ArrayList<>();
-    private List<EntSHSEvent.RecordsBean> selectList = new ArrayList<>();
+    private List<EntSHSEvent> list = new ArrayList<>();
+    private List<EntSHSEvent> selectList = new ArrayList<>();
     private EntSHSAdapter adapter;
     private PopEvent popEvent;
     private TabLayout tabLayout;
@@ -233,7 +233,7 @@ public class PieChartSH1DataActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                EntSHSEvent.RecordsBean jumpData = (EntSHSEvent.RecordsBean) adapter.getItem(position);
+                EntSHSEvent jumpData = (EntSHSEvent) adapter.getItem(position);
                 Intent intent = new Intent(PieChartSH1DataActivity.this, LineChartWxyFxActivity.class);
                 intent.putExtra("labelId", jumpData.labelId);
                 intent.putExtra("dw_str", jumpData.dataType);
@@ -256,6 +256,7 @@ public class PieChartSH1DataActivity extends BaseActivity {
                         chooseText.setText(response.getData().get(0).name);
                         qyid = String.valueOf(response.getData().get(0).id);
 //                        getEntType(Integer.parseInt(qyid));
+                        list.clear();
                         getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
                         tagOne = 1;
                     }
@@ -308,13 +309,13 @@ public class PieChartSH1DataActivity extends BaseActivity {
 
     public void getEntSHS(String id, String tlid, int pageNum, int pageSize, int timeType, String type) {
         try {
-            ArticlesRepo.getEntSHSEvent(id, tlid, pageNum, pageSize, timeType, type).observe(this, new ApiObserver<EntSHSEvent>() {
+            ArticlesRepo.getEntSHSEvent(id, tlid, pageNum, pageSize, timeType, type).observe(this, new ApiObserver<List<EntSHSEvent>>() {
                 @Override
-                public void onSuccess(Response<EntSHSEvent> response) {
+                public void onSuccess(Response<List<EntSHSEvent>> response) {
                     try {
-                        EntSHSEvent shsEvent = response.getData();
+                        List<EntSHSEvent> shsEvent = response.getData();
                         selectList = new ArrayList<>();
-                        selectList = shsEvent.records;
+                        selectList = shsEvent;
                         if (selectList != null && selectList.size() > 0) {
                             list.addAll(selectList);
                             adapter.setNewData(list);

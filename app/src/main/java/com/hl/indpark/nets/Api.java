@@ -154,7 +154,7 @@ public interface Api {
 
     /*=======危险源信息分页======*/
     @GET(BASE_JAVA + "/app/statistics/hazardDetail")
-    LiveData<Resource<Response<EntSHSEvent>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid, @Query("current") int pageNum, @Query("size") int pageSiz, @Query("dataType") int timeType, @Query("type") String Type);
+    LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(@Query("enterpriseId") String id, @Query("technologyId") String tlid, @Query("current") int pageNum, @Query("size") int pageSiz, @Query("dataType") int timeType, @Query("type") String Type);
 
     /*=======企业排污口列表======*/
     @GET(BASE_JAVA + "/environmentpoint/list/")

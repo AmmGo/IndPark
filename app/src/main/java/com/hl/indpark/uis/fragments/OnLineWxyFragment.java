@@ -59,8 +59,8 @@ public class OnLineWxyFragment extends BaseFragment {
     private EntDialog pop;
     private String qyid;
     private String companyCode;
-    private List<EntSHSEvent.RecordsBean> list = new ArrayList<>();
-    private List<EntSHSEvent.RecordsBean> selectList = new ArrayList<>();
+    private List<EntSHSEvent> list = new ArrayList<>();
+    private List<EntSHSEvent> selectList = new ArrayList<>();
     private EntSHSAdapter adapter;
     private PopEvent popEvent;
     private TabLayout tabLayout;
@@ -71,11 +71,11 @@ public class OnLineWxyFragment extends BaseFragment {
     private String selectType = "0";
     private String gyid;
     private int queryType = 0;
-    private Map<String, List<EntSHSEvent.RecordsBean>> listMap;
-    private List<EntSHSEvent.RecordsBean> gblist;
-    private List<EntSHSEvent.RecordsBean> ggblist;
-    private List<EntSHSEvent.RecordsBean> dblist;
-    private List<EntSHSEvent.RecordsBean> ddblist;
+    private Map<String, List<EntSHSEvent>> listMap;
+    private List<EntSHSEvent> gblist;
+    private List<EntSHSEvent> ggblist;
+    private List<EntSHSEvent> dblist;
+    private List<EntSHSEvent> ddblist;
     private String getEntName;
 
     @OnClick({R.id.ll_spin, R.id.ll_spin2})
@@ -304,7 +304,7 @@ public class OnLineWxyFragment extends BaseFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                EntSHSEvent.RecordsBean jumpData = (EntSHSEvent.RecordsBean) adapter.getItem(position);
+                EntSHSEvent jumpData = (EntSHSEvent) adapter.getItem(position);
                 Intent intent = new Intent(getActivity(), LineChartWxyTjActivity.class);
                 intent.putExtra("labelId", jumpData.tagId);
                 String dw_str = jumpData.value;
@@ -402,12 +402,12 @@ public class OnLineWxyFragment extends BaseFragment {
 
     public void getEntSHS(String id, String tlid, int pageNum, int pageSize, int timeType, String type) {
         try {
-            ArticlesRepo.getEntSHSEvent(id, tlid, pageNum, pageSize, timeType, type).observe(this, new ApiObserver<EntSHSEvent>() {
+            ArticlesRepo.getEntSHSEvent(id, tlid, pageNum, pageSize, timeType, type).observe(this, new ApiObserver<List<EntSHSEvent>>() {
                 @Override
-                public void onSuccess(Response<EntSHSEvent> response) {
-                    EntSHSEvent shsEvent = response.getData();
+                public void onSuccess(Response<List<EntSHSEvent>> response) {
+                    List<EntSHSEvent> shsEvent = response.getData();
                     selectList = new ArrayList<>();
-                    selectList = shsEvent.records;
+                    selectList = shsEvent;
                     if (selectList != null && selectList.size() > 0) {
                         list.addAll(selectList);
                         adapter.setNewData(list);
@@ -500,7 +500,7 @@ public class OnLineWxyFragment extends BaseFragment {
                     if (wxyEvents != null && wxyEvents.size() > 0) {
                         if (selectType.equals("0")) {
                             for (int i = 0; i < wxyEvents.size(); i++) {
-                                EntSHSEvent.RecordsBean data1 = new EntSHSEvent.RecordsBean();
+                                EntSHSEvent data1 = new EntSHSEvent();
                                 data1.type = wxyEvents.get(i).type;
                                 data1.pointName = wxyEvents.get(i).pointName;
                                 data1.enterpriseName = wxyEvents.get(i).enterpriseName;
@@ -512,7 +512,7 @@ public class OnLineWxyFragment extends BaseFragment {
                         }else{
                             for (int i = 0; i < wxyEvents.size(); i++) {
                                 if (selectType.equals(wxyEvents.get(i).type)){
-                                    EntSHSEvent.RecordsBean data1 = new EntSHSEvent.RecordsBean();
+                                    EntSHSEvent data1 = new EntSHSEvent();
                                     data1.type = wxyEvents.get(i).type;
                                     data1.pointName = wxyEvents.get(i).pointName;
                                     data1.enterpriseName = wxyEvents.get(i).enterpriseName;

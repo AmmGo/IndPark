@@ -29,20 +29,20 @@ public class EntSHSEvent {
     public String type;
     public String value;
     public String labelId;
-    public List<RecordsBean> records;
+//    public List<RecordsBean> records;
 
-    public static class RecordsBean {
-
-        public String dataType;
-        public String enterpriseName;
-        public String pointName;
-        public String sourceDangerName;
-        public String tagId;
-        public String technologyName;
-        public String time;
-        public String type;
-        public String value;
-        public String labelId;
-        public String labelid;
-    }
+//    public static class RecordsBean {
+//
+//        public String dataType;
+//        public String enterpriseName;
+//        public String pointName;
+//        public String sourceDangerName;
+//        public String tagId;
+//        public String technologyName;
+//        public String time;
+//        public String type;
+//        public String value;
+//        public String labelId;
+//        public String labelid;
+//    }
 }

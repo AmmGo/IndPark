@@ -94,7 +94,7 @@ public class ArticlesRepo {
         return Net.api().getEntSHSEvent(id, tlid);
     }
 
-    public static LiveData<Resource<Response<EntSHSEvent>>> getEntSHSEvent(String id, String tlid, int pageNum, int pageSize, int timeType, String dataType) {
+    public static LiveData<Resource<Response<List<EntSHSEvent>>>> getEntSHSEvent(String id, String tlid, int pageNum, int pageSize, int timeType, String dataType) {
         return Net.api().getEntSHSEvent(id, tlid, pageNum, pageSize, timeType, dataType);
     }
 
