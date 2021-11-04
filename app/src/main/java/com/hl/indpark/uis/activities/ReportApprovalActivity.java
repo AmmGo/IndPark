@@ -14,6 +14,7 @@ import com.android.tu.loadingdialog.LoadingDailog;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.MyPeportIDEvent;
+import com.hl.indpark.entities.new2.EventId;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.fragments.ImageFragment;
@@ -140,9 +141,9 @@ public class ReportApprovalActivity extends BaseActivity {
         finish();
     }
     public void getData(int id) {
-        ArticlesRepo.getMyPeportIDEvent(String.valueOf(id)).observe(this, new ApiObserver<MyPeportIDEvent>() {
+        ArticlesRepo.getMyPeportIDEvent(String.valueOf(id)).observe(this, new ApiObserver<EventId>() {
             @Override
-            public void onSuccess(Response<MyPeportIDEvent> response) {
+            public void onSuccess(Response<EventId> response) {
                 Log.e("审批列表-ID-查询事件", "onSuccess: ");
                 try {
                     setViewData(response.getData());
@@ -165,13 +166,13 @@ public class ReportApprovalActivity extends BaseActivity {
         });
     }
 
-    public void setViewData(MyPeportIDEvent idEvent) {
+    public void setViewData(EventId idEvent) {
 //        String eventType = "<font color='#3A3A3A'>事件类型</font><br/><font color='#BABABA'"+idEvent.typeName+"</font>";
-        tvType.setText("事件类型:" + idEvent.typeName);
-        tvTitle.setText("事件名称:" + idEvent.title);
-        tvDes.setText("事件内容:" + idEvent.content);
+        tvType.setText("事件类型:" + Util.selectTypeName(idEvent.eventType));
+        tvTitle.setText("事件名称:" + idEvent.name);
+        tvDes.setText("事件内容:" + idEvent.detail);
         tv_event_time.setText("上报时间:" + idEvent.createTime);
-        tv_event_person.setText("上报人:" + idEvent.reportedName);
+        tv_event_person.setText(idEvent.createName==null?"上报人:":"上报人:"+idEvent.createName);
         tv_event_phone.setText("联系电话:" + idEvent.phone);
         if (idEvent.imageList != null && idEvent.imageList.size() > 0) {
             mediaList = idEvent.imageList;
@@ -183,9 +184,9 @@ public class ReportApprovalActivity extends BaseActivity {
         if (idEvent.status == 1) {
             tvReport.setVisibility(View.GONE);
             rledNote.setVisibility(View.GONE);
-            if (idEvent.handleOpinion != null && !idEvent.handleOpinion.equals("")) {
+            if (idEvent.handlingOpinions != null && !idEvent.handlingOpinions.equals("")) {
                 rlNote.setVisibility(View.VISIBLE);
-                tv_event_onte.setText("审批意见:" + idEvent.handleOpinion);
+                tv_event_onte.setText("审批意见:" + idEvent.handlingOpinions);
             } else {
                 rlNote.setVisibility(View.GONE);
             }

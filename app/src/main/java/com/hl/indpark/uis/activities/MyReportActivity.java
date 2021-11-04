@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.MyPeportEvent;
+import com.hl.indpark.entities.new2.EventPageList;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.adapters.MyReportAdapter;
@@ -44,8 +45,8 @@ public class MyReportActivity extends BaseActivity {
     private int total = 0;
     @BindView(R.id.refreshLayout)
     RefreshLayout refreshLayout;
-    private List<MyPeportEvent.RecordsBean> list;
-    private List<MyPeportEvent.RecordsBean> myList;
+    private List<EventPageList.RecordsBean> list;
+    private List<EventPageList.RecordsBean> myList;
     private MyReportAdapter adapter;
     private TabLayout tabLayout;
     private String state = null;
@@ -167,11 +168,11 @@ public class MyReportActivity extends BaseActivity {
     }
 
     public void getData(int pageNum, int pageSize, String state) {
-        ArticlesRepo.getMyPeportEvent(pageNum, pageSize, state).observe(this, new ApiObserver<MyPeportEvent>() {
+        ArticlesRepo.getMyPeportEvent(pageNum, pageSize, state).observe(this, new ApiObserver<EventPageList>() {
             @Override
-            public void onSuccess(Response<MyPeportEvent> response) {
+            public void onSuccess(Response<EventPageList> response) {
                 Log.e("上报列表", "onSuccess: ");
-                MyPeportEvent event = response.getData();
+                EventPageList event = response.getData();
                 myList = new ArrayList<>();
                 myList = event.records;
                 if (myList != null && event.records.size() > 0) {

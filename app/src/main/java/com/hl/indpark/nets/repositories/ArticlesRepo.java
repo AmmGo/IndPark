@@ -34,6 +34,8 @@ import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.entities.events.WxyEvent;
 import com.hl.indpark.entities.events.WxyTjEvent;
+import com.hl.indpark.entities.new2.EventId;
+import com.hl.indpark.entities.new2.EventPageList;
 import com.hl.indpark.entities.new2.Ryqr;
 import com.hl.indpark.entities.new2.Sbry;
 import com.hl.indpark.entities.new2.Wpry;
@@ -109,7 +111,7 @@ public class ArticlesRepo {
         return Net.api().getMyMsgEvent(sizePage, isP);
     }
 
-    public static LiveData<Resource<Response<MyPeportIDEvent>>> getMyPeportIDEvent(String id) {
+    public static LiveData<Resource<Response<EventId>>> getMyPeportIDEvent(String id) {
         return Net.api().getMyPeportIDEvent(id);
     }
 
@@ -117,7 +119,7 @@ public class ArticlesRepo {
         return Net.api().getVideoPush(content, userId);
     }
 
-    public static LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(int sizePage, int isP, String state) {
+    public static LiveData<Resource<Response<EventPageList>>> getMyPeportEvent(int sizePage, int isP, String state) {
         return Net.api().getMyPeportEvent(sizePage, isP, state);
     }
 

@@ -29,6 +29,8 @@ import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.entities.events.MyScoresEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
+import com.hl.indpark.entities.new2.EventId;
+import com.hl.indpark.entities.new2.EventPageList;
 import com.hl.indpark.entities.new2.Ryqr;
 import com.hl.indpark.entities.events.ScoresDetailsEvent;
 import com.hl.indpark.entities.events.SelfCheck;
@@ -166,17 +168,17 @@ public interface Api {
     @GET(BASE_JAVA + "/push/pageList/")
     LiveData<Resource<Response<MyMsgEvent>>> getMyMsgEvent(@Query("current") int page, @Query("size") int pageSize);
 
-    /*=======上报列表======*/
-    @GET(BASE_JAVA + "/phone/events/")
-    LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(@Query("current") int page, @Query("size") int pageSize, @Query("status") String state);
+//    /*=======上报列表======*/
+//    @GET(BASE_JAVA + "/phone/events/")
+//    LiveData<Resource<Response<MyPeportEvent>>> getMyPeportEvent(@Query("current") int page, @Query("size") int pageSize, @Query("status") String state);
 
     /*=======审批列表======*/
     @GET(BASE_JAVA + "/phone/approveEvents/")
     LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(@Query("current") int page, @Query("size") int pageSize, @Query("status") String state);
 
-    /*=======审批列表-ID-查询事件======*/
-    @GET(BASE_JAVA + "/event/findById/")
-    LiveData<Resource<Response<MyPeportIDEvent>>> getMyPeportIDEvent(@Query("id") String id);
+//    /*=======审批列表-ID-查询事件======*/
+//    @GET(BASE_JAVA + "/event/findById/")
+//    LiveData<Resource<Response<MyPeportIDEvent>>> getMyPeportIDEvent(@Query("id") String id);
 
     /*=======视频呼叫======*/
     @GET(BASE_JAVA + "/phone/push/")
@@ -348,4 +350,12 @@ public interface Api {
     /*=======上报事件2.0======*/
     @POST(BASE_JAVA + "/event/insert")
     LiveData<Resource<Response<String>>> getReportEvent(@Body HashMap<String, String> map);
+
+    /*=======上报列表======*/
+    @GET(BASE_JAVA + "/event/pageList")
+    LiveData<Resource<Response<EventPageList>>> getMyPeportEvent(@Query("current") int page, @Query("size") int pageSize, @Query("status") String state);
+
+    /*=======审批列表-ID-查询事件======*/
+    @GET(BASE_JAVA + "/event/findById")
+    LiveData<Resource<Response<EventId>>> getMyPeportIDEvent(@Query("id") String id);
 }

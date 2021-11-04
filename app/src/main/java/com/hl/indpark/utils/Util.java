@@ -2,16 +2,13 @@ package com.hl.indpark.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.hl.indpark.App;
 import com.hl.indpark.BuildConfig;
-import com.hl.indpark.uis.activities.LoginActivity;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -161,7 +158,8 @@ public class Util {
         }
         return result;
     }
-    public static String stampToDate(String s){
+
+    public static String stampToDate(String s) {
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //如果它本来就是long类型的,则不用写这一步
@@ -169,5 +167,33 @@ public class Util {
         Date date = new Date(lt);
         res = simpleDateFormat.format(date);
         return res;
+    }
+
+    public static String selectTypeName(int i) {
+        String name = "";
+        switch (i) {
+            case 1:
+                name = "突发事件";
+                break;
+            case 2:
+                name = "普通事件";
+                break;
+            case 3:
+                name = "危险源事件";
+                break;
+            case 4:
+                name = "排口报警(水)";
+                break;
+            case 5:
+                name = "排口报警(气)";
+                break;
+            case 6:
+                name = "其他事件";
+                break;
+            case 7:
+                name = "实时事件";
+                break;
+        }
+        return name;
     }
 }
