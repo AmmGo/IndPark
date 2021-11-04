@@ -133,7 +133,7 @@ public interface Api {
     LiveData<Resource<Response<List<PhoneEvent>>>> getPhoneEvent();
 
     /*=======用户信息======*/
-    @GET(BASE_JAVA + "/phone/user/")
+    @GET(BASE_JAVA + "/app/statistics/user")
     LiveData<Resource<Response<UserInfoEvent>>> getUserInfoEvent();
 
     /*=======我的上报or我的审批======*/
@@ -309,19 +309,19 @@ public interface Api {
 
 
     /*=======巡检人员======*/
-    @GET(BASE_JAVA + "/equipmentexaminedetails/enterpriseedetails")
+    @GET(BASE_JAVA + "/equipmentExamineDetails/enterpriseedetails")
     LiveData<Resource<Response<List<PhoneEvent>>>> getXjryCheck();
 
     /*=======巡检上报事件======*/
-    @POST(BASE_JAVA + "/equipmentexaminedetails/insert")
+    @POST(BASE_JAVA + "/equipmentExamineDetails/insert")
     LiveData<Resource<Response<String>>> getMachineCheckReportEvent(@Body HashMap<String, String> map);
 
     /*=======巡检上报Id查询事件======*/
-    @POST(BASE_JAVA + "/equipmentexaminedetails/selectDetails")
+    @POST(BASE_JAVA + "/equipmentExamineDetails/selectDetails")
     LiveData<Resource<Response<List<MachineCheckId>>>> getMachineCheckReportIdEvent(@Query("id") String id);
 
     /*=======巡检上报List查询事件======*/
-    @GET(BASE_JAVA + "/equipmentexaminedetails/select")
+    @GET(BASE_JAVA + "/equipmentExamineDetails/select")
     LiveData<Resource<Response<List<MachineCheck>>>> getMachineCheckReportListEvent();
 
     /*=======一键报警======*/

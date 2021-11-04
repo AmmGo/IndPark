@@ -324,15 +324,15 @@ public class NavigationManagerActivity extends BaseActivity implements LocationS
                 if (list.size() > 0) {
                     for (int i = 0; i < list.size(); i++) {
                         Marker marker = aMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(list.get(i).latitude, list.get(i).longitude))
+                                .position(new LatLng(Double.parseDouble(list.get(i).centre.split(",")[1]), Double.parseDouble(list.get(i).centre.split(",")[0])))
                                 .title(list.get(i).name)
                                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                         .decodeResource(getResources(), R.drawable.ep_marker_point)))
                                 .draggable(true));
                         listEpPoint.add(marker);
                         try {
-                            if (marker.getPosition() != null && list.get(i).latitude > 0 && isFirstEpPoint) {
-                                cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(list.get(i).latitude, list.get(i).longitude), 15, 0, 30));
+                            if (marker.getPosition() != null && Double.parseDouble(list.get(i).centre.split(",")[1])> 0 && isFirstEpPoint) {
+                                cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(Double.parseDouble(list.get(i).centre.split(",")[1]), Double.parseDouble(list.get(i).centre.split(",")[0])), 15, 0, 30));
                                 aMap.moveCamera(cameraUpdate);//地图移向指定区域
                                 isFirstEpPoint = false;
                             }
