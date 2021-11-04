@@ -18,5 +18,6 @@ public class PhoneEvent {
     public String deviceId;
     public String depName;
     public String enterpriseName;
+    public String photo;//头像
 
 }

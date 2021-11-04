@@ -257,15 +257,15 @@ public interface Api {
     LiveData<Resource<Response<MyMsgEvent>>> getLogManager(@Query("current") int page, @Query("size") int pageSize,@Query("enterpriseId") String enterpriseId,@Query("date") String date);
 
     /*=======企业点位======*/
-    @GET(BASE_JAVA + "/phone/navigationEnterprise")
+    @GET(BASE_JAVA + "/app/statistics/navigationEnterprise")
     LiveData<Resource<Response<List<MapPointEvent>>>> getEpPoint();
 
     /*=======巡检设备======*/
-    @GET(BASE_JAVA + "/phone/navigationDevice")
+    @GET(BASE_JAVA + "/app/statistics/navigationDevice")
     LiveData<Resource<Response<List<MapPointEvent>>>> getCheckPoint();
 
     /*=======事件点位======*/
-    @GET(BASE_JAVA + "/phone/navigationEvent")
+    @GET(BASE_JAVA + "/app/statistics/navigationEvent")
     LiveData<Resource<Response<List<MapPointEvent>>>> getEventPoint();
 
     /*=======   监控系统-高空瞭望视频======*/
@@ -325,7 +325,7 @@ public interface Api {
     LiveData<Resource<Response<List<MachineCheck>>>> getMachineCheckReportListEvent();
 
     /*=======一键报警======*/
-    @GET(BASE_JAVA + "/phone/giveAnAlarm")
+    @GET(BASE_JAVA + "/app/statistics/giveAnAlarm")
     LiveData<Resource<Response<String>>> getCallPolice(@Query("address") String address,@Query("name") String name,@Query("phone") String phone);
 
 
