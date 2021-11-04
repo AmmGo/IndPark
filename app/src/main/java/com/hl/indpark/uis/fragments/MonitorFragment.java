@@ -219,7 +219,6 @@ public class MonitorFragment extends BaseFragment {
         } else {
             ll_spin.setVisibility(View.GONE);
         }
-
         refreshLayout.autoRefresh();//自动刷新
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override

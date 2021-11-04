@@ -141,7 +141,7 @@ public interface Api {
     LiveData<Resource<Response<SelfReportEvent>>> getSelfReportEvent();
 
     /*=======企业列表======*/
-    @GET(BASE_JAVA + "/transmission/enterpriseList/")
+    @GET(BASE_JAVA + "/safetyProduction/enterpriseList")
     LiveData<Resource<Response<List<EntNameEvent>>>> getEnterpriseEvent();
 
     /*=======企业工艺列表======*/
