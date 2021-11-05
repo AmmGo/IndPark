@@ -159,7 +159,7 @@ public interface Api {
     LiveData<Resource<Response<List<EntSEPTypeEvent>>>> getEntSEPTypeEvent(@Query("enterpriseId") int id);
 
     /*=======环保信息======*/
-    @GET(BASE_JAVA + "/phone/EnvironmentMonitor/")
+    @GET(BASE_JAVA + "/app/statistics/environmentMonitor")
     LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(@Query("psCode") String id, @Query("pointCode") String tlid, @Query("current") int page, @Query("size") int pageSize, @Query("type") int timeType, @Query("isException") String isp);  /*=======环保信息======*/
 
     @GET(BASE_JAVA + "/app/statistics/environmentMonitor")

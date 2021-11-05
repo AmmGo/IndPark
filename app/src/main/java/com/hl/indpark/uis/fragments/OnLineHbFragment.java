@@ -22,9 +22,12 @@ import com.hl.indpark.entities.events.EntSEPEvent;
 import com.hl.indpark.entities.events.NameEp;
 import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.entities.events.TypeEp;
+import com.hl.indpark.entities.new2.HBItem;
+import com.hl.indpark.entities.new2.HbSSSJ;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.activities.LineChartHbPcActivity;
+import com.hl.indpark.uis.activities.PieChartEPDataActivity;
 import com.hl.indpark.uis.adapters.EntSEPAdapter;
 import com.hl.indpark.utils.Util;
 import com.hl.indpark.widgit.EntDialog;
@@ -145,22 +148,22 @@ public class OnLineHbFragment extends BaseFragment {
                             case 0:
                                 //全部
                                 selectType = null;
-                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                                 break;
                             case 1:
                                 //高高报
                                 selectType = "0";
-                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                                 break;
                             case 2:
                                 //高报
                                 selectType = "1";
-                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                                 break;
                             case 3:
                                 //低低报
                                 selectType = "2";
-                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                                 break;
 
                         }
@@ -190,7 +193,7 @@ public class OnLineHbFragment extends BaseFragment {
                             pageNum = 1;
                             pageSize = 10;
                             list.clear();
-                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                             refreshLayout.finishRefresh();
                         }
                     }, 50);
@@ -203,7 +206,7 @@ public class OnLineHbFragment extends BaseFragment {
                         @Override
                         public void run() {
                             pageNum += 1;
-                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                             if (total == 1) {
                                 refreshLayout.finishLoadMoreWithNoMoreData();
                             } else {
@@ -264,7 +267,7 @@ public class OnLineHbFragment extends BaseFragment {
                     popEvent.typeEp=typeEps(commName);
                     qyid = map.get(commName).get(0).psCode;
                     pkid = map.get(commName).get(0).ioCode;
-                    getEntSEP(value.psCode,value.ioCode,pageNum,pageSize,timeType,selectType);
+                    getEntSEP(value.psCode,value.ioCode,pageNum,pageSize,timeType,selectType,pkid);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -294,7 +297,7 @@ public class OnLineHbFragment extends BaseFragment {
         return type;
     }
     private LoadingDailog dialog;
-    public void getEntSEP(String qyid, String pkid, int pageNum, int pageSize, int timeType, String selectType) {
+    public void getEntSEP(String qyid, String pkid, int pageNum, int pageSize, int timeType, String selectType,String pkidnew) {
         LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(getActivity())
                 .setMessage("加载中...")
                 .setCancelable(false)
@@ -303,12 +306,21 @@ public class OnLineHbFragment extends BaseFragment {
         dialog.getWindow().setDimAmount(0f);
         dialog.show();
         try {
-            ArticlesRepo.getEntSEPEvent(qyid, pkid, pageNum, pageSize, timeType, selectType).observe(this, new ApiObserver<EntSEPEvent>() {
+            ArticlesRepo.getEntSEPEventNew(qyid, pkid, pageNum, pageSize, 1, selectType,pkidnew).observe(this, new ApiObserver<HbSSSJ>() {
                 @Override
-                public void onSuccess(Response<EntSEPEvent> response) {
-                    EntSEPEvent shsEvent = response.getData();
+                public void onSuccess(Response<HbSSSJ> response) {
+                    HbSSSJ hbSSSJS = new HbSSSJ();
+                    hbSSSJS=response.getData();
+                    List<EntSEPEvent.RecordsBean> er = new ArrayList<>();
+
+                    if (hbSSSJS.records.size()>0){
+                        for (int i = 0 ;i<hbSSSJS.records.size();i++){
+                            HBItem hbItem = HbSSSJ.getNum(hbSSSJS.records.get(i).monitoringDataList);
+                            er.add(new EntSEPEvent.RecordsBean(hbSSSJS.records.get(i).pointName,hbSSSJS.records.get(i).monitorTime,hbSSSJS.records.get(i).couFlow,hbSSSJS.records.get(i).couFlow,hbItem.coddata,hbItem.ammoniacalData,hbItem.totalData,hbItem.smokeData,hbItem.sulfurData,hbItem.nitrogenData,hbItem.isException));
+                        }
+                    }
                     selectList = new ArrayList<>();
-                    selectList = shsEvent.records;
+                    selectList = er;
                     if (selectList != null && selectList.size() > 0) {
                         list.addAll(selectList);
                         adapter.setNewData(list);
@@ -358,7 +370,7 @@ public class OnLineHbFragment extends BaseFragment {
             qyid = map.get(commName).get(0).psCode;
             pkid = map.get(commName).get(0).ioCode;
             popEvent.typeEp=typeEps(commName);
-            getEntSEP(qyid,pkid,pageNum,pageSize,timeType,selectType);
+            getEntSEP(qyid,pkid,pageNum,pageSize,timeType,selectType,pkid);
             pop.cancel();
         } catch (Exception e) {
             e.printStackTrace();
@@ -377,7 +389,7 @@ public class OnLineHbFragment extends BaseFragment {
             }
             adapter.getType(typeAdapter);
             list.clear();
-            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
             pop.cancel();
         } catch (Exception e) {
             e.printStackTrace();
