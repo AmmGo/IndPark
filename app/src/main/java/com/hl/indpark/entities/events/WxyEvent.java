@@ -21,6 +21,7 @@ public class WxyEvent {
     public String technologyName;
     public String value;
     public String type;
+    public String labelId;
     public String time;
     public String dataType;
     public String companyCode;

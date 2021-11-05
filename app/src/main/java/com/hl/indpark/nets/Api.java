@@ -24,14 +24,9 @@ import com.hl.indpark.entities.events.MapPointEvent;
 import com.hl.indpark.entities.events.MyApprovalEvent;
 import com.hl.indpark.entities.events.MyExchangeRecordEvent;
 import com.hl.indpark.entities.events.MyMsgEvent;
-import com.hl.indpark.entities.events.MyPeportEvent;
-import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.entities.events.MyScoresEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
-import com.hl.indpark.entities.new2.EventId;
-import com.hl.indpark.entities.new2.EventPageList;
-import com.hl.indpark.entities.new2.Ryqr;
 import com.hl.indpark.entities.events.ScoresDetailsEvent;
 import com.hl.indpark.entities.events.SelfCheck;
 import com.hl.indpark.entities.events.SelfReportEvent;
@@ -39,6 +34,10 @@ import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.entities.events.WxyEvent;
 import com.hl.indpark.entities.events.WxyTjEvent;
+import com.hl.indpark.entities.new2.EventId;
+import com.hl.indpark.entities.new2.EventPageList;
+import com.hl.indpark.entities.new2.HbSSSJ;
+import com.hl.indpark.entities.new2.Ryqr;
 import com.hl.indpark.entities.new2.Sbry;
 import com.hl.indpark.entities.new2.Wpry;
 
@@ -91,7 +90,6 @@ public interface Api {
 //    String BASE_JAVA = "java";
     /**
      * 盐池外网发布
-     *
      */
 //    String BASE_URL = "https://ycgwh.zwhldk.com:444/";
 //    String BASE_URL_IMG = "https://ycgwh.zwhldk.com:444/img";
@@ -104,9 +102,9 @@ public interface Api {
     String BASE_URL = "http://testindustry.zwhldk.com/";
     String BASE_URL_IMG = "https://testindustry.zwhldk.com/img/";
     String BASE_JAVA = "java";
+
     /**
      * 2.0版本线上地址
-     *
      */
 //    String BASE_URL = "http://nxzwgyyq.zwhldk.com/";
 //    String BASE_URL_IMG = "https://nxzwgyyq.zwhldk.com/img/";
@@ -162,7 +160,10 @@ public interface Api {
 
     /*=======环保信息======*/
     @GET(BASE_JAVA + "/phone/EnvironmentMonitor/")
-    LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(@Query("psCode") String id, @Query("pointCode") String tlid, @Query("current") int page, @Query("size") int pageSize, @Query("type") int timeType, @Query("isException") String isp);
+    LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(@Query("psCode") String id, @Query("pointCode") String tlid, @Query("current") int page, @Query("size") int pageSize, @Query("type") int timeType, @Query("isException") String isp);  /*=======环保信息======*/
+
+    @GET(BASE_JAVA + "/app/statistics/environmentMonitor")
+    LiveData<Resource<Response<HbSSSJ>>> getEntSEPEventNew(@Query("psCode") String id, @Query("pointCode") String tlid, @Query("current") int page, @Query("size") int pageSize, @Query("type") int timeType, @Query("isException") String isp, @Query("pointType") String pointType);
 
     /*=======消息列表======*/
     @GET(BASE_JAVA + "/push/pageList/")
@@ -172,7 +173,6 @@ public interface Api {
     /*=======审批列表======*/
     @GET(BASE_JAVA + "/phone/approveEvents/")
     LiveData<Resource<Response<MyApprovalEvent>>> getMyApprovalEvent(@Query("current") int page, @Query("size") int pageSize, @Query("status") String state);
-
 
 
     /*=======视频呼叫======*/
@@ -207,7 +207,7 @@ public interface Api {
     LiveData<Resource<Response<String>>> getUploadImgS(@Part List<MultipartBody.Part> maps);
 
     /*=======企业列表New======*/
-    @GET(BASE_JAVA + "/environmentpoint/listTree")
+    @GET(BASE_JAVA + "/app/statistics/listTree")
     LiveData<Resource<Response<List<EntNewEp>>>> getEntNewEp();
 
     /*=======修改消息状态======*/
@@ -254,7 +254,7 @@ public interface Api {
 
     /*=======日志管理=====*/
     @GET(BASE_JAVA + "/push/journal")
-    LiveData<Resource<Response<MyMsgEvent>>> getLogManager(@Query("current") int page, @Query("size") int pageSize,@Query("enterpriseId") String enterpriseId,@Query("date") String date);
+    LiveData<Resource<Response<MyMsgEvent>>> getLogManager(@Query("current") int page, @Query("size") int pageSize, @Query("enterpriseId") String enterpriseId, @Query("date") String date);
 
     /*=======企业点位======*/
     @GET(BASE_JAVA + "/app/statistics/navigationEnterprise")
@@ -274,7 +274,7 @@ public interface Api {
 
     /*======= 监控系统-危险源视频======*/
     @GET(BASE_JAVA + "/app/statistics/hazardCamera")
-    LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(@Query("current") int page, @Query("size")int pageSize ,@Query("enterpriseId") String enterpriseId,@Query("name") String name);
+    LiveData<Resource<Response<List<CameraVideoEvent>>>> getHazardCamera(@Query("current") int page, @Query("size") int pageSize, @Query("enterpriseId") String enterpriseId, @Query("name") String name);
 
     /*=======自检列表======*/
     @GET(BASE_JAVA + "/appChecking/pageList")
@@ -293,18 +293,18 @@ public interface Api {
     LiveData<Resource<Response<List<WxyTjEvent>>>> getWxyTjEvent();
 
     /*=======危险源折线图分析======*/
-    @GET(BASE_JAVA + "/phone/alarmInfoStatistic")
+    @GET(BASE_JAVA + "/app/statistics/alarmInfoStatistic")
     LiveData<Resource<Response<List<LineChartWxy>>>> getLineChartWxy(@Query("labelId") String labelId, @Query("type") int type);
 
     /*=======危险源折线图统计======*/
-    @GET(BASE_JAVA + "/phone/realStatistics")
+    @GET(BASE_JAVA + "/app/statistics/realStatistics")
     LiveData<Resource<Response<List<LineChartWxy>>>> getLineChartWxyTj(@Query("labelId") String labelId, @Query("type") int type);
 
     /*=======环保数据折线图======*/
     @GET(BASE_JAVA + "/environmentStatistics/analysisTrendChartEnvironment")
     LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHb(@Query("enterpriseId") String enterpriseId, @Query("pointId") String pointId, @Query("timeType") String timeType, @Query("type") String type);    /*=======环保数据折线图======*/
 
-    @GET(BASE_JAVA + "/environmentStatistics/queryMonitoringDataByEnterpriseIdAndPointId")
+    @GET(BASE_JAVA + "/app/statistics/queryMonitoringDataByEnterpriseIdAndPointId")
     LiveData<Resource<Response<List<LineChartsHb>>>> getLineChartHbPc(@Query("enterpriseId") String enterpriseId, @Query("pointId") String pointId, @Query("startDate") String startDate, @Query("endDate") String endDate);
 
 
@@ -326,7 +326,7 @@ public interface Api {
 
     /*=======一键报警======*/
     @GET(BASE_JAVA + "/app/statistics/giveAnAlarm")
-    LiveData<Resource<Response<String>>> getCallPolice(@Query("address") String address,@Query("name") String name,@Query("phone") String phone);
+    LiveData<Resource<Response<String>>> getCallPolice(@Query("address") String address, @Query("name") String name, @Query("phone") String phone);
 
 
     //2.0新增接口

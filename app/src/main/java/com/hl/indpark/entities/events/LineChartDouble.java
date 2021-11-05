@@ -124,7 +124,7 @@ public class LineChartDouble {
             vle.setX(i);
             vle.setY((float) list.get(i).value);
             valueSet1.add(vle);
-            map.put(i,list.get(i).key);
+            map.put(i,list.get(i).name);
         }
         LineDataSet barDataSet1 = new LineDataSet(valueSet1, "数据1注解");
         barDataSet1.setColor(Color.parseColor("#45a2ff"));

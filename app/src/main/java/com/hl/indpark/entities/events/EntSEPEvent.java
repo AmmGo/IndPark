@@ -57,6 +57,18 @@ public class EntSEPEvent {
          */
         public String isException ;
 
-
+        public RecordsBean(String equipmentName, String monitorTime, String exhaustData, String wastewaterData, String coddata, String ammoniacalData, String totalData, String smokeData, String sulfurData, String nitrogenData, String isException) {
+            this.equipmentName = equipmentName;
+            this.monitorTime = monitorTime;
+            this.exhaustData = exhaustData;
+            this.wastewaterData = wastewaterData;
+            this.coddata = coddata;
+            this.ammoniacalData = ammoniacalData;
+            this.totalData = totalData;
+            this.smokeData = smokeData;
+            this.sulfurData = sulfurData;
+            this.nitrogenData = nitrogenData;
+            this.isException = isException;
+        }
     }
 }

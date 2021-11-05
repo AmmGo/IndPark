@@ -306,7 +306,7 @@ public class OnLineWxyFragment extends BaseFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 EntSHSEvent jumpData = (EntSHSEvent) adapter.getItem(position);
                 Intent intent = new Intent(getActivity(), LineChartWxyTjActivity.class);
-                intent.putExtra("labelId", jumpData.tagId);
+                intent.putExtra("labelId", String.valueOf(jumpData.tagId));
                 String dw_str = jumpData.value;
                 if (dw_str!=null&&!dw_str.equals("")){
                     dw_str = dw_str.replace(".","").replaceAll("[\\d]+","").replace("-","");
@@ -343,7 +343,7 @@ public class OnLineWxyFragment extends BaseFragment {
                 try {
                     if (response.getData() != null) {
 
-                        companyCode = String.valueOf(response.getData().get(0).companyCode);
+                        companyCode = String.valueOf(response.getData().get(0).id);
                         if (response.getData().size()==1){
                             queryType=1;
                             chooseText.setText(response.getData().get(0).name);
@@ -454,7 +454,7 @@ public class OnLineWxyFragment extends BaseFragment {
         pageNum = 1;
         pageSize =10;
 //        getEntSHS(qyid, null, pageNum, pageSize, timeType, selectType);
-        companyCode=event.companyCode;
+        companyCode= String.valueOf(event.id);
         getWxy(companyCode,selectType,queryType);
 //        getEntType(event.id);
         pop.cancel();

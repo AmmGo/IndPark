@@ -22,8 +22,6 @@ import com.hl.indpark.entities.events.MapPointEvent;
 import com.hl.indpark.entities.events.MyApprovalEvent;
 import com.hl.indpark.entities.events.MyExchangeRecordEvent;
 import com.hl.indpark.entities.events.MyMsgEvent;
-import com.hl.indpark.entities.events.MyPeportEvent;
-import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.entities.events.MyScoresEvent;
 import com.hl.indpark.entities.events.PhoneEvent;
 import com.hl.indpark.entities.events.ReportTypeEvent;
@@ -36,6 +34,7 @@ import com.hl.indpark.entities.events.WxyEvent;
 import com.hl.indpark.entities.events.WxyTjEvent;
 import com.hl.indpark.entities.new2.EventId;
 import com.hl.indpark.entities.new2.EventPageList;
+import com.hl.indpark.entities.new2.HbSSSJ;
 import com.hl.indpark.entities.new2.Ryqr;
 import com.hl.indpark.entities.new2.Sbry;
 import com.hl.indpark.entities.new2.Wpry;
@@ -104,6 +103,10 @@ public class ArticlesRepo {
 
     public static LiveData<Resource<Response<EntSEPEvent>>> getEntSEPEvent(String id, String tlid, int page, int sizePage, int timeType, String isP) {
         return Net.api().getEntSEPEvent(id, tlid, page, sizePage, timeType, isP);
+    }
+
+    public static LiveData<Resource<Response<HbSSSJ>>> getEntSEPEventNew(String id, String tlid, int page, int sizePage, int timeType, String isP, String pointType) {
+        return Net.api().getEntSEPEventNew(id, tlid, page, sizePage, timeType, isP,pointType);
     }
 
 
@@ -220,7 +223,7 @@ public class ArticlesRepo {
     }
 
     public static LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(String id, int queryType, int dateType) {
-        return Net.api().getWxyEvent(id, queryType,dateType);
+        return Net.api().getWxyEvent(id, queryType, dateType);
     }
 
     public static LiveData<Resource<Response<List<WxyTjEvent>>>> getWxyTjEvent() {

@@ -22,6 +22,8 @@ import com.hl.indpark.entities.events.EntSEPEvent;
 import com.hl.indpark.entities.events.NameEp;
 import com.hl.indpark.entities.events.PopEvent;
 import com.hl.indpark.entities.events.TypeEp;
+import com.hl.indpark.entities.new2.HBItem;
+import com.hl.indpark.entities.new2.HbSSSJ;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.adapters.EntSEPAdapter;
@@ -152,22 +154,22 @@ public class PieChartEPDataActivity extends BaseActivity {
                             case 0:
                                 //全部
                                 selectType = null;
-                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                                 break;
                             case 1:
                                 //高高报
                                 selectType = "0";
-                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                                 break;
                             case 2:
                                 //高报
                                 selectType = "1";
-                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                                 break;
                             case 3:
                                 //低低报
                                 selectType = "2";
-                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                                getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                                 break;
 
                         }
@@ -197,7 +199,7 @@ public class PieChartEPDataActivity extends BaseActivity {
                             pageNum = 1;
                             pageSize = 10;
                             list.clear();
-                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                             refreshLayout.finishRefresh();
                         }
                     }, 50);
@@ -210,7 +212,7 @@ public class PieChartEPDataActivity extends BaseActivity {
                         @Override
                         public void run() {
                             pageNum += 1;
-                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+                            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
                             if (total == 1) {
                                 refreshLayout.finishLoadMoreWithNoMoreData();
                             } else {
@@ -270,8 +272,8 @@ public class PieChartEPDataActivity extends BaseActivity {
                     popEvent.nameEp=nameEp;
                     popEvent.typeEp=typeEps(commName);
                     qyid = map.get(commName).get(0).psCode;
-                    pkid = map.get(commName).get(0).iocode;
-                    getEntSEP(value.psCode,value.iocode,pageNum,pageSize,timeType,selectType);
+                    pkid = map.get(commName).get(0).ioCode;
+                    getEntSEP(value.psCode,value.ioCode,pageNum,pageSize,timeType,selectType,pkid);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -300,7 +302,7 @@ public List<TypeEp> typeEps(String key){
         }
         return type;
 }
-    public void getEntSEP(String qyid, String pkid, int pageNum, int pageSize, int timeType, String selectType) {
+    public void getEntSEP(String qyid, String pkid, int pageNum, int pageSize, int timeType, String selectType,String pkidnew) {
         LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(PieChartEPDataActivity.this)
                 .setMessage("加载中...")
                 .setCancelable(false)
@@ -309,12 +311,21 @@ public List<TypeEp> typeEps(String key){
         dialog.getWindow().setDimAmount(0f);
         dialog.show();
         try {
-            ArticlesRepo.getEntSEPEvent(qyid, pkid, pageNum, pageSize, timeType, selectType).observe(this, new ApiObserver<EntSEPEvent>() {
+            ArticlesRepo.getEntSEPEventNew(qyid, pkid, pageNum, pageSize, timeType, selectType,pkidnew).observe(this, new ApiObserver<HbSSSJ>() {
                 @Override
-                public void onSuccess(Response<EntSEPEvent> response) {
-                    EntSEPEvent shsEvent = response.getData();
+                public void onSuccess(Response<HbSSSJ> response) {
+                   HbSSSJ hbSSSJS = new HbSSSJ();
+                    hbSSSJS=response.getData();
+                    List<EntSEPEvent.RecordsBean> er = new ArrayList<>();
+
+                    if (hbSSSJS.records.size()>0){
+                        for (int i = 0 ;i<hbSSSJS.records.size();i++){
+                            HBItem hbItem = HbSSSJ.getNum(hbSSSJS.records.get(i).monitoringDataList);
+                            er.add(new EntSEPEvent.RecordsBean(hbSSSJS.records.get(i).pointName,hbSSSJS.records.get(i).monitorTime,hbSSSJS.records.get(i).couFlow,hbSSSJS.records.get(i).couFlow,hbItem.coddata,hbItem.ammoniacalData,hbItem.totalData,hbItem.smokeData,hbItem.sulfurData,hbItem.nitrogenData,hbItem.isException));
+                        }
+                    }
                     selectList = new ArrayList<>();
-                    selectList = shsEvent.records;
+                    selectList = er;
                     if (selectList != null && selectList.size() > 0) {
                         list.addAll(selectList);
                         adapter.setNewData(list);
@@ -362,9 +373,9 @@ public List<TypeEp> typeEps(String key){
             adapter.getType(typeAdapter);
             chooseText2.setText(map.get(commName).get(0).name);
             qyid = map.get(commName).get(0).psCode;
-            pkid = map.get(commName).get(0).iocode;
+            pkid = map.get(commName).get(0).ioCode;
             popEvent.typeEp=typeEps(commName);
-            getEntSEP(qyid,pkid,pageNum,pageSize,timeType,selectType);
+            getEntSEP(qyid,pkid,pageNum,pageSize,timeType,selectType,pkid);
             pop.cancel();
         } catch (Exception e) {
             e.printStackTrace();
@@ -378,12 +389,12 @@ public List<TypeEp> typeEps(String key){
             for (int i = 0 ;i<map.get(commName).size();i++){
                 if (event.typeEp.equals(map.get(commName).get(i).name)){
                     typeAdapter = map.get(commName).get(i).type;
-                    pkid = map.get(commName).get(i).iocode;
+                    pkid = map.get(commName).get(i).ioCode;
                 }
             }
             adapter.getType(typeAdapter);
             list.clear();
-            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType);
+            getEntSEP(qyid, pkid, pageNum, pageSize, timeType, selectType,pkid);
             pop.cancel();
         } catch (Exception e) {
             e.printStackTrace();

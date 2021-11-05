@@ -32,7 +32,7 @@ public class LineChartsHb {
         public String monitorTime;
         public String pollutantCode;
         public String realTimeData;
-        public String key;
+        public String name;
         public List<ValueBean> value;
         public static class ValueBean {
                 public String monitorTime;

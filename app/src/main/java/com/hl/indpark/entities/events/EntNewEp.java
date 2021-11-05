@@ -52,7 +52,7 @@ public class EntNewEp {
         public Object updateId;
         public String updateTime;
         public Object likeName;
-        public String iocode;
+        public String ioCode;
 
     }
 }

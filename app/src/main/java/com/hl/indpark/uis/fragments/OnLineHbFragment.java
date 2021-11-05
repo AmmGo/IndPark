@@ -263,8 +263,8 @@ public class OnLineHbFragment extends BaseFragment {
                     popEvent.nameEp=nameEp;
                     popEvent.typeEp=typeEps(commName);
                     qyid = map.get(commName).get(0).psCode;
-                    pkid = map.get(commName).get(0).iocode;
-                    getEntSEP(value.psCode,value.iocode,pageNum,pageSize,timeType,selectType);
+                    pkid = map.get(commName).get(0).ioCode;
+                    getEntSEP(value.psCode,value.ioCode,pageNum,pageSize,timeType,selectType);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -356,7 +356,7 @@ public class OnLineHbFragment extends BaseFragment {
             adapter.getType(typeAdapter);
             chooseText2.setText(map.get(commName).get(0).name);
             qyid = map.get(commName).get(0).psCode;
-            pkid = map.get(commName).get(0).iocode;
+            pkid = map.get(commName).get(0).ioCode;
             popEvent.typeEp=typeEps(commName);
             getEntSEP(qyid,pkid,pageNum,pageSize,timeType,selectType);
             pop.cancel();
@@ -372,7 +372,7 @@ public class OnLineHbFragment extends BaseFragment {
             for (int i = 0 ;i<map.get(commName).size();i++){
                 if (event.typeEp.equals(map.get(commName).get(i).name)){
                     typeAdapter = map.get(commName).get(i).type;
-                    pkid = map.get(commName).get(i).iocode;
+                    pkid = map.get(commName).get(i).ioCode;
                 }
             }
             adapter.getType(typeAdapter);

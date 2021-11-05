@@ -313,7 +313,7 @@ public class PieChartSHDataActivity extends BaseActivity {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 EntSHSEvent jumpData = (EntSHSEvent) adapter.getItem(position);
                 Intent intent = new Intent(PieChartSHDataActivity.this, LineChartWxyTjActivity.class);
-                intent.putExtra("labelId", jumpData.tagId);
+                intent.putExtra("labelId", String.valueOf(jumpData.labelId));
                 String dw_str = jumpData.value;
                 if (dw_str!=null&&!dw_str.equals("")){
                     dw_str = dw_str.replace(".","").replaceAll("[\\d]+","").replace("-","");
@@ -535,7 +535,8 @@ public class PieChartSHDataActivity extends BaseActivity {
                                 data1.enterpriseName = wxyEvents.get(i).enterpriseName;
                                 data1.value = wxyEvents.get(i).value;
                                 data1.time = wxyEvents.get(i).time;
-                                data1.tagId = wxyEvents.get(i).tagId;
+                                data1.tagId = wxyEvents.get(i).labelId;
+                                data1.labelId = wxyEvents.get(i).labelId;
                                 list.add(data1);
                             }
                         }else{
@@ -547,7 +548,8 @@ public class PieChartSHDataActivity extends BaseActivity {
                                     data1.enterpriseName = wxyEvents.get(i).enterpriseName;
                                     data1.value = wxyEvents.get(i).value;
                                     data1.time = wxyEvents.get(i).time;
-                                    data1.tagId = wxyEvents.get(i).tagId;
+                                    data1.tagId = wxyEvents.get(i).labelId;
+                                    data1.labelId = wxyEvents.get(i).labelId;
                                     list.add(data1);
                                 }
                             }

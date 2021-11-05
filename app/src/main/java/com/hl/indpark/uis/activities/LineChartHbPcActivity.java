@@ -275,22 +275,22 @@ public class LineChartHbPcActivity extends BaseActivity {
         mapAd = new HashMap<>();
         mapTime = new HashMap<>();
         for (int i = 0; i < chartsHbs.size(); i++) {
-            if (chartsHbs.get(i).key.equals(LineChatUtils.AD)) {
+            if (chartsHbs.get(i).name.equals(LineChatUtils.AD)) {
                 KEY_NAME1 = LineChatUtils.AD;
                 listAd = chartsHbs.get(i).value;
-            } else if (chartsHbs.get(i).key.equals(LineChatUtils.ZD)) {
+            } else if (chartsHbs.get(i).name.equals(LineChatUtils.ZD)) {
                 KEY_NAME2 = LineChatUtils.ZD;
                 listZl = chartsHbs.get(i).value;
-            } else if (chartsHbs.get(i).key.equals(LineChatUtils.COD)) {
+            } else if (chartsHbs.get(i).name.equals(LineChatUtils.COD)) {
                 KEY_NAME3 = LineChatUtils.COD;
                 listCod = chartsHbs.get(i).value;
-            }else if (chartsHbs.get(i).key.equals(LineChatUtils.YC)){
+            }else if (chartsHbs.get(i).name.equals(LineChatUtils.YC)){
                 KEY_NAME1 = LineChatUtils.YC;
                 listAd = chartsHbs.get(i).value;
-            }else if (chartsHbs.get(i).key.equals(LineChatUtils.EYHL)){
+            }else if (chartsHbs.get(i).name.equals(LineChatUtils.EYHL)){
                 KEY_NAME2 = LineChatUtils.EYHL;
                 listZl = chartsHbs.get(i).value;
-            }else if (chartsHbs.get(i).key.equals(LineChatUtils.DYHW)){
+            }else if (chartsHbs.get(i).name.equals(LineChatUtils.DYHW)){
                 KEY_NAME3 = LineChatUtils.DYHW;
                 listCod = chartsHbs.get(i).value;
             }
