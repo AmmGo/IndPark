@@ -16,8 +16,10 @@ import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
 import com.hl.indpark.entities.events.MyPeportEvent;
 import com.hl.indpark.entities.new2.EventPageList;
+import com.hl.indpark.entities.new2.SbEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
+import com.hl.indpark.uis.adapters.EntSEPAdapter;
 import com.hl.indpark.uis.adapters.MyReportAdapter;
 import com.hl.indpark.utils.Util;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -45,11 +47,11 @@ public class MyReportActivity extends BaseActivity {
     private int total = 0;
     @BindView(R.id.refreshLayout)
     RefreshLayout refreshLayout;
-    private List<EventPageList.RecordsBean> list;
-    private List<EventPageList.RecordsBean> myList;
+    private List<SbEvent.RecordsBean> list;
+    private List<SbEvent.RecordsBean> myList;
     private MyReportAdapter adapter;
     private TabLayout tabLayout;
-    private String state = null;
+    private String state = "0";
 
     @Override
     protected int getContentView() {
@@ -76,7 +78,7 @@ public class MyReportActivity extends BaseActivity {
                         pageNum = 1;
                         pageSize = 10;
                         list.clear();
-                        state = null;
+                        state = "0";
                         getData(pageNum, pageSize, state);
                         break;
                     case 1:
@@ -168,11 +170,11 @@ public class MyReportActivity extends BaseActivity {
     }
 
     public void getData(int pageNum, int pageSize, String state) {
-        ArticlesRepo.getMyPeportEvent(pageNum, pageSize, state).observe(this, new ApiObserver<EventPageList>() {
+        ArticlesRepo.getSbEvent(pageNum, pageSize, state).observe(this, new ApiObserver<SbEvent>() {
             @Override
-            public void onSuccess(Response<EventPageList> response) {
+            public void onSuccess(Response<SbEvent> response) {
                 Log.e("上报列表", "onSuccess: ");
-                EventPageList event = response.getData();
+                SbEvent event = response.getData();
                 myList = new ArrayList<>();
                 myList = event.records;
                 if (myList != null && event.records.size() > 0) {

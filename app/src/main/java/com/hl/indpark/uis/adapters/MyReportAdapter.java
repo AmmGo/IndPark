@@ -4,6 +4,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.new2.EventPageList;
+import com.hl.indpark.entities.new2.SbEvent;
 
 import java.util.List;
 
@@ -12,13 +13,13 @@ import java.util.List;
  * Function：我的上报
  * Desc：
  */
-public class MyReportAdapter extends BaseQuickAdapter<EventPageList.RecordsBean, BaseViewHolder> {
-    public MyReportAdapter(List<EventPageList.RecordsBean> list) {
+public class MyReportAdapter extends BaseQuickAdapter<SbEvent.RecordsBean, BaseViewHolder> {
+    public MyReportAdapter(List<SbEvent.RecordsBean> list) {
         super(R.layout.item_my_report, list);
     }
 
     @Override
-    protected void convert(BaseViewHolder holder, EventPageList.RecordsBean item) {
+    protected void convert(BaseViewHolder holder, SbEvent.RecordsBean item) {
         if (item.status != null) {
             try {
                 if (item.status.equals("1")) {

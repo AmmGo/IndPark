@@ -37,8 +37,11 @@ import com.hl.indpark.entities.events.WxyTjEvent;
 import com.hl.indpark.entities.new2.EventId;
 import com.hl.indpark.entities.new2.EventPageList;
 import com.hl.indpark.entities.new2.HbSSSJ;
+import com.hl.indpark.entities.new2.IsWpSb;
 import com.hl.indpark.entities.new2.Ryqr;
+import com.hl.indpark.entities.new2.SbEvent;
 import com.hl.indpark.entities.new2.Sbry;
+import com.hl.indpark.entities.new2.SpEvent;
 import com.hl.indpark.entities.new2.Wpry;
 
 import java.util.HashMap;
@@ -356,4 +359,39 @@ public interface Api {
     /*=======火灾报警======*/
     @POST(BASE_JAVA + "/fireAlarm/insert")
     LiveData<Resource<Response<String>>> getCallPoliceFire(@Body HashMap<String, String> map);
+
+
+    /**
+     * 审批流程
+     * 第一步：获取事件详情：接口地址：event/findById?id=11 （显示标题，内容，等）
+     * 第二步：获取下一步操作：接口地址：event/operation?eventId=11（是否能上报或者委派）
+     * 第三步：查询委派或者上报处理人。
+     * 第四步：根据委派或者上报选择审批进行提交
+     * */
+
+    /*=======审批列表-ID-查询事件======*/
+    @GET(BASE_JAVA + "/event/operation")
+    LiveData<Resource<Response<IsWpSb>>> getIsWpSb(@Query("eventId") String id);
+
+
+    /*=======事件-指派======*/
+    @POST(BASE_JAVA + "/event/assign")
+    LiveData<Resource<Response<String>>> getEventAssign(@Body HashMap<String, String> map);
+
+    /*=======事件-指派======*/
+    @POST(BASE_JAVA + "/event/report")
+    LiveData<Resource<Response<String>>> getEventReport(@Body HashMap<String, String> map);
+
+    /*=======事件-自行结束=====*/
+    @POST(BASE_JAVA + "/event/end")
+    LiveData<Resource<Response<String>>> getEventEnd(@Body HashMap<String, String> map);
+
+
+    /*=======上报处理列表======*/
+    @GET(BASE_JAVA + "/event/pageList")
+    LiveData<Resource<Response<SpEvent>>> getEventSp(@Query("current") int page, @Query("size") int pageSize, @Query("status") String state);
+
+    /*=======我的上报列表======*/
+    @GET(BASE_JAVA + "/event/findMyCreate")
+    LiveData<Resource<Response<SbEvent>>> getEventSb(@Query("current") int page, @Query("size") int pageSize, @Query("type") String state);
 }

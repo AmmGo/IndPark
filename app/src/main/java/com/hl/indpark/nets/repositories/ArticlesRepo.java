@@ -35,8 +35,11 @@ import com.hl.indpark.entities.events.WxyTjEvent;
 import com.hl.indpark.entities.new2.EventId;
 import com.hl.indpark.entities.new2.EventPageList;
 import com.hl.indpark.entities.new2.HbSSSJ;
+import com.hl.indpark.entities.new2.IsWpSb;
 import com.hl.indpark.entities.new2.Ryqr;
+import com.hl.indpark.entities.new2.SbEvent;
 import com.hl.indpark.entities.new2.Sbry;
+import com.hl.indpark.entities.new2.SpEvent;
 import com.hl.indpark.entities.new2.Wpry;
 import com.hl.indpark.nets.Net;
 
@@ -106,7 +109,7 @@ public class ArticlesRepo {
     }
 
     public static LiveData<Resource<Response<HbSSSJ>>> getEntSEPEventNew(String id, String tlid, int page, int sizePage, int timeType, String isP, String pointType) {
-        return Net.api().getEntSEPEventNew(id, tlid, page, sizePage, timeType, isP,pointType);
+        return Net.api().getEntSEPEventNew(id, tlid, page, sizePage, timeType, isP, pointType);
     }
 
 
@@ -282,5 +285,29 @@ public class ArticlesRepo {
 
     public static LiveData<Resource<Response<String>>> getCallPoliceFire(Map map) {
         return Net.api().getCallPoliceFire((HashMap<String, String>) map);
+    }
+
+    public static LiveData<Resource<Response<IsWpSb>>> getIsWpsb(String id) {
+        return Net.api().getIsWpSb(id);
+    }
+
+
+    public static LiveData<Resource<Response<String>>> getEventReport(Map map) {
+        return Net.api().getEventReport((HashMap<String, String>) map);
+    }
+
+    public static LiveData<Resource<Response<String>>> getEventAssign(Map map) {
+        return Net.api().getEventAssign((HashMap<String, String>) map);
+    }
+
+    public static LiveData<Resource<Response<String>>> getEventEnd(Map map) {
+        return Net.api().getEventEnd((HashMap<String, String>) map);
+    }
+
+    public static LiveData<Resource<Response<SbEvent>>> getSbEvent(int page, int size, String type) {
+        return Net.api().getEventSb(page, size, type);
+    }
+    public static LiveData<Resource<Response<SpEvent>>> getSpEvent(int page, int size, String type) {
+        return Net.api().getEventSp(page, size, type);
     }
 }

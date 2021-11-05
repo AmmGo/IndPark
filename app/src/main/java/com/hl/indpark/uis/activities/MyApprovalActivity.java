@@ -15,7 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
-import com.hl.indpark.entities.events.MyApprovalEvent;
+import com.hl.indpark.entities.new2.SpEvent;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.adapters.MyApprovalAdapter;
@@ -45,11 +45,11 @@ public class MyApprovalActivity extends BaseActivity {
     private int total = 0;
     @BindView(R.id.refreshLayout)
     RefreshLayout refreshLayout;
-    private List<MyApprovalEvent.RecordsBean> list;
-    private List<MyApprovalEvent.RecordsBean> myApprovalList;
+    private List<SpEvent.RecordsBean> list;
+    private List<SpEvent.RecordsBean> myApprovalList;
     private MyApprovalAdapter adapter;
     private TabLayout tabLayout;
-    private String state ;
+    private String state;
 
     @Override
     protected int getContentView() {
@@ -168,13 +168,14 @@ public class MyApprovalActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(MyApprovalActivity.this, ReportApprovalActivity.class);
-                intent.putExtra("id",list.get(position).id);
-                intent.putExtra("reorap",2);
+                Intent intent = new Intent(MyApprovalActivity.this, EventSpActivity.class);
+                intent.putExtra("id", list.get(position).id);
+                intent.putExtra("reorap", 2);
                 startActivityForResult(intent, 1);
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -190,12 +191,13 @@ public class MyApprovalActivity extends BaseActivity {
         }
 
     }
+
     public void getData(int pageNum, int pageSize, String state) {
-        ArticlesRepo.getMyApprovalEvent(pageNum, pageSize, state).observe(this, new ApiObserver<MyApprovalEvent>() {
+        ArticlesRepo.getSpEvent(pageNum, pageSize, state).observe(this, new ApiObserver<SpEvent>() {
             @Override
-            public void onSuccess(Response<MyApprovalEvent> response) {
+            public void onSuccess(Response<SpEvent> response) {
                 Log.e("审批列表", "onSuccess: ");
-                MyApprovalEvent myApprovalEvent = response.getData();
+                SpEvent myApprovalEvent = response.getData();
                 myApprovalList = new ArrayList<>();
                 myApprovalList = myApprovalEvent.records;
                 if (myApprovalList != null && myApprovalEvent.records.size() > 0) {
@@ -217,7 +219,7 @@ public class MyApprovalActivity extends BaseActivity {
             @Override
             public void onFailure(int code, String msg) {
                 super.onFailure(code, msg);
-                Util.login(String.valueOf(code),MyApprovalActivity.this);
+                Util.login(String.valueOf(code), MyApprovalActivity.this);
                 refreshLayout.finishRefresh(false);
             }
 
@@ -228,6 +230,7 @@ public class MyApprovalActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
