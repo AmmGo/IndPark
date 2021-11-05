@@ -276,7 +276,11 @@ public class ArticlesRepo {
         return Net.api().getWpry();
     }
 
-    public static LiveData<Resource<Response<List<Sbry>>>> getSbry() {
+    public static LiveData<Resource<Response<Sbry>>> getSbry() {
         return Net.api().getSbry();
+    }
+
+    public static LiveData<Resource<Response<String>>> getCallPoliceFire(Map map) {
+        return Net.api().getCallPoliceFire((HashMap<String, String>) map);
     }
 }

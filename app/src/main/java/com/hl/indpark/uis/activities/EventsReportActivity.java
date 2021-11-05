@@ -94,6 +94,7 @@ public class EventsReportActivity extends BaseActivity {
     private double getLongitude;
     private double getLatitude;
     private String eventAddress;
+    public String isWS = "1";
 
     @OnTextChanged(value = R.id.ed_event_decs, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void editTextDetailChange(Editable editable) {
@@ -478,17 +479,18 @@ public class EventsReportActivity extends BaseActivity {
         paramMap.put("eventType", String.valueOf(eventReport.id));
         paramMap.put("level", String.valueOf(eventLevel.id));
         paramMap.put("createTime", Util.stampToDate(String.valueOf(System.currentTimeMillis())));
-        paramMap.put("type", String.valueOf(1));
+        paramMap.put("happenedTime", Util.stampToDate(String.valueOf(System.currentTimeMillis())));
+        paramMap.put("type", isWS);
         paramMap.put("assignId", String.valueOf(eventClr.id));
         paramMap.put("handlePersonId", String.valueOf(eventClr.id));
-//        paramMap.put("联系电话", uploadEventTitile);
+        paramMap.put("phone", eventClr.phone);
         paramMap.put("address", eventAddress);
         paramMap.put("longitude", String.valueOf(getLongitude));
         paramMap.put("latitude", String.valueOf(getLatitude));
         paramMap.put("detail", uploadEventDecs);
         paramMap.put("content", uploadEventDecs);
         if (imgS != null && !imgS.equals("")) {
-            paramMap.put("image", imgS);
+            paramMap.put("sceneImages", imgS);
         }
         ArticlesRepo.getReportEvent(paramMap).observe(this, new ApiObserver<String>() {
             @Override
@@ -615,9 +617,11 @@ public class EventsReportActivity extends BaseActivity {
             @Override
             public void onSuccess(Response<Ryqr> response) {
                 Ryqr ryqr = response.getData();
-                if (ryqr.isDep) {
+                if (ryqr.isDep||ryqr.isEnt||ryqr.isMc) {
                     getWpry();
+                    isWS = "2";
                 } else {
+                    isWS = "1";
                     getSbry();
                 }
             }
@@ -650,10 +654,10 @@ public class EventsReportActivity extends BaseActivity {
         ArticlesRepo.getWpry().observe(this, new ApiObserver<List<Wpry>>() {
             @Override
             public void onSuccess(Response<List<Wpry>> response) {
-                List<Wpry> wpry = wpryTest();
+                List<Wpry> wpry = response.getData();
                 List<Clr> clrs = new ArrayList<>();
                 for (int i = 0; i < wpry.size(); i++) {
-                    clrs.add(new Clr(wpry.get(i).name, wpry.get(i).id));
+                    clrs.add(new Clr(wpry.get(i).name, wpry.get(i).id, wpry.get(i).phone));
                 }
                 popEvent.clrList = clrs;
 
@@ -674,15 +678,16 @@ public class EventsReportActivity extends BaseActivity {
     }
 
     public void getSbry() {
-        ArticlesRepo.getSbry().observe(this, new ApiObserver<List<Sbry>>() {
+        ArticlesRepo.getSbry().observe(this, new ApiObserver<Sbry>() {
             @Override
-            public void onSuccess(Response<List<Sbry>> response) {
-                List<Sbry> sbry = sbryTest();
-                List<Clr> clrs = new ArrayList<>();
-                for (int i = 0; i < sbry.size(); i++) {
-                    clrs.add(new Clr(sbry.get(i).name, sbry.get(i).id));
+            public void onSuccess(Response<Sbry> response) {
+
+                if (response.getData()!=null){
+                    List<Clr> clrs = new ArrayList<>();
+                    clrs.add(new Clr(response.getData().name,response.getData().id,response.getData().phone));
+                    popEvent.clrList = clrs;
                 }
-                popEvent.clrList = clrs;
+
             }
 
             @Override
@@ -697,23 +702,5 @@ public class EventsReportActivity extends BaseActivity {
                 super.onError(throwable);
             }
         });
-    }
-
-    public List<Sbry> sbryTest() {
-        List<Sbry> sbries = new ArrayList<>();
-        sbries.add(new Sbry("昭仪", 1));
-        sbries.add(new Sbry("挽茨", 2));
-        sbries.add(new Sbry("刘骅骝", 3));
-        sbries.add(new Sbry("晋王及", 4));
-        return sbries;
-    }
-
-    public List<Wpry> wpryTest() {
-        List<Wpry> sbries = new ArrayList<>();
-        sbries.add(new Wpry("昭仪", 1));
-        sbries.add(new Wpry("挽茨", 2));
-        sbries.add(new Wpry("刘骅骝", 3));
-        sbries.add(new Wpry("晋王及", 4));
-        return sbries;
     }
 }

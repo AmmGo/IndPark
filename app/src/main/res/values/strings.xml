@@ -24,5 +24,6 @@
     <string name="lab_yes">是</string>
     <string name="lab_no">否</string>
     <string name="tip_bluetooth_permission">是否继续一键报警?</string>
+    <string name="tip_bluetooth_permission_file">是否继续火灾报警?</string>
     <string name="tab_wxy">危险源</string>
 </resources>

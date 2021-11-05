@@ -285,7 +285,7 @@ public interface Api {
     LiveData<Resource<Response<SelfCheck.RecordsBean>>> getCheckIDEvent(@Query("id") String id);
 
     /*=======新增危险源实时统计======*/
-    @GET(BASE_JAVA + "/app/statistics/hazardDetail")
+    @GET(BASE_JAVA + "/safetyProduction/realData")
     LiveData<Resource<Response<List<WxyEvent>>>> getWxyEvent(@Query("enterpriseId") String id, @Query("queryType") int queryType, @Query("dataType") int dateType);
 
     /*=======危险源报警统计======*/
@@ -331,7 +331,7 @@ public interface Api {
 
     //2.0新增接口
     /*=======身份确认======*/
-    @GET(BASE_JAVA + "/personnel/identificationm")
+    @GET(BASE_JAVA + "/personnel/identification")
     LiveData<Resource<Response<Ryqr>>> getRyqr();
 
     /*=======委派人员======*/
@@ -340,7 +340,7 @@ public interface Api {
 
     /*=======上报人员======*/
     @GET(BASE_JAVA + "/personnel/getSuperior")
-    LiveData<Resource<Response<List<Sbry>>>> getSbry();
+    LiveData<Resource<Response<Sbry>>> getSbry();
 
     /*=======上报事件2.0======*/
     @POST(BASE_JAVA + "/event/insert")
@@ -353,4 +353,7 @@ public interface Api {
     /*=======审批列表-ID-查询事件======*/
     @GET(BASE_JAVA + "/event/findById")
     LiveData<Resource<Response<EventId>>> getMyPeportIDEvent(@Query("id") String id);
+    /*=======火灾报警======*/
+    @POST(BASE_JAVA + "/fireAlarm/insert")
+    LiveData<Resource<Response<String>>> getCallPoliceFire(@Body HashMap<String, String> map);
 }

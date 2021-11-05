@@ -128,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="上班打卡"
+                        android:text="火灾报警"
                         android:textColor="#FFFFFF"
                         android:textSize="15sp" />
                 </LinearLayout>

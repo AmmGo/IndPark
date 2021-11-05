@@ -10,5 +10,7 @@ public class Wpry {
     }
 
     public String name;
+    public String phone;
     public int id;
+
 }

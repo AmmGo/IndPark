@@ -31,7 +31,6 @@ import com.hl.indpark.uis.activities.MachineCheckActivity;
 import com.hl.indpark.uis.activities.NavigationManagerActivity;
 import com.hl.indpark.uis.activities.OnlineMonitorActivity;
 import com.hl.indpark.uis.activities.SelfTestActivity;
-import com.hl.indpark.uis.activities.SignInActivity;
 import com.hl.indpark.uis.adapters.ViewPagerAdapter;
 import com.hl.indpark.utils.Util;
 
@@ -39,7 +38,9 @@ import net.arvin.baselib.base.BaseFragment;
 import net.arvin.baselib.utils.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -57,6 +58,8 @@ public class HomeFragment extends BaseFragment {
     private Intent intent;
     private UserInfoEvent userInfoEvent;
     private String locAddress = "";
+    private double lon;
+    private double lat;
 
     @OnClick({R.id.ll_one_alrarm, R.id.ll_events, R.id.ll_sign_in, R.id.ll_bjtj, R.id.ll_bjfx, R.id.ll_sys, R.id.ll_self_test, R.id.ll_nav_manager, R.id.ll_log_manager, R.id.ll_home_jc, R.id.ll_sbxj})
     public void onClick(View view) {
@@ -90,7 +93,24 @@ public class HomeFragment extends BaseFragment {
                 break;
             case R.id.ll_sign_in:
 //                showDialog("立即打卡");
-                startActivity(new Intent(getActivity(), SignInActivity.class));
+//                startActivity(new Intent(getActivity(), SignInActivity.class));
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                builder1.setMessage(R.string.tip_bluetooth_permission_file);
+                builder1.setTitle("提示");
+                builder1.setPositiveButton(R.string.lab_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getCallPoliceFire();
+                        dialog.dismiss();
+                    }
+                });
+                builder1.setNegativeButton(R.string.lab_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder1.create().show();
                 break;
             case R.id.ll_bjtj:
                 tabLayout.getTabAt(0).select();
@@ -270,6 +290,36 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
+    public void getCallPoliceFire() {
+        Map<String, String> paramMap = new HashMap<>();
+        /**
+         * 通用参数配置
+         * */
+        paramMap.put("address", locAddress);
+        paramMap.put("alarmName",  userInfoEvent.name);
+        paramMap.put("alarmReceiverPhone", userInfoEvent.phone);
+        paramMap.put("latitude", String.valueOf(lat));
+        paramMap.put("longitude", String.valueOf(lon));
+        ArticlesRepo.getCallPoliceFire(paramMap).observe(this, new ApiObserver<String>() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                ToastUtil.showToast(getContext(), "火灾报警成功");
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                super.onFailure(code, msg);
+                ToastUtil.showToast(getContext(), msg);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                super.onError(throwable);
+
+            }
+        });
+    }
+
     public void initData() {
         ArticlesRepo.getUserInfoEvent().observe(this, new ApiObserver<UserInfoEvent>() {
             @Override
@@ -307,7 +357,9 @@ public class HomeFragment extends BaseFragment {
                     aMapLocation.getLongitude();//获取经度
                     Log.e("获取纬度", "onLocationChanged: " + aMapLocation.getLatitude());
                     Log.e("获取经度", "onLocationChanged: " + aMapLocation.getLongitude());
-                    locAddress = aMapLocation.getAddress();
+                    locAddress = aMapLocation.getAoiName();
+                    lon = aMapLocation.getLongitude();
+                    lat = aMapLocation.getLatitude();
                 } else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError", "location Error, ErrCode:"
