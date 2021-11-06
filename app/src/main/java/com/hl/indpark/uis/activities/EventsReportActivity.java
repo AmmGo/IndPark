@@ -238,6 +238,7 @@ public class EventsReportActivity extends BaseActivity {
     public void getClr(Clr event) {
         tv_clr.setText(event.name);
         eventClr.id = event.id;
+        eventClr.phone = event.phone;
         pop.cancel();
     }
 

@@ -103,7 +103,7 @@ public interface Api {
 //     *
 //     */
     String BASE_URL = "http://testindustry.zwhldk.com/";
-    String BASE_URL_IMG = "https://testindustry.zwhldk.com/img/";
+    String BASE_URL_IMG = "http://testindustry.zwhldk.com/img/";
     String BASE_JAVA = "java";
 
     /**

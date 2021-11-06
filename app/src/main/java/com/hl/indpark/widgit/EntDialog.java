@@ -213,6 +213,7 @@ public class EntDialog extends Dialog implements OnClickListener {
                 Clr event = new Clr();
                 event.name = list.get(position).name;
                 event.id = list.get(position).id;
+                event.phone = list.get(position).phone;
                 EventBus.getDefault().post(event);
             }
         });

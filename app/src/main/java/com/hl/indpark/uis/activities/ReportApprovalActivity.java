@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.hl.indpark.R;
 import com.hl.indpark.entities.Response;
-import com.hl.indpark.entities.events.MyPeportIDEvent;
 import com.hl.indpark.entities.new2.EventId;
 import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
@@ -25,6 +24,7 @@ import net.arvin.baselib.utils.ToastUtil;
 import net.arvin.baselib.widgets.TitleBar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +72,7 @@ public class ReportApprovalActivity extends BaseActivity {
     private int idEvent;
     private int reorap;
     private String titileText;
+    private String nameP;
 
     @OnClick({R.id.tv_report})
     public void onClickView(View v) {
@@ -112,6 +113,7 @@ public class ReportApprovalActivity extends BaseActivity {
         Intent intent = getIntent();
         idEvent = intent.getIntExtra("id", 0);
         reorap = intent.getIntExtra("reorap", 0);
+        nameP = intent.getStringExtra("name");
         if (reorap == 2) {
             titileText = "我的审批";
         } else {
@@ -134,12 +136,14 @@ public class ReportApprovalActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
     public void onBackPressedRes() {
         Intent intent = new Intent();
         intent.putExtra("T", idEvent);
         setResult(2, intent);
         finish();
     }
+
     public void getData(int id) {
         ArticlesRepo.getMyPeportIDEvent(String.valueOf(id)).observe(this, new ApiObserver<EventId>() {
             @Override
@@ -172,8 +176,16 @@ public class ReportApprovalActivity extends BaseActivity {
         tvTitle.setText("事件名称:" + idEvent.name);
         tvDes.setText("事件内容:" + idEvent.detail);
         tv_event_time.setText("上报时间:" + idEvent.createTime);
-        tv_event_person.setText(idEvent.createName==null?"上报人:":"上报人:"+idEvent.createName);
+        tv_event_person.setText(nameP == null ? "上报人:" : "上报人:" + nameP);
         tv_event_phone.setText("联系电话:" + idEvent.phone);
+        idEvent.imageList = new ArrayList<>();
+        if (idEvent.sceneImages.contains(",")) {
+            String[] strings = idEvent.sceneImages.split(",");
+            idEvent.imageList.addAll(Arrays.asList(strings));
+        } else {
+            idEvent.imageList.add(idEvent.sceneImages);
+        }
+
         if (idEvent.imageList != null && idEvent.imageList.size() > 0) {
             mediaList = idEvent.imageList;
             mediaFragment.setActivity(this, mediaList);

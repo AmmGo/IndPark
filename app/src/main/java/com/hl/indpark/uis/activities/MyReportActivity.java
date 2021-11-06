@@ -160,6 +160,7 @@ public class MyReportActivity extends BaseActivity {
                 try {
                     Intent intent = new Intent(MyReportActivity.this, ReportApprovalActivity.class);
                     intent.putExtra("id",list.get(position).id);
+                    intent.putExtra("name",list.get(position).createName);
                     intent.putExtra("reorap",1);
                     startActivity(intent);
                 } catch (Exception e) {
