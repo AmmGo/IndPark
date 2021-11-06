@@ -3,10 +3,14 @@ package com.hl.indpark.uis.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,16 +27,22 @@ import com.hl.indpark.nets.ApiObserver;
 import com.hl.indpark.nets.repositories.ArticlesRepo;
 import com.hl.indpark.uis.fragments.ImageSpFragment;
 import com.hl.indpark.utils.Util;
+import com.hl.indpark.widgit.EntDialog;
 
 import net.arvin.baselib.base.BaseActivity;
 import net.arvin.baselib.utils.ToastUtil;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
@@ -49,14 +59,10 @@ public class EventSpActivity extends BaseActivity {
     TextView tvCount;
     @BindView(R.id.tv_report)
     TextView tvReport;
-    @BindView(R.id.tv_event_onte)
-    TextView tv_event_onte;
     @BindView(R.id.ed_event_onte)
     EditText editOnte;
     @BindView(R.id.ll_img)
     LinearLayout llImg;
-    @BindView(R.id.rl_note)
-    RelativeLayout rlNote;
     @BindView(R.id.rl_ed_event_onte)
     RelativeLayout rledNote;
     @BindView(R.id.tv_event_time)
@@ -65,21 +71,118 @@ public class EventSpActivity extends BaseActivity {
     TextView tv_event_person;
     @BindView(R.id.tv_event_phone)
     TextView tv_event_phone;
+    @BindView(R.id.ll_clr)
+    LinearLayout ll_clr;
     boolean islMaxCount;
     private int idEvent;
+    int isWpSbEnd = 0;
+    boolean isWp = false;
+    boolean isSb = false;
+    boolean isGone = false;
 
-    @OnClick({R.id.tv_report})
-    public void onClickView(View v) {
-        switch (v.getId()) {
-            case R.id.tv_report:
-                Util.hideInputManager(EventSpActivity.this, v);
-                String edOnte = editOnte.getText().toString().trim().replaceAll(" ", "");
-                if (edOnte != null && !edOnte.equals("")) {
-//                    updataData();
-                } else {
-                    ToastUtil.showToast(this, "请填写处理意见");
+    private String nameP;
+    @BindView(R.id.rb_wp)
+    RadioButton rb_wp;
+    @BindView(R.id.rb_sb)
+    RadioButton rb_sb;
+    @BindView(R.id.rb_end)
+    RadioButton rb_end;
+    @BindView(R.id.rg_sfnj)
+    RadioGroup rg_sfnj;
+    @BindView(R.id.tv_clr)
+    TextView tv_clr;
+    private Clr eventClr;
+    private List<Clr> clrsSb;
+    private List<Clr> clrsWp;
+    private String edOnte;
+    private String uploadTvClr;
+
+    @OnCheckedChanged({R.id.rb_wp, R.id.rb_sb, R.id.rb_end})
+    public void OnCheckedChangeListener(CompoundButton view, boolean ischanged) {
+        switch (view.getId()) {
+            case R.id.rb_wp:
+                if (ischanged) {
+                    isWpSbEnd = 2;
+                    ll_clr.setVisibility(View.VISIBLE);
+                    tv_clr.setText("请选择处理人");
+                    popEvent.clrList = clrsWp;
                 }
                 break;
+            case R.id.rb_sb:
+                if (ischanged) {
+                    ll_clr.setVisibility(View.VISIBLE);
+                    tv_clr.setText("请选择处理人");
+                    isWpSbEnd = 1;
+                    popEvent.clrList = clrsSb;
+                }
+                break;
+            case R.id.rb_end:
+                if (ischanged) {
+                    ll_clr.setVisibility(View.GONE);
+                    isWpSbEnd = 3;
+                }
+                break;
+        }
+    }
+
+    @Subscribe
+    public void getClr(Clr event) {
+        tv_clr.setText(event.name);
+        eventClr.id = event.id;
+        eventClr.phone = event.phone;
+        pop.cancel();
+    }
+
+    EntDialog pop;
+
+    @OnClick({R.id.tv_report, R.id.ll_clr, R.id.tv_event_flow, R.id.rl_back})
+    public void onClickView(View v) {
+        switch (v.getId()) {
+            case R.id.rl_back:
+                finish();
+                break;
+            case R.id.tv_event_flow:
+                Intent intent = new Intent(EventSpActivity.this, EventFlowActivity.class);
+                intent.putExtra("id", idEvent);
+                startActivity(intent);
+                break;
+            case R.id.tv_report:
+                Util.hideInputManager(EventSpActivity.this, v);
+                edOnte = editOnte.getText().toString().trim().replaceAll(" ", "");
+                if (isWpSbEnd != 3) {
+                    uploadTvClr = tv_clr.getText().toString().replaceAll(" ", "").replace("请选择处理人", "");
+                    if (TextUtils.isEmpty(uploadTvClr)) {
+                        ToastUtil.showToast(this, "请选择处理人");
+                        return;
+                    }
+                }
+                if (TextUtils.isEmpty(edOnte)) {
+                    ToastUtil.showToast(this, "请填写处理意见");
+                    return;
+                }
+                switch (isWpSbEnd) {
+                    case 0:
+                        break;
+                    case 1:
+                        getSbSp();
+                        break;
+                    case 2:
+                        getWpSp();
+                        break;
+                    case 3:
+                        getEndSp();
+                        break;
+                }
+
+                break;
+            case R.id.ll_clr:
+                try {
+                    pop = new EntDialog(EventSpActivity.this, popEvent, 107);
+                    pop.setCanceledOnTouchOutside(true);
+                    pop.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             default:
         }
     }
@@ -106,7 +209,9 @@ public class EventSpActivity extends BaseActivity {
     protected void init(Bundle savedInstanceState) {
         Intent intent = getIntent();
         idEvent = intent.getIntExtra("id", 0);
-        getData(idEvent);
+        nameP = intent.getStringExtra("name");
+        eventClr = new Clr();
+        getIsWpSb(idEvent);
         setMediaFragment();
     }
 
@@ -142,33 +247,34 @@ public class EventSpActivity extends BaseActivity {
         tvTitle.setText("事件名称:" + idEvent.name);
         tvDes.setText("事件内容:" + idEvent.detail);
         tv_event_time.setText("上报时间:" + idEvent.createTime);
-        tv_event_person.setText(idEvent.createName == null ? "上报人:" : "上报人:" + idEvent.createName);
+        tv_event_person.setText(nameP == null ? "上报人:" : "上报人:" + nameP);
         tv_event_phone.setText("联系电话:" + idEvent.phone);
-        if (idEvent.imageList != null && idEvent.imageList.size() > 0) {
-            mediaList = idEvent.imageList;
-            mediaFragment.setActivity(this, mediaList);
-            llImg.setVisibility(View.VISIBLE);
-        } else {
-            llImg.setVisibility(View.GONE);
-        }
-        if (idEvent.status == 1) {
-            tvReport.setVisibility(View.GONE);
+        if (isGone) {
+            rg_sfnj.setVisibility(View.GONE);
             rledNote.setVisibility(View.GONE);
-            if (idEvent.handlingOpinions != null && !idEvent.handlingOpinions.equals("")) {
-                rlNote.setVisibility(View.VISIBLE);
-                tv_event_onte.setText("审批意见:" + idEvent.handlingOpinions);
-            } else {
-                rlNote.setVisibility(View.GONE);
-            }
+            tvReport.setVisibility(View.GONE);
         } else {
-            tvReport.setVisibility(View.VISIBLE);
+            rg_sfnj.setVisibility(View.VISIBLE);
             rledNote.setVisibility(View.VISIBLE);
-            rlNote.setVisibility(View.GONE);
+            tvReport.setVisibility(View.VISIBLE);
         }
-        if (idEvent.status == 1) {
-            tvReport.setVisibility(View.GONE);
-            rledNote.setVisibility(View.GONE);
+        idEvent.imageList = new ArrayList<>();
+        if (idEvent.sceneImages != null) {
+            if (idEvent.sceneImages.contains(",")) {
+                String[] strings = idEvent.sceneImages.split(",");
+                idEvent.imageList.addAll(Arrays.asList(strings));
+            } else {
+                idEvent.imageList.add(idEvent.sceneImages);
+            }
+            if (idEvent.imageList != null && idEvent.imageList.size() > 0) {
+                mediaList = idEvent.imageList;
+                mediaFragment.setActivity(this, mediaList);
+                llImg.setVisibility(View.VISIBLE);
+            } else {
+                llImg.setVisibility(View.GONE);
+            }
         }
+
 
     }
 
@@ -192,7 +298,30 @@ public class EventSpActivity extends BaseActivity {
         ArticlesRepo.getIsWpsb(String.valueOf(id)).observe(this, new ApiObserver<IsWpSb>() {
             @Override
             public void onSuccess(Response<IsWpSb> response) {
-
+                IsWpSb isWpSb = new IsWpSb();
+                isWpSb = response.getData();
+                if (isWpSb.assign) {
+                    getWpry();
+                    isWp = true;
+                    rb_wp.setClickable(true);
+                } else {
+                    rb_wp.setEnabled(false);
+                    rb_wp.setClickable(false);
+                }
+                if (isWpSb.report) {
+                    getSbry();
+                    isSb = true;
+                    rb_sb.setClickable(true);
+                } else {
+                    rb_sb.setEnabled(false);
+                    rb_sb.setClickable(false);
+                }
+                if (!isWpSb.assign && !isWpSb.report) {
+                    isGone = true;
+                } else {
+                    isGone = false;
+                }
+                getData(idEvent);
             }
 
             @Override
@@ -217,11 +346,11 @@ public class EventSpActivity extends BaseActivity {
             @Override
             public void onSuccess(Response<List<Wpry>> response) {
                 List<Wpry> wpry = response.getData();
-                List<Clr> clrs = new ArrayList<>();
+                clrsWp = new ArrayList<>();
                 for (int i = 0; i < wpry.size(); i++) {
-                    clrs.add(new Clr(wpry.get(i).name, wpry.get(i).id, wpry.get(i).phone));
+                    clrsWp.add(new Clr(wpry.get(i).name, wpry.get(i).id, wpry.get(i).phone));
                 }
-                popEvent.clrList = clrs;
+
 
             }
 
@@ -248,9 +377,9 @@ public class EventSpActivity extends BaseActivity {
             public void onSuccess(Response<Sbry> response) {
 
                 if (response.getData() != null) {
-                    List<Clr> clrs = new ArrayList<>();
-                    clrs.add(new Clr(response.getData().name, response.getData().id, response.getData().phone));
-                    popEvent.clrList = clrs;
+                    clrsSb = new ArrayList<>();
+                    clrsSb.add(new Clr(response.getData().name, response.getData().id, response.getData().phone));
+                    popEvent.clrList = clrsSb;
                 }
 
             }
@@ -283,9 +412,9 @@ public class EventSpActivity extends BaseActivity {
         dialog.show();
 
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("eventId", "事件id");
-        paramMap.put("msg", "意见");
-        paramMap.put("personnelId", "下一步操作人");
+        paramMap.put("eventId", String.valueOf(idEvent));
+        paramMap.put("msg", edOnte);
+        paramMap.put("personnelId", String.valueOf(eventClr.id));
 
         ArticlesRepo.getEventAssign(paramMap).observe(this, new ApiObserver<String>() {
             @Override
@@ -327,9 +456,9 @@ public class EventSpActivity extends BaseActivity {
         dialog.show();
 
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("eventId", "事件id");
-        paramMap.put("msg", "意见");
-        paramMap.put("personnelId", "下一步操作人");
+        paramMap.put("eventId", String.valueOf(idEvent));
+        paramMap.put("msg", edOnte);
+        paramMap.put("personnelId", String.valueOf(eventClr.id));
 
         ArticlesRepo.getEventReport(paramMap).observe(this, new ApiObserver<String>() {
             @Override
@@ -371,9 +500,9 @@ public class EventSpActivity extends BaseActivity {
         dialog.show();
 
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("eventId", "事件id");
-        paramMap.put("msg", "意见");
-        paramMap.put("personnelId", "下一步操作人");
+        paramMap.put("eventId", String.valueOf(idEvent));
+        paramMap.put("msg", edOnte);
+        paramMap.put("personnelId", String.valueOf(eventClr.id));
 
         ArticlesRepo.getEventEnd(paramMap).observe(this, new ApiObserver<String>() {
             @Override
@@ -400,4 +529,21 @@ public class EventSpActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    public void onDestroy() {
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
 }

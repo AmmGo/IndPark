@@ -74,7 +74,7 @@ public class ReportApprovalActivity extends BaseActivity {
     private String titileText;
     private String nameP;
 
-    @OnClick({R.id.tv_report})
+    @OnClick({R.id.tv_report, R.id.tv_event_flow, R.id.rl_back})
     public void onClickView(View v) {
         switch (v.getId()) {
             case R.id.tv_report:
@@ -85,6 +85,14 @@ public class ReportApprovalActivity extends BaseActivity {
                 } else {
                     ToastUtil.showToast(this, "请填写处理意见");
                 }
+                break;
+            case R.id.rl_back:
+                finish();
+                break;
+            case R.id.tv_event_flow:
+                Intent intent = new Intent(ReportApprovalActivity.this, EventFlowActivity.class);
+                intent.putExtra("id", idEvent);
+                startActivity(intent);
                 break;
             default:
         }
@@ -120,14 +128,6 @@ public class ReportApprovalActivity extends BaseActivity {
             titileText = "我的上报";
 
         }
-        TitleBar titleBar = findViewById(R.id.title_bar);
-        titleBar.getCenterTextView().setText(titileText);
-        titleBar.getLeftImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
         //根据id查询事件
         try {
             getData(idEvent);

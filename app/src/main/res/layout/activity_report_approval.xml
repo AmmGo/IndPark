@@ -9,20 +9,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".uis.activities.EventsReportActivity">
 
-        <net.arvin.baselib.widgets.TitleBar
-            android:id="@+id/title_bar"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/primary"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_back" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:centerText="title"
-            app:centerTextColor="@color/text"
-            app:centerType="textView"
-            app:leftBackground="@drawable/bg_button"
-            app:leftImageResource="@drawable/ic_back"
-            app:leftType="imageView"
-            app:showBottomLine="false"
-            app:statusBarColor="@color/primary_dark"
-            app:statusBarMode="light"
-            app:titleBarColor="@color/primary" />
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="我的上报"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/tv_event_flow"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="事件流程"
+            android:textColor="@color/background_white"
+            android:textSize="13sp" />
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"

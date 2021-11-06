@@ -34,6 +34,7 @@ import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.entities.events.WxyEvent;
 import com.hl.indpark.entities.events.WxyTjEvent;
+import com.hl.indpark.entities.new2.EventFlow;
 import com.hl.indpark.entities.new2.EventId;
 import com.hl.indpark.entities.new2.EventPageList;
 import com.hl.indpark.entities.new2.HbSSSJ;
@@ -394,4 +395,8 @@ public interface Api {
     /*=======我的上报列表======*/
     @GET(BASE_JAVA + "/event/findMyCreate")
     LiveData<Resource<Response<SbEvent>>> getEventSb(@Query("current") int page, @Query("size") int pageSize, @Query("type") String state);
+
+    /*=======事件流程======*/
+    @GET(BASE_JAVA + "/event/schematicIllustrationList")
+    LiveData<Resource<Response<List<EventFlow>>>> getEventFlow(@Query("eventId") String id);
 }

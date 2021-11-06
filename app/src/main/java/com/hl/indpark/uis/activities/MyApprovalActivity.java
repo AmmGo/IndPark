@@ -170,6 +170,7 @@ public class MyApprovalActivity extends BaseActivity {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(MyApprovalActivity.this, EventSpActivity.class);
                 intent.putExtra("id", list.get(position).id);
+                intent.putExtra("name", list.get(position).createName);
                 intent.putExtra("reorap", 2);
                 startActivityForResult(intent, 1);
             }

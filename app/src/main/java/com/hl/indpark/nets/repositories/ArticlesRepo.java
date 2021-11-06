@@ -32,6 +32,7 @@ import com.hl.indpark.entities.events.UpdateVersion;
 import com.hl.indpark.entities.events.UserInfoEvent;
 import com.hl.indpark.entities.events.WxyEvent;
 import com.hl.indpark.entities.events.WxyTjEvent;
+import com.hl.indpark.entities.new2.EventFlow;
 import com.hl.indpark.entities.new2.EventId;
 import com.hl.indpark.entities.new2.EventPageList;
 import com.hl.indpark.entities.new2.HbSSSJ;
@@ -292,6 +293,7 @@ public class ArticlesRepo {
     }
 
 
+
     public static LiveData<Resource<Response<String>>> getEventReport(Map map) {
         return Net.api().getEventReport((HashMap<String, String>) map);
     }
@@ -309,5 +311,8 @@ public class ArticlesRepo {
     }
     public static LiveData<Resource<Response<SpEvent>>> getSpEvent(int page, int size, String type) {
         return Net.api().getEventSp(page, size, type);
+    }
+    public static LiveData<Resource<Response<List<EventFlow>>>> getEventFlow(String id) {
+        return Net.api().getEventFlow(id);
     }
 }
